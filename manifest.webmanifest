@@ -1,7 +1,7 @@
 {
   "name": "Travel Command Centre",
   "short_name": "Travel Command",
-  "start_url": "./index.html?v=4.5.89-croatia-full-sim-20260816",
+  "start_url": "./index.html?v=4.5.89-croatia-travel-detail-20260816",
   "display": "standalone",
   "orientation": "landscape",
   "background_color": "#000000",
@@ -20,7 +20,7 @@
       "purpose": "any maskable"
     }
   ],
-  "description": "Travel Command Centre Build 4.5.89 Croatia full-data upload simulation for complete iPad release testing.",
+  "description": "Travel Command Centre Build 4.5.89 with reservation travel-day/payment tracking and expanded Vault travel-document detail.",
   "scope": "./",
   "id": "./",
   "display_override": [
