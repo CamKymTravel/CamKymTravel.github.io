@@ -19311,3 +19311,112 @@ body[data-screen="itinerary"] .itinerary-map-panel.full-page{
 dialog{
   filter:saturate(1.055) contrast(1.025) brightness(1.025)!important;
 }
+
+/* ========================================================================== */
+/* 16 AUG 2026 — RESERVATIONS EIGHT-COLOUR IDENTITY + HEADER CLEAN LOCK      */
+/* Appearance only. Eight category widgets and their expanded views use eight */
+/* unmistakably different colour identities. All screen headers lose external */
+/* shadow bleed/ghost lines while retaining approved borders and colour grade. */
+/* ========================================================================== */
+body[data-screen="reservations"] .reservation-category-card.tone-0{--res:#3399ff;background:linear-gradient(145deg,#124a82 0%,#0a3158 55%,#071c31 100%)!important;border-color:#66b2ff!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(47,143,232,.18)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-1{--res:#39d37f;background:linear-gradient(145deg,#12603d 0%,#0b402c 55%,#071f1b 100%)!important;border-color:#63e59b!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(34,181,115,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-2{--res:#9a6bff;background:linear-gradient(145deg,#513487 0%,#34245f 55%,#17162f 100%)!important;border-color:#b79cff!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(139,92,246,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-3{--res:#ff6b35;background:linear-gradient(145deg,#71380f 0%,#4e2b14 55%,#26180d 100%)!important;border-color:#ff9a73!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(240,125,47,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-4{--res:#16c7c7;background:linear-gradient(145deg,#0e6262 0%,#0b4448 55%,#072429 100%)!important;border-color:#4bdada!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(22,198,194,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-5{--res:#f14ba4;background:linear-gradient(145deg,#7b2855 0%,#56203f 55%,#2a1325 100%)!important;border-color:#ff7fc5!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(232,75,155,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-6{--res:#f2d13d;background:linear-gradient(145deg,#71570d 0%,#513f10 55%,#29230c 100%)!important;border-color:#ffe06b!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(240,194,63,.16)!important}
+body[data-screen="reservations"] .reservation-category-card.tone-7{--res:#9aa8b8;background:linear-gradient(145deg,#3b4655 0%,#2b3543 55%,#171e28 100%)!important;border-color:#b9c4d1!important;box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 18px rgba(129,146,168,.14)!important}
+body[data-screen="reservations"] .reservation-category-card[class*="tone-"] .reservation-category-count strong{color:var(--res)!important}
+
+.readability-focus-panel.reservation-category{--reservation-accent:#3399ff;--reservation-border:rgba(67,165,255,.48);--reservation-head:#123e6f}
+.readability-focus-panel.reservation-focus-flight{--reservation-accent:#3399ff;--reservation-border:rgba(67,165,255,.48);--reservation-head:#123e6f;border-color:#66b2ff!important;background:linear-gradient(145deg,#123f73,#0a2b50 58%,#061622)!important}
+.readability-focus-panel.reservation-focus-train{--reservation-accent:#39d37f;--reservation-border:rgba(69,219,138,.48);--reservation-head:#14583a;border-color:#63e59b!important;background:linear-gradient(145deg,#14563a,#0b3929 58%,#061a17)!important}
+.readability-focus-panel.reservation-focus-cruise{--reservation-accent:#9a6bff;--reservation-border:rgba(169,128,255,.48);--reservation-head:#493476;border-color:#b79cff!important;background:linear-gradient(145deg,#493476,#2d2254 58%,#101429)!important}
+.readability-focus-panel.reservation-focus-rv{--reservation-accent:#ff6b35;--reservation-border:rgba(255,154,79,.48);--reservation-head:#663515;border-color:#ff9a73!important;background:linear-gradient(145deg,#663515,#442714 58%,#20160d)!important}
+.readability-focus-panel.reservation-focus-hotel{--reservation-accent:#16c7c7;--reservation-border:rgba(66,223,220,.48);--reservation-head:#105556;border-color:#4bdada!important;background:linear-gradient(145deg,#105556,#0a393e 58%,#061d23)!important}
+.readability-focus-panel.reservation-focus-airbnb{--reservation-accent:#f14ba4;--reservation-border:rgba(255,117,189,.48);--reservation-head:#672447;border-color:#ff7fc5!important;background:linear-gradient(145deg,#672447,#462039 58%,#251323)!important}
+.readability-focus-panel.reservation-focus-tickets{--reservation-accent:#f2d13d;--reservation-border:rgba(255,224,90,.48);--reservation-head:#67500f;border-color:#ffe06b!important;background:linear-gradient(145deg,#67500f,#473b10 58%,#241f0b)!important}
+.readability-focus-panel.reservation-focus-completed{--reservation-accent:#9aa8b8;--reservation-border:rgba(184,200,220,.44);--reservation-head:#354252;border-color:#b9c4d1!important;background:linear-gradient(145deg,#354252,#273241 58%,#151d27)!important}
+.readability-focus-panel.reservation-category .readability-focus-head{border-bottom-color:var(--reservation-border)!important;background:linear-gradient(180deg,var(--reservation-head),rgba(7,25,39,.92))!important}
+.readability-focus-panel.reservation-category .readability-focus-head small,.readability-focus-panel.reservation-category .reservation-focus-date b,.readability-focus-panel.reservation-category .reservation-focus-copy em,.readability-focus-panel.reservation-category .reservation-focus-row>i{color:var(--reservation-accent)!important}
+.readability-focus-panel.reservation-category .readability-focus-close,.readability-focus-panel.reservation-category footer button,.readability-focus-panel.reservation-category .reservation-focus-row,.readability-focus-panel.reservation-category .reservation-focus-icon{border-color:var(--reservation-border)!important}
+
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-1{background:linear-gradient(145deg,#124a82,#071c31)!important;border-color:#66b2ff!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-2{background:linear-gradient(145deg,#12603d,#071f1b)!important;border-color:#63e59b!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-3{background:linear-gradient(145deg,#513487,#17162f)!important;border-color:#b79cff!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-4{background:linear-gradient(145deg,#71380f,#26180d)!important;border-color:#ff9a73!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-5{background:linear-gradient(145deg,#0e6262,#072429)!important;border-color:#4bdada!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-6{background:linear-gradient(145deg,#7b2855,#2a1325)!important;border-color:#ff7fc5!important}
+#modal:has(.reservation-quick-form) .quick-type-tab.tone-7{background:linear-gradient(145deg,#71570d,#29230c)!important;border-color:#ffe06b!important}
+
+/* One border, no external header shadow/ghost edge. */
+body #screen :is(.destination-lock-hero,.dedicated-lock-hero,.context-hero,.shared-destination-context-hero){box-shadow:none!important;outline:0!important}
+body[data-screen="dashboard"] #screen .home-hero-identity,
+body[data-screen="budget"] #screen .shared-context-card,
+body[data-screen="reservations"] #screen .shared-context-card,
+body[data-screen="itinerary"] #screen .shared-context-card,
+body[data-screen="calendar"] #screen .shared-context-card,
+body[data-screen="vault"] #screen .dedicated-vault-live-status,
+body[data-screen="settings"] #screen .settings-hero-build,
+body[data-screen="settings"] #screen .settings-hero-current,
+body[data-screen="settings"] #screen .settings-hero-next{box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)!important;filter:none!important}
+body[data-screen="budget"] #screen .shared-context-arrow,
+body[data-screen="reservations"] #screen .shared-context-arrow,
+body[data-screen="itinerary"] #screen .shared-context-arrow,
+body[data-screen="calendar"] #screen .shared-context-arrow{box-shadow:none!important}
+body[data-screen="settings"] #screen .dedicated-settings,
+body[data-screen="journeys"] #screen .dedicated-journeys,
+body[data-screen="checklist"] #screen .dedicated-checklist,
+body[data-screen="vault"] #screen .dedicated-vault{box-shadow:none!important}
+
+/* Dedicated header artwork already contains its own authored edge; do not draw a second CSS border. */
+body[data-screen="journeys"] #screen .dedicated-journeys,
+body[data-screen="checklist"] #screen .dedicated-checklist,
+body[data-screen="vault"] #screen .dedicated-vault,
+body[data-screen="settings"] #screen .dedicated-settings{border:0!important}
+
+/* Final specificity seal: no external shadow or duplicate CSS edge on any screen header. */
+body[data-screen="budget"] #screen .shared-destination-context-hero,
+body[data-screen="reservations"] #screen .shared-destination-context-hero,
+body[data-screen="itinerary"] #screen .shared-destination-context-hero,
+body[data-screen="calendar"] #screen .shared-destination-context-hero{box-shadow:none!important;outline:0!important}
+body[data-screen="journeys"] #screen .dedicated-lock-hero.dedicated-journeys,
+body[data-screen="checklist"] #screen .dedicated-lock-hero.dedicated-checklist,
+body[data-screen="vault"] #screen .dedicated-lock-hero.dedicated-vault,
+body[data-screen="settings"] #screen .dedicated-lock-hero.dedicated-settings{box-shadow:none!important;border:0!important;outline:0!important}
+
+/* ========================================================================== */
+/* 16 AUG 2026 — JOURNEY DESTINATION TOTALS FINAL FIT LOCK                   */
+/* Keep all three ranked destination rows fully visible inside the card.     */
+/* Appearance/fit only: no data, calculation or interaction changes.          */
+/* ========================================================================== */
+body[data-screen="journeys"] .journey-destination-totals-card{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+body[data-screen="journeys"] .journey-destination-totals-card>h3{
+  flex:0 0 auto!important;
+}
+body[data-screen="journeys"] .journey-destination-totals-card .journey-destination-totals{
+  flex:1 1 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  overflow:hidden!important;
+  padding-right:0!important;
+}
+body[data-screen="journeys"] .journey-destination-totals-card .journey-destination-totals button{
+  height:auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+body[data-screen="journeys"] .journey-destination-totals-card .journey-destination-totals button>span{
+  min-width:0!important;
+}
+body[data-screen="journeys"] .journey-destination-totals-card .journey-destination-totals b{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
