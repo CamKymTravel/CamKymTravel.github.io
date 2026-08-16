@@ -2,7 +2,7 @@
 
 const STORAGE_KEY = 'travelCommandCentre.v1.croatiaFullSimulation4589';
 const LEGACY_STORAGE_KEYS = [];
-const APP_VERSION = '4.5.89 Core Budget Expansion Lock';
+const APP_VERSION = '4.5.89-map-production-readability-20260817';
 const MAX_JOURNEY_YEARS = 30;
 const MAX_VAULT_SOURCE_BYTES = 8_000_000;
 const MAX_VAULT_ATTACHMENT_BYTES = 180_000;
@@ -485,6 +485,7 @@ let vaultOwnerFilter = 'All';
 let vaultCountryFilter = 'All';
 let vaultSearchQuery = '';
 let vaultCheckVisible = false;
+let vaultFocusWidget = '';
 let mapYearFilters = new Set(['All']);
 let mapExpanded = false;
 let mapEditMode = false;
@@ -844,8 +845,8 @@ function mergeDetailedRouteStops(text,existing=[]){
 function detailedRoutePointInfo(point,index,total){
   const manualX=point?.mapX===null||point?.mapX===undefined||point?.mapX===''?null:Number(point.mapX),manualY=point?.mapY===null||point?.mapY===undefined||point?.mapY===''?null:Number(point.mapY);
   if(Number.isFinite(manualX)&&Number.isFinite(manualY))return {point:clampMapPoint({x:manualX,y:manualY}),located:true,manual:true,source:'manual'};
-  const key=geoKey(point?.label);if(key&&OFFLINE_GEO[key])return {point:projectedPoint(...OFFLINE_GEO[key]),located:true,manual:false,source:'offline-place'};
-  return {point:stableMapFallback({id:point?.id,title:point?.label},index,total),located:false,manual:false,source:'unlocated'};
+  const found=offlineGeoLookup(point?.label);if(found)return {point:projectedPoint(...found.coords),located:true,manual:false,source:'offline-place'};
+  return {point:null,located:false,manual:false,source:'unlocated'};
 }
 function normalizeItineraryEntry(entry={},fallback={}){
   const coverageType=entry.coverageType==='Intentional Gap'?'Intentional Gap':'Destination';
@@ -1220,7 +1221,7 @@ function init(){
   addBtn.addEventListener('click', () => { const action=headerActions[screen]; if(action) openForm(action.kind); });
   restoreInput.addEventListener('change', restoreFile);
   window.addEventListener('tcc:datachanged',event=>scheduleScreenRefresh(event.detail?.entity||'all'));
-  if (navigator.serviceWorker && typeof navigator.serviceWorker.register === 'function') navigator.serviceWorker.register('./sw.js?v=4.5.89-core-budget-expand-20260816').catch(() => {});
+  if (navigator.serviceWorker && typeof navigator.serviceWorker.register === 'function') navigator.serviceWorker.register('./sw.js?v=4.5.89-map-final-tv-lock-20260817').catch(() => {});
   const appDate=parseDate(itineraryReferenceDate()); if(appDate) calendarCursor=appDate;
   requirePinThenRender();
   const splash=$('#splash'),root=document.documentElement;const LAUNCH_HOLD_MS=3000,LAUNCH_FADE_MS=800;if(splash){setTimeout(()=>{root.classList.add('tcc-app-reveal');splash.classList.add('hide');setTimeout(()=>{splash.remove();root.classList.add('tcc-launch-complete');},LAUNCH_FADE_MS);},LAUNCH_HOLD_MS);}else{root.classList.add('tcc-app-reveal','tcc-launch-complete');}
@@ -1257,9 +1258,10 @@ function render(){
   if(screen!=='dashboard'&&homeFocusWidget) homeFocusWidget='';
   if(screen!=='budget'&&budgetFocusWidget) budgetFocusWidget='';
   if(screen!=='reservations'&&reservationCategoryFocus) reservationCategoryFocus='';
+  if(screen!=='vault'&&vaultFocusWidget) vaultFocusWidget='';
   document.body.classList.toggle('checklist-focus-open',screen==='checklist'&&Boolean(checklistFocusList));
   document.body.classList.toggle('journey-focus-open',screen==='journeys'&&Boolean(journeyFocusWidget));
-  document.body.classList.toggle('readability-focus-open',(screen==='dashboard'&&Boolean(homeFocusWidget))||(screen==='budget'&&Boolean(budgetFocusWidget))||(screen==='reservations'&&Boolean(reservationCategoryFocus)));
+  document.body.classList.toggle('readability-focus-open',(screen==='dashboard'&&Boolean(homeFocusWidget))||(screen==='budget'&&Boolean(budgetFocusWidget))||(screen==='reservations'&&Boolean(reservationCategoryFocus))||(screen==='vault'&&Boolean(vaultFocusWidget)));
   const visual=countryVisual();
   state.currentStay.flag=visual.flag;
   document.documentElement.style.setProperty('--destination-accent',visual.accent);
@@ -1614,6 +1616,30 @@ const OFFLINE_GEO={
   'new york':[40.7128,-74.006], 'miami':[25.7617,-80.1918], 'dallas':[32.7767,-96.797], 'los angeles':[34.0522,-118.2437],
   'san francisco':[37.7749,-122.4194], 'las vegas':[36.1699,-115.1398], 'grand canyon':[36.1069,-112.1129], 'new orleans':[29.9511,-90.0715], 'pagosa springs':[37.2695,-107.0098], 'orlando':[28.5383,-81.3792], 'monument valley':[36.9980,-110.0986], 'denver':[39.7392,-104.9903],
   'morocco':[31.7917,-7.0926], 'algeria':[28.0339,1.6596], 'cyprus':[35.1264,33.4299], 'croatia':[45.1,15.2],
+
+  'split':[43.5081,16.4402], 'ljubljana':[46.0569,14.5058], 'zagreb':[45.8150,15.9819], 'zadar':[44.1194,15.2314], 'rijeka':[45.3271,14.4422],
+  'warsaw':[52.2297,21.0122], 'krakow':[50.0647,19.9450], 'wroclaw':[51.1079,17.0385], 'gdansk':[54.3520,18.6466], 'poznan':[52.4064,16.9252],
+  'dresden':[51.0504,13.7373], 'nuremberg':[49.4521,11.0767], 'heidelberg':[49.3988,8.6724], 'frankfurt':[50.1109,8.6821], 'cologne':[50.9375,6.9603], 'hamburg':[53.5511,9.9937],
+  'strasbourg':[48.5734,7.7521], 'colmar':[48.0794,7.3585], 'bern':[46.9480,7.4474], 'interlaken':[46.6863,7.8632], 'geneva':[46.2044,6.1432], 'lausanne':[46.5197,6.6323],
+  'como':[45.8081,9.0852], 'verona':[45.4384,10.9916], 'cortina dampezzo':[46.5405,12.1357], 'trieste':[45.6495,13.7768], 'bologna':[44.4949,11.3426],
+  'key west':[24.5551,-81.7800], 'san juan':[18.4655,-66.1057], 'st maarten':[18.0425,-63.0548], 'ponta delgada':[37.7412,-25.6756], 'funchal':[32.6669,-16.9241], 'tenerife':[28.2916,-16.6291],
+  'honolulu':[21.3099,-157.8581], 'yokohama':[35.4437,139.6380], 'osaka':[34.6937,135.5023], 'seattle':[47.6062,-122.3321], 'vancouver':[49.2827,-123.1207],
+
+  'palma de mallorca':[39.5696,2.6502], 'palma':[39.5696,2.6502], 'mallorca':[39.6953,3.0176], 'corfu':[39.6243,19.9217], 'kerkyra':[39.6243,19.9217],
+  'crete':[35.2401,24.8093], 'heraklion':[35.3387,25.1442], 'santorini':[36.3932,25.4615], 'mykonos':[37.4467,25.3289],
+  'southampton':[50.9097,-1.4044], 'dover port':[51.1279,1.3134], 'barcelona port':[41.3525,2.1589], 'lisbon port':[38.7071,-9.1365],
+  'split port':[43.5035,16.4383], 'dubrovnik port':[42.6596,18.0866], 'miami port':[25.7781,-80.1794], 'portmiami':[25.7781,-80.1794],
+  'los angeles port':[33.7329,-118.2673], 'san pedro':[33.7361,-118.2922], 'tokyo port':[35.6482,139.7708], 'yokohama port':[35.4437,139.6380],
+  'sydney port':[-33.8587,151.2140], 'circular quay':[-33.8610,151.2128], 'auckland port':[-36.8410,174.7850],
+  'yellowstone':[44.4280,-110.5885], 'jackson wyoming':[43.4799,-110.7624], 'moab':[38.5733,-109.5498], 'zion':[37.2982,-113.0263],
+  'bryce canyon':[37.6283,-112.1677], 'santa fe':[35.6870,-105.9378], 'austin':[30.2672,-97.7431], 'san antonio':[29.4241,-98.4936],
+  'houston':[29.7604,-95.3698], 'memphis':[35.1495,-90.0490], 'nashville':[36.1627,-86.7816],
+
+  'civitavecchia':[42.0924,11.7954], 'civitavecchia rome':[42.0924,11.7954], 'livorno':[43.5485,10.3106], 'marseille':[43.2965,5.3698],
+  'malaga':[36.7213,-4.4217], 'gibraltar':[36.1408,-5.3536], 'cartagena spain':[37.6257,-0.9966], 'cadiz':[36.5271,-6.2886],
+  'naples port':[40.8350,14.2681], 'civitavecchia port':[42.0924,11.7954], 'marseille port':[43.2965,5.3698], 'gibraltar port':[36.1408,-5.3536],
+  'orlando florida':[28.5383,-81.3792], 'key west port':[24.5551,-81.7800], 'nassau port':[25.0780,-77.3385], 'cozumel port':[20.4220,-86.9220],
+  'san juan port':[18.4655,-66.1057], 'bermuda port':[32.3078,-64.7505], 'ponta delgada port':[37.7412,-25.6756], 'funchal port':[32.6500,-16.9080],
   'germany':[51.1657,10.4515], 'france':[46.2276,2.2137], 'italy':[41.8719,12.5674], 'spain':[40.4637,-3.7492],
   'portugal':[39.3999,-8.2245], 'united kingdom':[55.3781,-3.436], 'uk':[55.3781,-3.436], 'egypt':[26.8206,30.8025],
   'jordan':[30.5852,36.2384], 'greece':[39.0742,21.8243], 'russia':[61.524,105.3188], 'united states':[37.0902,-95.7129],
@@ -1621,6 +1647,37 @@ const OFFLINE_GEO={
   'vietnam':[14.0583,108.2772], 'indonesia':[-0.7893,113.9213], 'belgium':[50.5039,4.4699], 'netherlands':[52.1326,5.2913], 'czech republic':[49.8175,15.473], 'marrakesh':[31.6295,-7.9811], 'algiers':[36.7538,3.0588], 'nassau':[25.0443,-77.3504], 'cozumel':[20.4230,-86.9223], 'grand cayman':[19.3133,-81.2546], 'jamaica':[18.1096,-77.2975], 'bermuda':[32.3078,-64.7505], 'azores':[37.7412,-25.6756], 'santiago de compostela':[42.8782,-8.5448], 'bilbao':[43.2630,-2.9350], 'bordeaux':[44.8378,-0.5792], 'calais':[50.9513,1.8587], 'dover':[51.1279,1.3134], 'cotswolds':[51.8330,-1.8433], 'york':[53.9590,-1.0815], 'atlantic crossing':[36,-34], 'usa road trip':[37.1,-95.7], 'caribbean cruise 1':[19.5,-72], 'caribbean cruise 2':[18.2,-64.8], 'miami to europe cruise':[31,-36], 'amsterdam to usa cruise':[44,-38], 'caribbean':[18.2,-68.3], 'cruise':[35,-35]
 };
 function geoKey(value){ return String(value||'').toLowerCase().replace(/[–—]/g,'-').replace(/[^a-z0-9, ]/g,' ').replace(/\s+/g,' ').trim(); }
+
+const OFFLINE_GEO_ALIASES={
+  'cortina d ampezzo':'cortina dampezzo',
+  'split ferry port':'split port','split cruise port':'split port','split harbour':'split port','split harbor':'split port',
+  'dubrovnik ferry port':'dubrovnik port','dubrovnik cruise port':'dubrovnik port','port of dubrovnik':'dubrovnik port',
+  'port of miami':'miami port','miami cruise terminal':'miami port','miami cruise port':'miami port',
+  'port of los angeles':'los angeles port','los angeles cruise terminal':'los angeles port','san pedro cruise terminal':'san pedro',
+  'port of barcelona':'barcelona port','barcelona cruise terminal':'barcelona port','port of lisbon':'lisbon port','lisbon cruise terminal':'lisbon port',
+  'palma mallorca':'palma de mallorca','palma de mallorca port':'palma de mallorca','mallorca port':'palma de mallorca',
+  'corfu port':'corfu','corfu cruise port':'corfu','crete port':'crete','heraklion port':'heraklion',
+  'southampton port':'southampton','southampton cruise terminal':'southampton','yokohama cruise terminal':'yokohama port','tokyo cruise terminal':'tokyo port',
+  'sydney cruise terminal':'circular quay','auckland cruise terminal':'auckland port'
+};
+function offlineGeoCandidates(value){
+  const raw=String(value||'').trim(); if(!raw)return [];
+  const parts=raw.split(/[,·|/]/).map(x=>x.trim()).filter(Boolean);
+  const stripped=raw
+    .replace(/\b(international )?airport\b/ig,'')
+    .replace(/\b(central )?(railway |train )?station\b/ig,'')
+    .replace(/\b(cruise |ferry )?(terminal|port|harbou?r)\b/ig,'')
+    .replace(/\b(rv|motorhome|camper) (depot|pickup|return)\b/ig,'')
+    .replace(/\s+/g,' ').trim();
+  return [...new Set([raw,...parts,stripped])].filter(Boolean);
+}
+function offlineGeoLookup(value){
+  for(const candidate of offlineGeoCandidates(value)){
+    let key=geoKey(candidate); if(OFFLINE_GEO_ALIASES[key])key=OFFLINE_GEO_ALIASES[key];
+    if(OFFLINE_GEO[key])return {key,coords:OFFLINE_GEO[key]};
+  }
+  return null;
+}
 function projectedPoint(lat,lon){
   const numericLat=Number(lat),numericLon=Number(lon);
   const safeLat=Number.isFinite(numericLat)?Math.max(-70,Math.min(75,numericLat)):0;
@@ -1651,6 +1708,42 @@ function stableMapFallback(route,i,total){
   const y=14+(((hash>>>8)>>>0)%6800)/100;
   return clampMapPoint({x,y});
 }
+
+function itineraryMapTravelMode(type){
+  const mode=normalizedTravelMode(type);
+  return mode==='Motorhome'?'Motorhome':mode==='Cruise'?'Cruise':'Flight';
+}
+function itineraryMapRouteColour(type){
+  const mode=itineraryMapTravelMode(type);
+  return mode==='Motorhome'?'#78df5d':mode==='Cruise'?'#f2a11b':'#2cbcff';
+}
+function itineraryMapModeLabel(type){ return itineraryMapTravelMode(type); }
+function itineraryMapModeIcon(type){
+  const mode=itineraryMapTravelMode(type);
+  return mode==='Motorhome'?'RV':mode==='Cruise'?'⚓':'✈';
+}
+function compactItineraryRouteDetails(details,limit=6){
+  const rows=Array.isArray(details)?details:[];
+  if(rows.length<=limit)return rows;
+  const indexes=new Set([0,rows.length-1]);
+  for(let i=1;i<limit-1;i++)indexes.add(Math.round(i*(rows.length-1)/(limit-1)));
+  return [...indexes].sort((a,b)=>a-b).map(i=>rows[i]).filter(Boolean);
+}
+const ITINERARY_GEO_LABELS=[
+  ['Ireland',53.3,-8.1,'land'],['United Kingdom',54.7,-2.7,'land'],['Portugal',39.7,-8.2,'land'],['Spain',40.2,-3.8,'land'],['France',46.5,2.1,'land'],
+  ['Netherlands',52.2,5.3,'land'],['Belgium',50.7,4.6,'land'],['Germany',51.0,10.3,'land'],['Denmark',56.0,9.3,'land'],['Poland',52.0,19.2,'land'],
+  ['Czechia',49.8,15.5,'land'],['Austria',47.6,14.1,'land'],['Switzerland',46.8,8.2,'land'],['Hungary',47.1,19.4,'land'],['Italy',42.8,12.5,'land'],
+  ['Slovenia',46.1,14.9,'land'],['Croatia',45.2,16.3,'land'],['Bosnia & Herz.',44.2,17.7,'land'],['Romania',45.9,24.9,'land'],['Greece',39.1,22.0,'land'],['Türkiye',39.0,35.0,'land'],
+  ['Norway',61.0,8.5,'land'],['Sweden',62.0,15.0,'land'],['Finland',64.0,26.0,'land'],
+  ['North Sea',56.5,3.0,'sea'],['Bay of Biscay',45.0,-5.5,'sea'],['Mediterranean Sea',36.5,15.0,'sea'],['Black Sea',43.0,34.0,'sea'],['Atlantic Ocean',43.5,-22.0,'sea']
+];
+function itineraryGeoLabels(fullPage=false){
+  const compactNames=new Set(['United Kingdom','Ireland','Portugal','Spain','France','Germany','Switzerland','Italy','Slovenia','Croatia','North Sea','Mediterranean Sea']);
+  const rows=fullPage?ITINERARY_GEO_LABELS:ITINERARY_GEO_LABELS.filter(([name])=>compactNames.has(name));
+  return `<div class="itinerary-geo-labels" aria-hidden="true">${rows.map(([name,lat,lon,kind])=>{const p=projectedPoint(lat,lon),scale=(fullPage?1:(1/Math.max(1,itineraryMapZoom))).toFixed(4);return `<span class="${kind==='sea'?'sea-label':'land-label'}" style="left:${p.x}%;top:${p.y}%;--label-scale:${scale}">${esc(name)}</span>`;}).join('')}</div>`;
+}
+
+
 function mapDistanceBand(distance){ return distance>=38?'long':distance>=18?'medium':'short'; }
 function mapModePattern(type){ const mode=normalizedTravelMode(type); return mode==='Motorhome'?'Dashed route':mode==='Cruise'?'Dotted route':'Solid route'; }
 function mapJourneyRange(routes){
@@ -1664,11 +1757,8 @@ function routePoint(route,i,total){
   const lat=Number(route?.lat), lon=Number(route?.lon);
   if(Number.isFinite(lat)&&Number.isFinite(lon)) return projectedPoint(lat,lon);
   const candidates=[route?.title,route?.city,route?.country,String(route?.title||'').split(',')[0],String(route?.title||'').split(',').slice(-1)[0]];
-  for(const candidate of candidates){
-    const key=geoKey(candidate);
-    if(OFFLINE_GEO[key]) return projectedPoint(...OFFLINE_GEO[key]);
-  }
-  return stableMapFallback(route,i,total);
+  for(const candidate of candidates){const found=offlineGeoLookup(candidate);if(found)return projectedPoint(...found.coords);}
+  return null;
 }
 function normalizedTravelMode(type){
   const value=String(type||'').toLowerCase();
@@ -1680,7 +1770,7 @@ function routeGeoCoordinates(route){
   const lat=Number(route?.lat),lon=Number(route?.lon);
   if(Number.isFinite(lat)&&Number.isFinite(lon)) return {lat:Math.max(-90,Math.min(90,lat)),lon:Math.max(-180,Math.min(180,lon))};
   const candidates=[route?.title,route?.city,route?.country,String(route?.title||'').split(',')[0],String(route?.title||'').split(',').slice(-1)[0]];
-  for(const candidate of candidates){const value=OFFLINE_GEO[geoKey(candidate)];if(value)return {lat:value[0],lon:value[1]};}
+  for(const candidate of candidates){const found=offlineGeoLookup(candidate);if(found)return {lat:found.coords[0],lon:found.coords[1]};}
   return null;
 }
 function routeKilometres(a,b){
@@ -2262,10 +2352,10 @@ function itineraryMapEntries(range=itineraryCoverageMonths){
 function itineraryMapPointInfo(entry,index,total){
   const manualX=entry?.mapX===null||entry?.mapX===undefined||entry?.mapX===''?null:Number(entry.mapX),manualY=entry?.mapY===null||entry?.mapY===undefined||entry?.mapY===''?null:Number(entry.mapY);
   if(Number.isFinite(manualX)&&Number.isFinite(manualY))return {point:clampMapPoint({x:manualX,y:manualY}),located:true,manual:true,source:'manual'};
-  const cityKey=geoKey(entry?.city),countryKey=geoKey(entry?.country);
-  if(cityKey&&OFFLINE_GEO[cityKey])return {point:projectedPoint(...OFFLINE_GEO[cityKey]),located:true,manual:false,source:'city'};
-  if(countryKey&&OFFLINE_GEO[countryKey])return {point:projectedPoint(...OFFLINE_GEO[countryKey]),located:!cityKey,manual:false,source:cityKey?'country-fallback':'country'};
-  return {point:stableMapFallback(entry,index,total),located:false,manual:false,source:'unlocated'};
+  const cityFound=offlineGeoLookup(entry?.city),countryFound=offlineGeoLookup(entry?.country);
+  if(cityFound)return {point:projectedPoint(...cityFound.coords),located:true,manual:false,source:'city'};
+  if(countryFound)return {point:projectedPoint(...countryFound.coords),located:false,manual:false,source:'country-fallback'};
+  return {point:null,located:false,manual:false,source:'unlocated'};
 }
 function intentionalGapBetween(a,b){
   if(!a||!b||calendarDayDelta(a.departure,b.arrival)<=1)return null;
@@ -2274,7 +2364,7 @@ function intentionalGapBetween(a,b){
 }
 function itineraryRouteConnection(a,b){
   const delta=calendarDayDelta(a?.departure,b?.arrival);
-  if(delta<=1)return {kind:'travel',type:b?.type||'Standard'};
+  if(delta<=1)return {kind:'travel',type:'Flight'};
   const intentional=intentionalGapBetween(a,b);
   return intentional?{kind:'intentional',entry:intentional}:{kind:'break'};
 }
@@ -2287,60 +2377,88 @@ function itineraryMapStatus(entry,current,next,reference){
 }
 function renderItineraryPlanningMap(options={}){
   const fullPage=Boolean(options.fullPage),large=Boolean(options.large),range=fullPage?itineraryMapExpandedRange:itineraryCoverageMonths;
-  const reference=itineraryReferenceDate(),rangeEnd=itineraryMapRangeEnd(range),allRoutes=itineraryMapEntries(range),routes=fullPage?allRoutes:allRoutes.slice(0,Math.min(3,allRoutes.length)),current=currentItineraryEntry(),next=nextItineraryEntry();
+  const reference=itineraryReferenceDate(),rangeEnd=itineraryMapRangeEnd(range),allRoutes=itineraryMapEntries(range),routes=fullPage?allRoutes:allRoutes.slice(0,Math.min(9,allRoutes.length)),current=currentItineraryEntry(),next=nextItineraryEntry();
   const detailRevealZoom=detailedRouteRevealZoom(routes);
   const nodes=[],connections=[],detailsVisible=fullPage&&itineraryMapZoom>=detailRevealZoom;
   routes.forEach((entry,entryIndex)=>{
     const baseInfo=itineraryMapPointInfo(entry,entryIndex,routes.length);
-    if(nodes.length){const previousEntry=routes[entryIndex-1],connection=itineraryRouteConnection(previousEntry,entry);connections.push({...connection,from:nodes.length-1,to:nodes.length,type:entry.type});}
+    if(nodes.length){const previousEntry=routes[entryIndex-1],connection=itineraryRouteConnection(previousEntry,entry);connections.push({...connection,from:nodes.length-1,to:nodes.length,type:'Flight'});}
     nodes.push({kind:'entry',entry,info:baseInfo,title:itineraryTitle(entry),type:entry.type});
-    if(detailsVisible&&['Motorhome','Cruise'].includes(normalizedTravelMode(entry.type))){
-      const details=normalizeDetailedRoutePoints(entry.routePoints);
-      details.forEach((detail,detailIndex)=>{
-        const info=detailedRoutePointInfo(detail,detailIndex,details.length);
+    if(['Motorhome','Cruise'].includes(normalizedTravelMode(entry.type))){
+      const allDetails=normalizeDetailedRoutePoints(entry.routePoints);
+      const shownDetails=detailsVisible?allDetails:compactItineraryRouteDetails(allDetails,fullPage?12:7);
+      const details=shownDetails.filter((detail,detailIndex)=>!(detailIndex===0&&geoKey(detail.label)===geoKey(entry.city)));
+      details.forEach(detail=>{
+        const sourceIndex=Math.max(0,allDetails.findIndex(item=>String(item.id)===String(detail.id)));
+        let info=detailedRoutePointInfo(detail,sourceIndex,allDetails.length);
+        if(!info.located&&baseInfo.point)info={...info,point:baseInfo.point};
         const from=nodes.length-1,to=nodes.length;
         nodes.push({kind:'detail',entry,detail,info,title:detail.label,type:entry.type});
         connections.push({kind:'travel',from,to,type:entry.type,internal:true});
       });
     }
   });
-  const rawPoints=nodes.map(node=>node.info.point),points=fullPage?spreadMapPoints(rawPoints,4.8/Math.max(1,itineraryMapZoom),6.4/Math.max(1,itineraryMapZoom)):rawPoints.map(clampMapPoint);
-  const focusPoints=points.slice(0,Math.min(points.length,6));
-  if(!itineraryMapPanTouched && Math.abs(itineraryMapZoom-1.65)<.001 && focusPoints.length){
-    const xs=focusPoints.map(p=>p.x),ys=focusPoints.map(p=>p.y),spread=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys));
-    itineraryMapZoom=fullPage?(spread<=8?3.65:spread<=16?3.20:spread<=28?2.55:1.65):(spread<=2.5?6.2:spread<=5?5.2:spread<=10?4.2:spread<=20?3.15:2.2);
-  }
+  const rawPoints=nodes.map(node=>node.info.point);
+  const points=rawPoints.map((point,index)=>point?clampMapPoint(point):(itineraryMapPositionMode?stableMapFallback(nodes[index]?.entry,index,nodes.length):null));
+  const validPoints=points.filter(Boolean),focusPoints=(fullPage?validPoints:validPoints.slice(0,Math.min(validPoints.length,16)));
+  const autoZoomFor=pts=>{
+    if(!pts.length)return fullPage?1.65:2.2;
+    const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),w=Math.max(1,Math.max(...xs)-Math.min(...xs)),h=Math.max(1,Math.max(...ys)-Math.min(...ys));
+    const span=Math.max(w,h*1.08),raw=66/span;
+    return fullPage?Math.max(1.08,Math.min(7.0,raw)):Math.max(1.18,Math.min(6.25,raw));
+  };
+  if(!itineraryMapPanTouched&&Math.abs(itineraryMapZoom-1.65)<.001)itineraryMapZoom=autoZoomFor(focusPoints);
   const focusX=focusPoints.length?focusPoints.reduce((sum,p)=>sum+p.x,0)/focusPoints.length:50,focusY=focusPoints.length?focusPoints.reduce((sum,p)=>sum+p.y,0)/focusPoints.length:50;
   const autoLimit=Math.max(0,(itineraryMapZoom-1)*50);
-  const autoPanX=Math.max(-autoLimit,Math.min(autoLimit,itineraryMapZoom*(50-focusX))),autoPanY=Math.max(-autoLimit,Math.min(autoLimit,itineraryMapZoom*(50-focusY)));
-  if(!itineraryMapPanTouched){itineraryMapPanX=autoPanX;itineraryMapPanY=autoPanY;}
+  if(!itineraryMapPanTouched){itineraryMapPanX=Math.max(-autoLimit,Math.min(autoLimit,itineraryMapZoom*(50-focusX)));itineraryMapPanY=Math.max(-autoLimit,Math.min(autoLimit,itineraryMapZoom*(50-focusY)));}
   const mapPanX=itineraryMapPanX,mapPanY=itineraryMapPanY;
   const breakCount=connections.filter(x=>x.kind==='break').length,unlocatedCount=nodes.filter(node=>!node.info.located).length,detailCount=routes.reduce((sum,entry)=>sum+normalizeDetailedRoutePoints(entry.routePoints).length,0),visibleDetailCount=nodes.filter(node=>node.kind==='detail').length;
   const selected=routes.find(x=>String(x.id)===String(itineraryMapSelectedId))||null;
-  const height=large?520:342;
+  const height=large?548:392;
+  const pointKm=(a,b)=>{
+    if(!a||!b)return 0; const rad=v=>v*Math.PI/180;
+    const ga={lat:75-(a.y/100)*145,lon:(a.x/100)*360-180},gb={lat:75-(b.y/100)*145,lon:(b.x/100)*360-180};
+    const dLat=rad(gb.lat-ga.lat),dLon=rad(gb.lon-ga.lon),q=Math.sin(dLat/2)**2+Math.cos(rad(ga.lat))*Math.cos(rad(gb.lat))*Math.sin(dLon/2)**2;
+    return Math.round(6371*2*Math.atan2(Math.sqrt(Math.max(0,Math.min(1,q))),Math.sqrt(Math.max(0,1-Math.max(0,Math.min(1,q))))));
+  };
+  const modeStats={Flight:{km:0,segments:0},Motorhome:{km:0,segments:0},Cruise:{km:0,segments:0}};
+  connections.forEach(connection=>{
+    if(connection.kind!=='travel')return; const a=points[connection.from],b=points[connection.to]; if(!a||!b)return;
+    const distance=pointKm(a,b);if(distance<8)return;
+    const mode=itineraryMapTravelMode(connection.type||nodes[connection.to]?.type);modeStats[mode].segments+=1;modeStats[mode].km+=distance;
+  });
+  const durationLabel=(()=>{const s=parseDate(reference),e=parseDate(rangeEnd);if(!s||!e)return '—';let months=(e.getFullYear()-s.getFullYear())*12+(e.getMonth()-s.getMonth());let anchor=new Date(s);anchor.setMonth(anchor.getMonth()+months);if(anchor>e){months-=1;anchor=new Date(s);anchor.setMonth(anchor.getMonth()+months);}const rem=Math.max(0,Math.round((e-anchor)/86400000));return months?`${months} month${months===1?'':'s'} ${rem} day${rem===1?'':'s'}`:`${rem} days`;})();
+  const totalKm=Object.values(modeStats).reduce((sum,item)=>sum+item.km,0);
   const lines=connections.map((connection,index)=>{
-    if(connection.kind==='break')return '';
-    const a=points[connection.from],b=points[connection.to],destination=nodes[connection.to],intentional=connection.kind==='intentional',mode=normalizedTravelMode(connection.type||destination.type),modeClass=mode.toLowerCase(),colour=intentional?'#8fc9e8':routeColour(connection.type||destination.type);
-    const description=intentional?`${nodes[connection.from].title} to ${destination.title} · intentional travel day / gap`:`${nodes[connection.from].title} to ${destination.title} · ${mapModeLabel(connection.type||destination.type)}${connection.internal?' detailed route':''}`;
-    return mapReadableRouteGeometry(a,b).map(part=>`<g class="route-group itinerary-route-group ${intentional?'route-intentional':`route-mode-${modeClass}`} ${(!nodes[connection.from].info.located||!destination.info.located)?'route-unlocated':''}" data-itinerary-route-leg="${index+1}" aria-label="${esc(description)}"><title>${esc(description)}</title><path d="${part.d}" class="route-shadow"/><path d="${part.d}" class="route-segment ${intentional?'route-intentional-line':`route-${modeClass}`}" style="--route-colour:${colour}"/><circle class="route-direction" cx="${part.mx}" cy="${part.my}" r="1.18" style="--route-colour:${colour}"/></g>`).join('');
+    if(connection.kind!=='travel')return '';
+    const a=points[connection.from],b=points[connection.to],destination=nodes[connection.to];if(!a||!b)return '';
+    if(pointKm(a,b)<8)return '';
+    const unresolved=!nodes[connection.from].info.located||!destination.info.located;if(unresolved&&!itineraryMapPositionMode)return '';
+    const mode=itineraryMapTravelMode(connection.type||destination.type),modeClass=mode.toLowerCase(),colour=itineraryMapRouteColour(mode);
+    const description=`${nodes[connection.from].title} to ${destination.title} · ${mode}${connection.internal?' detailed route':''}`;
+    return mapReadableRouteGeometry(a,b).map(part=>`<g class=\"route-group itinerary-route-group route-mode-${modeClass} ${unresolved?'route-unlocated':''} ${unresolved&&itineraryMapPositionMode?'map-positioning':''}\" data-itinerary-route-leg=\"${index+1}\" aria-label=\"${esc(description)}\"><title>${esc(description)}</title><path d=\"${part.d}\" class=\"route-shadow\"/><path d=\"${part.d}\" class=\"route-segment route-${modeClass}\" style=\"--route-colour:${colour}\"/><circle class=\"route-direction\" cx=\"${part.mx}\" cy=\"${part.my}\" r=\"1.05\" style=\"--route-colour:${colour}\"/></g>`).join('');
   }).join('');
-  const breaks=connections.map(connection=>{
-    if(connection.kind!=='break')return '';
-    const a=points[connection.from],b=points[connection.to],x=(a.x+b.x)/2,y=(a.y+b.y)/2;
-    return `<button class="itinerary-route-break" style="left:${x}%;top:${y}%" title="Unplanned dates break this route"><b>!</b><span>UNPLANNED ROUTE BREAK</span></button>`;
-  }).join('');
+  const breaks=connections.map(connection=>{if(connection.kind!=='break')return '';const a=points[connection.from],b=points[connection.to];if(!a||!b)return '';const x=(a.x+b.x)/2,y=(a.y+b.y)/2;return `<button class=\"itinerary-route-break\" style=\"left:${x}%;top:${y}%\" title=\"Unplanned dates break this route\"><b>!</b><span>ROUTE GAP</span></button>`;}).join('');
   const pins=nodes.map((node,index)=>{
-    const p=points[index],entry=node.entry,info=node.info,isDetail=node.kind==='detail',status=isDetail?'Route stop':itineraryMapStatus(entry,current,next,reference),isCurrent=!isDetail&&status==='Current',isNext=!isDetail&&status==='Next',isHandover=!isDetail&&status==='Handover origin',isSelected=String(entry.id)===String(itineraryMapSelectedId),mode=normalizedTravelMode(entry.type).toLowerCase(),labelSide=isCurrent?'label-right':isNext||isHandover?'label-left':p.x>73?'label-left':p.x<20?'label-right':'label-centre',labelLevel=isCurrent?'label-high':isNext||isHandover?'label-low':index%2?'label-high':'label-low',showLabel=isCurrent||isNext||(!isDetail&&isSelected);
+    const p=points[index];if(!p)return '';
+    const entry=node.entry,info=node.info,isDetail=node.kind==='detail',status=isDetail?'Route stop':itineraryMapStatus(entry,current,next,reference),isCurrent=!isDetail&&status==='Current',isNext=!isDetail&&status==='Next',isHandover=!isDetail&&status==='Handover origin',isSelected=String(entry.id)===String(itineraryMapSelectedId),mode=itineraryMapTravelMode(entry.type).toLowerCase(),labelSide=isCurrent?'label-right':isNext||isHandover?'label-left':p.x>73?'label-left':p.x<20?'label-right':'label-centre',labelLevel=isCurrent?'label-high':isNext||isHandover?'label-low':index%2?'label-high':'label-low',showLabel=isCurrent||isNext||isSelected;
+    const previousPoint=index?points[index-1]:null,coincident=!isDetail&&!isCurrent&&!isNext&&!isSelected&&previousPoint&&pointKm(previousPoint,p)<8;
+    if(coincident)return '';
     const positionAttrs=!info.located&&itineraryMapPositionMode?(isDetail?`data-itinerary-route-point-position="${entry.id}" data-route-point-id="${node.detail.id}" data-map-x="${p.x}" data-map-y="${p.y}"`:`data-itinerary-map-position="${entry.id}" data-map-x="${p.x}" data-map-y="${p.y}"`):'';
-    return `<button class="geo-pin itinerary-planning-pin ${isDetail?'route-detail-pin':''} ${mode==='standard'?'stay':mode} ${isCurrent?'current-route':''} ${isNext?'next-route':''} ${isHandover?'handover-route':''} ${isSelected&&!isDetail?'selected-route':''} ${showLabel?'label-visible':''} ${info.located?'':'unlocated'} ${labelSide} ${labelLevel} ${!info.located&&itineraryMapPositionMode?'map-positioning':''}" style="left:${p.x}%;top:${p.y}%" data-itinerary-map-select="${entry.id}" ${positionAttrs} aria-label="Select ${esc(isDetail?node.detail.label:itineraryTitle(entry))}. ${esc(status)}. ${info.located?'Mapped offline':'Location needs positioning'}" title="${esc(isDetail?node.detail.label:itineraryTitle(entry))} · ${esc(status)}${info.located?'':' · Location needs positioning'}"><span><i>${isDetail?'•':mapModeIcon(entry.type)}</i><em>${index+1}</em></span><b>${esc(isDetail?node.detail.label:itineraryTitle(entry))}</b><small>${isDetail?`${esc(entry.type)} route stop`: `${esc(status)} · ${dateFmt(entry.arrival)}`}${info.located?'':' · Location needs positioning'}</small></button>`;
+    const icon=mode==='motorhome'?'🚐':mode==='cruise'?'⚓':'✈',pinTitle=`${isDetail?node.detail.label:itineraryTitle(entry)} · ${status} · ${info.located?'Mapped offline':'Needs positioning'}`;
+    return `<button class="geo-pin itinerary-planning-pin ${isDetail?'route-detail-pin':''} ${mode} ${isCurrent?'current-route':''} ${isNext?'next-route':''} ${isHandover?'handover-route':''} ${isSelected&&!isDetail?'selected-route':''} ${showLabel?'label-visible':''} ${info.located?'':'unlocated'} ${labelSide} ${labelLevel} ${!info.located&&itineraryMapPositionMode?'map-positioning':''}" style="left:${p.x}%;top:${p.y}%" data-itinerary-map-select="${entry.id}" ${positionAttrs} title="${esc(pinTitle)}" aria-label="Select ${esc(isDetail?node.detail.label:itineraryTitle(entry))}. ${esc(status)}. ${info.located?'Mapped offline':'Location needs positioning'}"><span><i>${icon}</i></span><b>${esc(isDetail?node.detail.label:itineraryTitle(entry))}</b><small>${isDetail?`${esc(itineraryMapTravelMode(entry.type))} route stop`:`${esc(status)} · ${dateFmt(entry.arrival)}`}${info.located?'':' · Needs positioning'}</small></button>`;
   }).join('');
-  const rangeControls=fullPage?`<label class="itinerary-map-range">Show<select id="itinerary-map-range"><option value="6" ${String(range)==='6'?'selected':''}>6 months</option><option value="12" ${String(range)==='12'?'selected':''}>12 months</option><option value="18" ${String(range)==='18'?'selected':''}>18 months</option><option value="All" ${String(range)==='All'?'selected':''}>All Future</option></select></label>`:'';
-  const tools=fullPage?`<div class="itinerary-map-tools">${rangeControls}<button data-itinerary-map-zoom="out" aria-label="Zoom planning map out">−</button><button data-itinerary-map-zoom="reset" aria-label="Reset planning map zoom">${Math.round(itineraryMapZoom*100)}%</button><button data-itinerary-map-zoom="in" aria-label="Zoom planning map in">＋</button>${unlocatedCount?`<button data-itinerary-map-position-mode class="${itineraryMapPositionMode?'active':''}">${itineraryMapPositionMode?'Finish Positioning':`Position ${unlocatedCount} Marker${unlocatedCount===1?'':'s'}`}</button>`:''}</div>`:`<div class="itinerary-map-tools"><button data-itinerary-map-expand class="secondary itinerary-route-overview">ROUTE OVERVIEW</button></div>`;
-  const mapBody=routes.length?`${worldSvg()}<svg class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Future itinerary routes">${lines}</svg>${breaks}${pins}`:`${worldSvg()}<div class="empty-map-copy"><b>No planned itinerary yet</b><small>Add a destination below to begin the forward route.</small></div>`;
+  const rangeControls=fullPage?`<label class=\"itinerary-map-range\">Show<select id=\"itinerary-map-range\"><option value=\"6\" ${String(range)==='6'?'selected':''}>6 months</option><option value=\"12\" ${String(range)==='12'?'selected':''}>12 months</option><option value=\"18\" ${String(range)==='18'?'selected':''}>18 months</option><option value=\"All\" ${String(range)==='All'?'selected':''}>All Future</option></select></label>`:'';
+  const tools=fullPage?`<div class=\"itinerary-map-tools\">${rangeControls}<button data-itinerary-map-zoom=\"out\" aria-label=\"Zoom planning map out\">−</button><button data-itinerary-map-zoom=\"reset\" aria-label=\"Fit planning map to route\">${Math.round(itineraryMapZoom*100)}%</button><button data-itinerary-map-zoom=\"in\" aria-label=\"Zoom planning map in\">＋</button>${unlocatedCount?`<button data-itinerary-map-position-mode class=\"${itineraryMapPositionMode?'active':''}\">${itineraryMapPositionMode?'Finish Positioning':`Position ${unlocatedCount} Marker${unlocatedCount===1?'':'s'}`}</button>`:''}</div>`:`<div class=\"itinerary-map-tools\"><button data-itinerary-map-expand class=\"secondary itinerary-route-overview\">EXPAND MAP</button></div>`;
+  const basemap=`<img class=\"itinerary-vector-basemap\" src=\"world-map-vector.svg\" alt=\"\" aria-hidden=\"true\">`;
+  const mapBody=routes.length?`${basemap}${itineraryGeoLabels(fullPage)}<svg class=\"route-svg\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"none\" aria-hidden=\"true\">${lines}</svg>${breaks}${pins}`:`${basemap}<div class=\"empty-map-copy\"><b>No planned itinerary yet</b><small>Add a destination below to begin the forward route.</small></div>`;
   const selectedRouteCount=selected?normalizeDetailedRoutePoints(selected.routePoints).length:0;
-  const selectedDetail=selected?`<div class="itinerary-map-selection"><span>${esc(countryVisual(selected.country,selected.type).flag)}</span><div><small>SELECTED ITINERARY STOP${selectedRouteCount?` · ${selectedRouteCount} DETAILED ROUTE POINT${selectedRouteCount===1?'':'S'}`:''}</small><b>${esc(itineraryTitle(selected))}</b><em>${dateFmt(selected.arrival)} – ${dateFmt(selected.departure)} · ${esc(selected.type)}</em></div><button data-edit="itinerary:${selected.id}">OPEN ITINERARY ENTRY →</button></div>`:'';
-  return `<section class="itinerary-map-panel ${fullPage?'full-page':''}"><header><div><span>FORWARD PLANNING MAP</span><h2>Where We’re Going</h2><p>${dateFmt(reference)} – ${dateFmt(rangeEnd)} · driven automatically by Itinerary</p></div>${tools}</header><div class="itinerary-map-summary"><span><small>CURRENT</small><b>${current?esc(itineraryTitle(current)):'No active destination'}</b></span><span><small>NEXT</small><b>${next?esc(itineraryTitle(next)):'Not planned'}</b></span><span><small>${fullPage?'PLANNED TRIPS':'NEARBY STOPS SHOWN'}</small><b>${routes.length}</b></span>${detailCount?`<span class="route-detail-count"><small>DETAILED ROUTE POINTS</small><b>${detailCount}</b></span>`:''}<span class="${breakCount?'warning-text':'success'}"><small>ROUTE BREAKS</small><b>${breakCount}</b></span>${unlocatedCount?`<span class="warning-text"><small>NEEDS POSITIONING</small><b>${unlocatedCount}</b></span>`:''}</div><div class="journey-map-shell itinerary-map-shell ${large?'large-map':''} ${fullPage?'full-page-map':''}">${fullPage?'':'<button data-itinerary-map-expand class="secondary itinerary-map-inline-expand">EXPAND MAP</button>'}<div class="map-mapplate"><span class="map-offline-badge">OFFLINE PLANNING MAP</span><span class="map-mode-summary">CURRENT · NEXT · FUTURE</span></div><div class="map-north" aria-hidden="true"><b>N</b><span>▲</span></div><div class="journey-map-viewport" style="${fullPage?expandedMapViewportStyle(itineraryMapZoom,mapPanX,mapPanY):`--map-zoom:${itineraryMapZoom};--map-pan-x:${mapPanX};--map-pan-y:${mapPanY};--pin-scale:${(1/itineraryMapZoom).toFixed(4)}`} "><div class="world-grid" style="height:${height}px" role="img" aria-label="Offline future itinerary map with ${visibleDetailCount} visible detailed motorhome or cruise route points">${mapBody}</div></div></div><div class="itinerary-map-legend"><span><i class="current"></i>Current</span><span><i class="next"></i>Next</span><span><i class="stay"></i>Standard</span><span><i class="motorhome"></i>Motorhome</span><span><i class="cruise"></i>Cruise</span>${detailCount?'<span><i class="route-detail"></i>Detailed route stop</span>':''}<span><i class="intentional"></i>Intentional gap</span><span><i class="break"></i>Unplanned break</span><small>${itineraryMapPositionMode?'Drag markers labelled “Location needs positioning”, including detailed RV/cruise stops, then finish positioning.':fullPage?(detailCount&&!detailsVisible?`Zoom to ${Math.round(detailRevealZoom*100)}% or closer to reveal detailed Motorhome/Cruise route stops for this selection.`:'Pinch to zoom deeply and use two fingers to move around. Detailed Motorhome/Cruise route stops remain sharp and visible.'):'The embedded map is fixed so the page scrolls normally. Expand the map to zoom and inspect detailed routes.'}</small></div>${selectedDetail}</section>`;
+  const selectedDetail=selected?`<div class=\"itinerary-map-selection\"><span>${esc(countryVisual(selected.country,selected.type).flag)}</span><div><small>SELECTED ITINERARY STOP${selectedRouteCount?` · ${selectedRouteCount} DETAILED ROUTE POINT${selectedRouteCount===1?'':'S'}`:''}</small><b>${esc(itineraryTitle(selected))}</b><em>${dateFmt(selected.arrival)} – ${dateFmt(selected.departure)} · ${esc(selected.type)}</em></div><button data-edit=\"itinerary:${selected.id}\">OPEN ITINERARY ENTRY →</button></div>`:'';
+  const summary=`<div class="itinerary-map-summary"><span class="map-stat current"><i>●</i><small>CURRENT</small><b>${current?esc(itineraryTitle(current)):'No active destination'}</b><em>${current?dateFmt(current.arrival):'—'}</em></span><span class="map-stat next"><i>●</i><small>NEXT</small><b>${next?esc(itineraryTitle(next)):'Not planned'}</b><em>${next?dateFmt(next.arrival):'—'}</em></span><span class="map-stat stops"><i>⌖</i><small>PLANNED STOPS</small><b>${routes.length}</b><em>including next</em></span><span class="map-stat details"><i>▦</i><small>DETAILED ROUTE POINTS</small><b>${detailCount}</b><em>${detailCount?'Motorhome / Cruise':'none saved'}</em></span><span class="map-stat distance"><i>⌁</i><small>TOTAL ROUTE</small><b>${totalKm.toLocaleString()} km</b><em>${durationLabel}</em></span><span class="map-stat ${breakCount?'gaps':'clear'}"><i>△</i><small>ROUTE BREAKS</small><b>${breakCount}</b><em>${breakCount?'needs review':'no gaps detected'}</em></span></div>`;
+  const modeSummary=`<div class=\"itinerary-route-mode-summary\"><div class=\"flight\"><i>✈</i><span><small>FLIGHT</small><b>${modeStats.Flight.km.toLocaleString()} km</b><em>${modeStats.Flight.segments} leg${modeStats.Flight.segments===1?'':'s'}</em></span></div><div class=\"motorhome\"><i>🚐</i><span><small>MOTORHOME</small><b>${modeStats.Motorhome.km.toLocaleString()} km</b><em>${modeStats.Motorhome.segments} leg${modeStats.Motorhome.segments===1?'':'s'}</em></span></div><div class=\"cruise\"><i>⚓</i><span><small>CRUISE</small><b>${modeStats.Cruise.km.toLocaleString()} km</b><em>${modeStats.Cruise.segments} leg${modeStats.Cruise.segments===1?'':'s'}</em></span></div><div class=\"duration\"><i>▣</i><span><small>${totalKm?'TOTAL ROUTE':'PLAN DURATION'}</small><b>${totalKm?`${totalKm.toLocaleString()} km`:durationLabel}</b><em>${durationLabel}</em></span></div></div>`;
+  return `<section class=\"itinerary-map-panel ${fullPage?'full-page':''}\"><header><div><span>FORWARD PLANNING MAP</span><h2>Where We’re Going</h2><p>${dateFmt(reference)} – ${dateFmt(rangeEnd)} · driven automatically by Itinerary</p></div>${tools}</header>${summary}<div class=\"journey-map-shell itinerary-map-shell ${large?'large-map':''} ${fullPage?'full-page-map':''}\">${fullPage?'':'<button data-itinerary-map-expand class=\"secondary itinerary-map-inline-expand\">EXPAND MAP</button>'}<div class=\"map-mapplate\"><span class=\"map-offline-badge\"><b></b>OFFLINE PLANNING MAP</span><span class=\"map-mode-summary\">FLIGHT · MOTORHOME · CRUISE</span></div><div class=\"map-north\" aria-hidden=\"true\"><b>N</b><span>▲</span></div><div class=\"journey-map-viewport\" style=\"${fullPage?expandedMapViewportStyle(itineraryMapZoom,mapPanX,mapPanY):`--map-zoom:${itineraryMapZoom};--map-pan-x:${mapPanX};--map-pan-y:${mapPanY};--pin-scale:${(1/itineraryMapZoom).toFixed(4)}`}\"><div class=\"world-grid\" style=\"height:${height}px\" role=\"img\" aria-label=\"Offline future itinerary map using Flight, Motorhome and Cruise routes with ${visibleDetailCount} visible detailed route points\">${mapBody}</div></div></div><div class=\"itinerary-map-legend\"><span><i class=\"flight\"></i>Flight</span><span><i class=\"motorhome\"></i>Motorhome</span><span><i class=\"cruise\"></i>Cruise</span><small>${itineraryMapPositionMode?'Drag unresolved markers into their correct location, then finish positioning.':fullPage?(detailCount&&!detailsVisible?`Zoom closer to reveal every detailed Motorhome/Cruise stop.`:'Pinch to zoom and drag to move around. Current is green; next is amber.'):'Clear route overview. Expand for detailed route stops and zoom.'}</small></div>${modeSummary}${selectedDetail}</section>`;
 }
+
 
 function reservationDateOverlap(a,b){
   if(!a?.date||!b?.date||a.id===b.id||a.status==='To Book'||b.status==='To Book') return false;
@@ -2848,6 +2966,12 @@ function renderJourneys(){
   const yearSpend=Object.entries(completed.reduce((o,x)=>{const y=String(yearOfJourney(x)||'—');o[y]=(o[y]||0)+journeySpendAud(x);return o;},{})).sort((a,b)=>a[0].localeCompare(b[0]));
   const modeDays=['Standard stay','Motorhome','Cruise'].map(label=>({label,value:completed.filter(x=>x.type===label).reduce((s,x)=>s+days(x.start,x.end),0)}));
   const topGroups=[...groups].sort((a,b)=>b.spend-a.spend).slice(0,6);
+  const countryGroups=Object.values(completed.reduce((o,j)=>{
+    const country=journeyCountry(j)||'Unknown'; const key=country.toLowerCase();
+    if(!o[key])o[key]={country,stays:0,days:0,spend:0,km:0,destinations:new Set()};
+    o[key].stays+=1;o[key].days+=days(j.start,j.end);o[key].spend+=journeySpendAud(j);o[key].km+=Number(j.km||0);o[key].destinations.add(journeyDestinationKey(j));
+    return o;
+  },{})).map(x=>({...x,destinations:x.destinations.size})).sort((a,b)=>a.country.localeCompare(b.country));
   const completedIds=new Set(completed.map(x=>String(x.id)));
   const journeySpendCategories={Accommodation:0,Transport:0,Food:0,Entertainment:0,Shopping:0,Other:0};
   const classifyExpense=category=>['Groceries','Eating Out'].includes(category)?'Food':category==='Transport'?'Transport':category==='Entertainment'?'Entertainment':category==='Shopping'?'Shopping':'Other';
@@ -2860,14 +2984,21 @@ function renderJourneys(){
   const journeyMilestonesBody=`<div class="journey-milestones"><div><b>${first?'1st':'—'}</b><small>${first?dateFmt(first.start):'First journey'}<br>First journey</small></div><div><b>${countries}</b><small>Countries<br>visited</small></div><div><b>${lifetimeDays}</b><small>Travel<br>days</small></div><div><b>${completed.filter(x=>x.type==='Cruise').length}</b><small>Cruises<br>completed</small></div><div><b>${completed.filter(x=>x.type==='Motorhome').length}</b><small>Motorhome<br>trip${completed.filter(x=>x.type==='Motorhome').length===1?'':'s'}</small></div><div><b>${Math.floor(lifetimeDays/365)}</b><small>Full<br>years</small></div></div>`;
   const journeyTotalsBody=`<div class="journey-destination-totals">${topGroups.slice(0,3).map(g=>`<button data-journey-search-value="${esc(g.title)}" aria-label="Filter Journey History to ${esc(g.title)}"><span><b>${esc(g.title)}</b><small>${g.stays} stay${g.stays===1?'':'s'} · ${g.days} days · ${Number(g.km||0).toLocaleString()} km</small></span><strong>${money(g.spend)}</strong></button>`).join('')||empty('No completed destination totals yet.')}</div>`;
   const journeyTotalsFocusBody=`<div class="journey-destination-totals journey-destination-totals-expanded">${topGroups.slice(0,6).map((g,i)=>`<div class="journey-total-focus-row"><span><em>#${i+1}</em><b>${esc(g.title)}</b><small>${g.stays} stay${g.stays===1?'':'s'} · ${g.days} days · ${Number(g.km||0).toLocaleString()} km</small></span><strong>${money(g.spend)}</strong></div>`).join('')||empty('No completed destination totals yet.')}</div>`;
-  const focusMeta={spend:{title:'LIFETIME TRAVEL SPEND · AUD',tone:'spend',content:journeySpendBody},stats:{title:'TRAVEL STATISTICS',tone:'stats',content:journeyStatsBody},milestones:{title:'MILESTONES · AUTOMATIC',tone:'milestones',content:journeyMilestonesBody},totals:{title:'DESTINATION TOTALS',tone:'totals',content:journeyTotalsFocusBody}}[journeyFocusWidget]||null;
+  const journeyCountriesFocusBody=`<div class="journey-kpi-focus-summary">${readabilityMetric('Countries visited',countries,'unique countries')}${readabilityMetric('Completed stays',completed.length,'journeys recorded')}${readabilityMetric('Travel days',lifetimeDays,'unique completed days')}${readabilityMetric('Lifetime spend',money(lifetimeSpend),'AUD')}</div><div class="journey-kpi-detail-list countries">${countryGroups.map(g=>`<div class="journey-kpi-detail-row"><span class="journey-kpi-flag">${journeyFlagForCountry(g.country)}</span><span><b>${esc(g.country)}</b><small>${g.destinations} destination${g.destinations===1?'':'s'} · ${g.stays} stay${g.stays===1?'':'s'} · ${g.days} days</small></span><strong>${money(g.spend)}</strong></div>`).join('')||empty('No completed countries yet.')}</div>`;
+  const destinationRows=[...groups].sort((a,b)=>a.title.localeCompare(b.title));
+  const journeyDestinationsFocusBody=`<div class="journey-kpi-focus-summary">${readabilityMetric('Destinations completed',destinations,'unique destinations')}${readabilityMetric('Completed stays',completed.length,'including return visits')}${readabilityMetric('Countries',countries,'visited')}${readabilityMetric('Kilometres',displayedJourneyKm.toLocaleString(),'approx. km')}</div><div class="journey-kpi-detail-list destinations">${destinationRows.map(g=>`<div class="journey-kpi-detail-row"><span class="journey-kpi-flag">${journeyFlagForCountry(g.country)}</span><span><b>${esc(g.title)}</b><small>${esc(g.country)} · ${g.stays} stay${g.stays===1?'':'s'} · ${g.days} days · ${Number(g.km||0).toLocaleString()} km</small></span><strong>${money(g.spend)}</strong></div>`).join('')||empty('No completed destinations yet.')}</div>`;
+  const yearDayRows=Object.entries(completed.reduce((o,j)=>{const y=String(yearOfJourney(j)||'—');(o[y]??=[]).push(j);return o;},{})).sort((a,b)=>a[0].localeCompare(b[0])).map(([year,rows])=>({year,days:uniqueJourneyDays(rows),stays:rows.length,spend:rows.reduce((sum,j)=>sum+journeySpendAud(j),0)}));
+  const journeyDaysFocusBody=`<div class="journey-kpi-focus-summary">${readabilityMetric('Travel days',lifetimeDays,'unique completed days')}${readabilityMetric('Average / day',moneyCents(avgDay),'AUD')}${readabilityMetric('First journey',first?dateFmt(first.start):'—','journey start')}${readabilityMetric('Latest completed',completed.length?dateFmt([...completed].sort((a,b)=>String(b.end).localeCompare(String(a.end)))[0].end):'—','journey end')}</div><div class="journey-kpi-split"><section><h3>TRAVEL DAYS BY YEAR</h3>${yearDayRows.map(r=>`<div class="journey-kpi-mini-row"><span><b>${esc(r.year)}</b><small>${r.stays} stay${r.stays===1?'':'s'}</small></span><strong>${r.days} days</strong></div>`).join('')||empty('No completed travel days yet.')}</section><section><h3>TRAVEL DAYS BY TYPE</h3>${modeDays.map(r=>`<div class="journey-kpi-mini-row"><span><b>${esc(r.label.replace(' stay',''))}</b><small>completed travel</small></span><strong>${r.value} days</strong></div>`).join('')}</section></div>`;
+  const fullYears=Math.floor(lifetimeDays/365),remainingYearDays=lifetimeDays%365;
+  const journeyRoadFocusBody=`<div class="journey-kpi-focus-summary">${readabilityMetric('Years on the road',(lifetimeDays/365).toFixed(1),'based on completed travel days')}${readabilityMetric('Full travel years',fullYears,String(remainingYearDays)+' additional days')}${readabilityMetric('Completed journeys',completed.length,'all travel types')}${readabilityMetric('Kilometres',displayedJourneyKm.toLocaleString(),'approx. km')}</div><div class="journey-kpi-split"><section><h3>YEAR-BY-YEAR</h3>${yearDayRows.map(r=>`<div class="journey-kpi-mini-row"><span><b>${esc(r.year)}</b><small>${r.stays} completed stay${r.stays===1?'':'s'}</small></span><strong>${r.days} days</strong></div>`).join('')||empty('No completed years yet.')}</section><section><h3>TRAVEL TYPE MIX</h3>${modeDays.map(r=>`<div class="journey-kpi-mini-row"><span><b>${esc(r.label.replace(' stay',''))}</b><small>${lifetimeDays?Math.round(r.value/lifetimeDays*100):0}% of travel days</small></span><strong>${r.value} days</strong></div>`).join('')}</section></div>`;
+  const focusMeta={countries:{title:'COUNTRIES VISITED',tone:'kpi-countries',content:journeyCountriesFocusBody},destinations:{title:'DESTINATIONS COMPLETED',tone:'kpi-destinations',content:journeyDestinationsFocusBody},days:{title:'DAYS TRAVELLED',tone:'kpi-days',content:journeyDaysFocusBody},road:{title:'YEARS ON THE ROAD',tone:'kpi-road',content:journeyRoadFocusBody},kpiSpend:{title:'LIFETIME TRAVEL SPEND · AUD',tone:'kpi-spend',content:journeySpendBody},spend:{title:'LIFETIME TRAVEL SPEND · AUD',tone:'spend',content:journeySpendBody},stats:{title:'TRAVEL STATISTICS',tone:'stats',content:journeyStatsBody},milestones:{title:'MILESTONES · AUTOMATIC',tone:'milestones',content:journeyMilestonesBody},totals:{title:'DESTINATION TOTALS',tone:'totals',content:journeyTotalsFocusBody}}[journeyFocusWidget]||null;
   return `${dedicatedHero('journeys')}
   <div class="journey-kpis journey-kpis-locked">
-    <div class="journey-kpi tone-purple"><span>${journeyKpiSvg('countries')}</span><b>${countries}</b><small>Countries<br>visited</small></div>
-    <div class="journey-kpi tone-green"><span>${journeyKpiSvg('destinations')}</span><b>${destinations}</b><small>Destinations<br>completed</small></div>
-    <div class="journey-kpi tone-blue"><span>${journeyKpiSvg('days')}</span><b>${lifetimeDays}</b><small>Days travelled</small></div>
-    <div class="journey-kpi tone-gold"><span>${journeyKpiSvg('road')}</span><b>${(lifetimeDays/365).toFixed(1)}</b><small>Years on the<br>road</small></div>
-    <div class="journey-kpi tone-teal"><span>${journeyKpiSvg('spend')}</span><b>${money(lifetimeSpend)}</b><small>Lifetime travel<br>spend</small></div>
+    <div class="journey-kpi tone-purple journey-kpi-expandable" data-journey-focus="countries" tabindex="0" role="button" aria-label="Open Countries Visited in expanded view"><span>${journeyKpiSvg('countries')}</span><b>${countries}</b><small>Countries<br>visited</small><em>TAP ↗</em></div>
+    <div class="journey-kpi tone-green journey-kpi-expandable" data-journey-focus="destinations" tabindex="0" role="button" aria-label="Open Destinations Completed in expanded view"><span>${journeyKpiSvg('destinations')}</span><b>${destinations}</b><small>Destinations<br>completed</small><em>TAP ↗</em></div>
+    <div class="journey-kpi tone-blue journey-kpi-expandable" data-journey-focus="days" tabindex="0" role="button" aria-label="Open Days Travelled in expanded view"><span>${journeyKpiSvg('days')}</span><b>${lifetimeDays}</b><small>Days travelled</small><em>TAP ↗</em></div>
+    <div class="journey-kpi tone-gold journey-kpi-expandable" data-journey-focus="road" tabindex="0" role="button" aria-label="Open Years on the Road in expanded view"><span>${journeyKpiSvg('road')}</span><b>${(lifetimeDays/365).toFixed(1)}</b><small>Years on the<br>road</small><em>TAP ↗</em></div>
+    <div class="journey-kpi tone-teal journey-kpi-expandable" data-journey-focus="kpiSpend" tabindex="0" role="button" aria-label="Open Lifetime Travel Spend in expanded view"><span>${journeyKpiSvg('spend')}</span><b>${money(lifetimeSpend)}</b><small>Lifetime travel<br>spend</small><em>TAP ↗</em></div>
   </div>
   <div class="journey-overview-grid journey-overview-locked">
     ${card('JOURNEY MAP',renderRouteStrip({readOnly:false,compact:true,large:true}),'journey-history-map journey-map-lock')}
@@ -2951,6 +3082,21 @@ function checklistPersonalCard(list){
   return `<section class="personal-needs-card ${tone} checklist-expandable-card" data-check-focus="${list}" tabindex="0" aria-label="Open ${list} needs and wants in expanded view"><header><div class="personal-owner-title"><h3>${owner}</h3><span>NEEDS &amp; WANTS</span><em class="checklist-expand-cue">TAP TO EXPAND ↗</em></div><button data-add="checklist" data-check-list="${list}" aria-label="Add ${list} needs and wants">＋ ADD ${owner}</button></header><div class="personal-needs-summary"><strong>${rows.length}</strong><span>item${rows.length===1?'':'s'}</span><div><b>${done}</b><small>completed</small><b>${pending}</b><small>pending</small></div></div><div class="personal-needs-mini">${rows.slice(0,3).map(item=>`<label><input type="checkbox" data-check="${item.id}" ${item.done?'checked':''}><span>${esc(item.task)}</span></label>`).join('')||`<button data-add="checklist" data-check-list="${list}">Add the first ${list.toLowerCase()} item →</button>`}</div></section>`;
 }
 function checklistFocusPanel(list){
+  if(list==='Overview'){
+    const o=checklistOverview(),lists=['His','Hers','Permanent','Destination'];
+    const phases=['Current Stay','Before You Leave','Travel Day','Arrival & Settle In'];
+    const listRows=lists.map(name=>{const rows=state.checklist.filter(x=>x.list===name),done=rows.filter(x=>x.done).length;return {name,total:rows.length,done,pending:rows.length-done};});
+    const phaseRows=phases.map(name=>{const rows=state.checklist.filter(x=>checklistPhaseFor(x)===name),done=rows.filter(x=>x.done).length;return {name,total:rows.length,done,pending:rows.length-done};});
+    const urgent=state.checklist.filter(x=>!x.done).sort((a,b)=>String(a.due||'9999').localeCompare(String(b.due||'9999'))).slice(0,8);
+    return `<div class="checklist-focus-backdrop" data-check-focus-backdrop role="presentation"><section class="checklist-focus-panel overview" role="dialog" aria-modal="true" aria-label="Expanded Checklist Overview">
+      <header class="checklist-focus-head"><div><small>EXPANDED VIEW</small><h2>CHECKLIST OVERVIEW</h2><p>Quick travel-readiness summary for easier reading on iPad.</p></div><div class="checklist-focus-head-actions"><button class="checklist-focus-close" data-check-focus-close aria-label="Close expanded checklist overview">×</button></div></header>
+      <div class="checklist-focus-summary"><span><small>TOTAL</small><b>${o.total}</b></span><span><small>COMPLETED</small><b>${o.completed}</b></span><span><small>PENDING</small><b>${o.pending}</b></span><span><small>OVERDUE</small><b>${o.overdue}</b></span></div>
+      <div class="checklist-focus-progress"><i style="width:${graphPercent(o.pct)}%"></i></div>
+      <div class="checklist-overview-focus-grid"><section><h3>BY CHECKLIST</h3>${listRows.map(r=>`<div class="checklist-overview-focus-row"><span><b>${esc(r.name)}</b><small>${r.done} complete · ${r.pending} remaining</small></span><strong>${r.total}</strong></div>`).join('')}</section><section><h3>BY TRAVEL STAGE</h3>${phaseRows.map(r=>`<div class="checklist-overview-focus-row"><span><b>${esc(r.name)}</b><small>${r.done} complete · ${r.pending} remaining</small></span><strong>${r.total}</strong></div>`).join('')}</section></div>
+      <div class="checklist-overview-focus-urgent"><h3>NEXT ITEMS TO FINISH</h3>${urgent.length?urgent.map(item=>{const due=checklistDueState(item);return `<div class="checklist-overview-urgent-row ${due.key}"><span><b>${esc(item.task)}</b><small>${esc(item.list)} · ${item.due?dateFmt(item.due):'No due date'}</small></span><strong>${due.label}</strong></div>`;}).join(''):empty('No incomplete checklist items.')}</div>
+      <footer><span>Checklist Overview is read-only and updates automatically.</span><button data-check-focus-close>CLOSE EXPANDED VIEW</button></footer>
+    </section></div>`;
+  }
   if(!['His','Hers','Permanent','Destination'].includes(list)) return '';
   const personal=['His','Hers'].includes(list);
   const all=state.checklist.filter(x=>x.list===list);
@@ -2990,7 +3136,7 @@ function renderChecklist(){
     <div class="checklist-lists">${checklistListPanel('Permanent')}${checklistListPanel('Destination')}</div>
     <div class="checklist-footer-note">ⓘ Tap a saved task to edit it. Green = Completed · Orange = Pending · Red = Overdue</div>
   </main><aside class="checklist-side">
-    ${card('CHECKLIST OVERVIEW',`<div class="checklist-overview-premium"><div class="checklist-orbit" style="--complete:${graphPercent(overview.pct)}"><div><span>TRAVEL READINESS</span><b>${overview.pct}%</b><small>${overview.completed} of ${overview.total} complete</small></div></div><div class="checklist-overview-stats"><span class="done"><i></i><small>COMPLETED</small><b>${overview.completed}</b></span><span class="pending"><i></i><small>PENDING</small><b>${overview.pending}</b></span><span class="overdue"><i></i><small>OVERDUE</small><b>${overview.overdue}</b></span></div></div>`,'checklist-overview-card')}
+    <article class="card checklist-overview-card checklist-expandable-card" data-check-focus="Overview" tabindex="0" role="button" aria-label="Open Checklist Overview in expanded view"><h3>CHECKLIST OVERVIEW <em class="checklist-overview-expand-cue">TAP TO EXPAND ↗</em></h3><div class="checklist-overview-premium"><div class="checklist-orbit" style="--complete:${graphPercent(overview.pct)}"><div><span>TRAVEL READINESS</span><b>${overview.pct}%</b><small>${overview.completed} of ${overview.total} complete</small></div></div><div class="checklist-overview-stats"><span class="done"><i></i><small>COMPLETED</small><b>${overview.completed}</b></span><span class="pending"><i></i><small>PENDING</small><b>${overview.pending}</b></span><span class="overdue"><i></i><small>OVERDUE</small><b>${overview.overdue}</b></span></div></div></article>
     ${card('NEXT DESTINATION',next?`<div class="checklist-next-card destination-visual" style="--next-image:url('${nextVisual.image}');--next-accent:${nextVisual.accent}"><b>${esc(next.title)}</b><span>${namedTextIcon('calendar',`${dateFmt(next.start)} – ${dateFmt(next.end)}`,'checklist-next-icon')}</span><span>${namedTextIcon('flight',`Travel day: ${dateFmt(next.start)}`,'checklist-next-icon')}</span><span>${namedTextIcon('hotel',`Stay duration: ${days(next.start,next.end)} days`,'checklist-next-icon')}</span><button data-edit="itinerary:${next.id}">VIEW DESTINATION →</button></div>`:`<div class="checklist-next-card"><b>Not planned</b><span>No future destination found.</span><button data-screen-jump="itinerary">SET NEXT DESTINATION →</button></div>`,'checklist-next-destination')}
     ${card('CHECKLIST CHECK',`<p>Run a check to make sure nothing is missed.</p><button id="run-checklist-check" class="wide-button primary">RUN CHECKLIST CHECK</button>${checklistCheckVisible?`<div class="checklist-check-result ${checkIssues.length?'issues':'ok'}"><b>${checkIssues.length?'CHECK NEEDED':'CHECKLIST OK'}</b><span>${checkIssues.length?`${checkIssues.length} issue${checkIssues.length===1?'':'s'} found.`:(ready?'You are ready to move!':'Checklist structure is valid. Finish the remaining tasks.')}</span>${checkIssues.length?`<ul>${checkIssues.slice(0,5).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}<small>Last run: ${esc(state.settings.lastChecklistCheckAt||'Not yet run')}</small></div>`:''}`)}
     <div class="checklist-reset-note">ⓘ Destination task completion resets automatically when the current destination changes.</div>
@@ -3044,8 +3190,16 @@ function renderVault(){
   const recent=[...state.vault].sort((a,b)=>String(b.updatedAt||b.addedAt||'').localeCompare(String(a.updatedAt||a.addedAt||''))).slice(0,5);
   const countries=[...new Set(state.vault.map(x=>String(x.country||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
   const recordsHeading=vaultTypeFilter==='All'?'ALL VAULT RECORDS':esc(vaultTypeLabel(vaultTypeFilter).toUpperCase());
+  const vaultFocusType={'passport':'Passport','visa':'Visa','insurance':'Insurance','accommodation':'Accommodation details','emergency':'Emergency contact'}[vaultFocusWidget]||'';
+  const vaultFocusTone={'Passport':'vault-focus-passport','Visa':'vault-focus-visa','Insurance':'vault-focus-insurance','Accommodation details':'vault-focus-accommodation','Emergency contact':'vault-focus-emergency'}[vaultFocusType]||'vault-focus-passport';
+  const vaultFocusRows=vaultFocusType?state.vault.filter(x=>x.type===vaultFocusType):[];
+  const vaultFocusValid=vaultFocusRows.filter(x=>['Valid','Active'].includes(vaultRecordStatus(x))).length;
+  const vaultFocusAttention=vaultFocusRows.filter(x=>['Expiring soon','Expired'].includes(vaultRecordStatus(x))).length;
+  const vaultFocusAttachments=vaultFocusRows.reduce((sum,x)=>sum+(Array.isArray(x.attachments)?x.attachments.length:0),0);
+  const vaultFocusBody=vaultFocusType?`<div class="vault-focus-summary">${readabilityMetric('Records',vaultFocusRows.length,'saved locally')}${readabilityMetric('Valid / active',vaultFocusValid,'ready to use')}${readabilityMetric('Needs attention',vaultFocusAttention,vaultFocusAttention===1?'record':'records',vaultFocusAttention?'warn':'')}${readabilityMetric('Screenshots',vaultFocusAttachments,'attachments')}</div><div class="vault-focus-actions"><p>${esc(vaultTypeLabel(vaultFocusType))} are shown here in a larger easy-read view. Tap a record to edit it.</p><button data-vault-show-list="${esc(vaultFocusType)}">SHOW ${esc(vaultTypeLabel(vaultFocusType).toUpperCase())} IN MAIN LIST</button></div><div class="vault-focus-list">${vaultFocusRows.map(record=>{const status=vaultRecordStatus(record),count=Array.isArray(record.attachments)?record.attachments.length:0,subtype=record.type==='Passport'&&record.identityKind&&record.identityKind!=='Passport'?record.identityKind:record.type==='Insurance'&&record.insuranceProvider?record.insuranceProvider:record.type==='Visa'&&record.visaEntries?`${record.visaEntries} entry`:vaultTypeLabel(record.type),detail=[record.country,subtype,record.reference].filter(Boolean).join(' · ');return `<article class="vault-focus-row" data-edit-row="vault:${record.id}" tabindex="0" role="button" aria-label="Edit Vault record ${esc(record.name)}"><span class="vault-focus-row-icon">${vaultSectionIcon(record.type)}</span><span class="vault-focus-row-copy"><b>${esc(record.name)}</b><small>${esc(detail||record.notes||'No additional details')}</small><em>${esc(record.owner||'Shared')} · ${record.expiry?`Valid until ${dateFmt(record.expiry)}`:'No expiry date'}</em></span><strong><i class="vault-status-pill ${status.toLowerCase().replaceAll(' ','-')}">${esc(status)}</i><small>${count} screenshot${count===1?'':'s'}</small></strong></article>`}).join('')||empty(`No ${vaultTypeLabel(vaultFocusType).toLowerCase()} saved yet.`)}</div>`:'';
+  const vaultFocusOverlay=vaultFocusType?readabilityFocusOverlay('vault',vaultTypeLabel(vaultFocusType).toUpperCase(),vaultFocusBody,vaultFocusTone,'Vault category views are read-only summaries. Tap a record to edit it, or show the category in the main list.'):'';
   return `${cinematicHero('vault')}<div class="vault-screen-grid vault-screen-stack"><main>
-    <div class="vault-category-grid">${types.map(type=>{const rows=state.vault.filter(x=>x.type===type);const active=vaultTypeFilter===type;const tone={'Passport':'vault-passport','Visa':'vault-visa','Insurance':'vault-insurance','Accommodation details':'vault-accommodation','Emergency contact':'vault-emergency'}[type]||'vault-passport';return `<button class="vault-category ${tone} ${active?'active':''}" data-vault-filter="${esc(type)}"><span>${vaultSectionIcon(type)}</span><b>${esc(vaultTypeLabel(type))}</b><strong>${rows.length}</strong><small>${rows.length===1?'record':'records'}</small></button>`}).join('')}</div>
+    <div class="vault-category-grid">${types.map(type=>{const rows=state.vault.filter(x=>x.type===type);const active=vaultTypeFilter===type;const tone={'Passport':'vault-passport','Visa':'vault-visa','Insurance':'vault-insurance','Accommodation details':'vault-accommodation','Emergency contact':'vault-emergency'}[type]||'vault-passport';const focus={'Passport':'passport','Visa':'visa','Insurance':'insurance','Accommodation details':'accommodation','Emergency contact':'emergency'}[type];return `<button class="vault-category ${tone} ${active?'active':''}" data-vault-focus="${focus}" aria-label="Open ${esc(vaultTypeLabel(type))} in expanded view"><span>${vaultSectionIcon(type)}</span><b>${esc(vaultTypeLabel(type))}</b><strong>${rows.length}</strong><small>${rows.length===1?'record':'records'}</small><em>TAP TO EXPAND ↗</em></button>`}).join('')}</div>
     <section class="vault-records-card vault-filter-card">
       <div class="vault-filterbar"><label class="vault-search approved-search-field">${iconMarkup('search','search-field-icon')}<input id="vault-search" aria-label="Search Vault records" value="${esc(vaultSearchQuery)}" placeholder="Search name, owner, country, reference or notes"></label><select id="vault-type-filter" aria-label="Filter Vault records by section"><option value="All">All sections</option>${types.map(x=>`<option value="${esc(x)}" ${vaultTypeFilter===x?'selected':''}>${esc(vaultTypeLabel(x))}</option>`).join('')}</select><select id="vault-owner-filter" aria-label="Filter Vault records by owner"><option value="All">All owners</option>${['Cameron','Kym','Shared'].map(x=>`<option value="${x}" ${vaultOwnerFilter===x?'selected':''}>${x}</option>`).join('')}</select><select id="vault-country-filter" aria-label="Filter Vault records by country"><option value="All">All countries</option>${countries.map(x=>`<option value="${esc(x)}" ${vaultCountryFilter===x?'selected':''}>${esc(x)}</option>`).join('')}</select><button id="clear-vault-filters">Clear</button><button class="primary vault-add-document" data-add="vault">＋ ADD DOCUMENT</button></div>
     </section>
@@ -3062,7 +3216,7 @@ function renderVault(){
     ${card('RECENT ACTIVITY',recent.length?recent.map(x=>`<button class="vault-activity" data-edit="vault:${x.id}"><span class="vault-mini-icon">${vaultSectionIcon(x.type)}</span><div><b>${esc(x.name)}</b><small>${esc(x.lastAction||'Saved')} · ${esc(x.owner||'')}</small></div><time>${esc(x.updatedAt||x.addedAt||'')}</time></button>`).join(''):empty('No Vault activity yet.'),'vault-side-activity')}
     ${card('VAULT CHECK',`<p>Check required details, expiry dates, owners, duplicates and screenshot data.</p><button id="run-vault-check" class="wide-button primary">RUN VAULT CHECK</button>${vaultCheckVisible?`<div class="vault-check-result ${issues.length?'issues':'ok'}"><b>${issues.length?'CHECK NEEDED':'VAULT OK'}</b><span>${issues.length?`${issues.length} issue${issues.length===1?'':'s'} found.`:'Your Vault records are in good order.'}</span>${issues.length?`<ul>${issues.slice(0,8).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}<small>Last checked: ${esc(state.settings.lastVaultCheckAt||'Not yet run')}</small></div>`:''}`,'vault-side-check vault-check-wide')}
   </section>
-  </div>`;
+  </div>${vaultFocusOverlay}`;
 }
 function vaultTable(list){
   if(!list.length) return `<div class="vault-record-list vault-record-empty">${empty('No Vault records match these filters.')}</div>`;
@@ -3759,7 +3913,7 @@ function bindScreen(){
     const planDate=e.target.closest('[data-plan-itinerary-date]');if(planDate){openForm('itinerary',null,{coverageType:'Destination',arrival:planDate.dataset.planItineraryDate,departure:planDate.dataset.planItineraryEnd||planDate.dataset.planItineraryDate});return;}
     const itineraryAlert=e.target.closest('[data-itinerary-alert]');if(itineraryAlert){const coverage=itineraryCoverage(itineraryReferenceDate(),itineraryCoverageMonths);const kind=itineraryAlert.dataset.itineraryAlert;if(kind==='gap'&&coverage.gaps[0])openForm('itinerary',null,{coverageType:'Destination',arrival:coverage.gaps[0].start,departure:coverage.gaps[0].end});else if(kind==='missing'&&coverage.missing[0])openForm('itinerary',coverage.missing[0].id);else if(kind==='overlap'&&coverage.overlaps[0]?.entry)openForm('itinerary',coverage.overlaps[0].entry.id);else if(kind==='currency'&&currentItineraryEntry())openForm('itinerary',currentItineraryEntry().id);else showToast('No matching itinerary issue needs attention.');return;}
     const itineraryMapSelect=e.target.closest('[data-itinerary-map-select]');if(itineraryMapSelect&&!itineraryMapSelect.classList.contains('dragging')){itineraryMapSelectedId=itineraryMapSelect.dataset.itineraryMapSelect;render();return;}
-    const itineraryMapExpand=e.target.closest('[data-itinerary-map-expand]');if(itineraryMapExpand){const entering=!itineraryMapExpanded;itineraryMapExpanded=entering;itineraryMapPositionMode=false;if(entering){itineraryMapZoom=1;itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;}else{itineraryMapZoom=1.65;itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;}render();requestAnimationFrame(resetScreenScroll);return;}
+    const itineraryMapExpand=e.target.closest('[data-itinerary-map-expand]');if(itineraryMapExpand){const entering=!itineraryMapExpanded;itineraryMapExpanded=entering;itineraryMapPositionMode=false;if(entering){itineraryMapZoom=1.65;itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;}else{itineraryMapZoom=1.65;itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;}render();requestAnimationFrame(resetScreenScroll);return;}
     const itineraryMapZoomButton=e.target.closest('[data-itinerary-map-zoom]');if(itineraryMapZoomButton){const z=itineraryMapZoomButton.dataset.itineraryMapZoom;itineraryMapZoom=z==='in'?Math.min(12,itineraryMapZoom+.5):z==='out'?Math.max(1,itineraryMapZoom-.35):1.65;if(z==='reset'){itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;}render();return;}
     const itineraryMapPositionButton=e.target.closest('[data-itinerary-map-position-mode]');if(itineraryMapPositionButton){itineraryMapPositionMode=!itineraryMapPositionMode;render();showToast(itineraryMapPositionMode?'Marker positioning enabled. Drag unresolved itinerary markers into place.':'Itinerary marker positions saved locally.');return;}
     const add=e.target.closest('[data-add]'); if(add){openForm(add.dataset.add);return;}
@@ -3778,7 +3932,6 @@ function bindScreen(){
     const mapExpand=e.target.closest('[data-map-expand]'); if(mapExpand){mapExpanded=!mapExpanded;if(!mapExpanded){mapPanX=0;mapPanY=0;mapPanTouched=false;mapZoom=1;journeyMapSelectedId='';}render();requestAnimationFrame(resetScreenScroll);return;}
     const mapZoomBtn=e.target.closest('[data-map-zoom]'); if(mapZoomBtn){const z=mapZoomBtn.dataset.mapZoom;mapZoom=z==='in'?Math.min(12,mapZoom+.5):z==='out'?Math.max(1,mapZoom-.5):1;if(z==='reset'){mapPanX=0;mapPanY=0;mapPanTouched=false;}render();return;}
     const day=e.target.closest('.day[data-date]'); if(day){calendarSelectedDate=day.dataset.date;calendarDayViewDate=day.dataset.date;render();return;}
-    const vf=e.target.closest('[data-vault-filter]'); if(vf){vaultTypeFilter=vaultTypeFilter===vf.dataset.vaultFilter?'All':vf.dataset.vaultFilter;render();return;}
     const va=e.target.closest('[data-vault-attachments]'); if(va){e.stopPropagation();showVaultAttachments(va.dataset.vaultAttachments);return;}
   };
   screenEl.onkeydown=e=>{
@@ -3787,6 +3940,7 @@ function bindScreen(){
     if(screen==='reservations'&&reservationCategoryFocus&&e.key==='Escape'){e.preventDefault();reservationCategoryFocus='';render();return;}
     if(screen==='journeys'&&journeyFocusWidget&&e.key==='Escape'){e.preventDefault();journeyFocusWidget='';render();return;}
     if(screen==='checklist'&&checklistFocusList&&e.key==='Escape'){e.preventDefault();checklistFocusList='';render();return;}
+    if(screen==='vault'&&vaultFocusWidget&&e.key==='Escape'){e.preventDefault();vaultFocusWidget='';render();return;}
     const row=e.target.closest('[data-edit-row]');
     if(row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();const[type,id]=row.dataset.editRow.split(':');if(type==='itinerary')itineraryMapSelectedId=id;openForm(type,id);}
   };
@@ -3833,6 +3987,13 @@ function bindScreen(){
     const nextStage=$('#checklist-next-stage');if(nextStage)nextStage.onclick=()=>{const phases=['Current Stay','Before You Leave','Travel Day','Arrival & Settle In'];checklistPhase=phases[(phases.indexOf(checklistPhase)+1)%phases.length];render();};
   }
   if(screen==='vault'){
+    document.querySelectorAll('[data-vault-focus]').forEach(card=>{
+      const openFocus=e=>{if(e.target.closest('input,a,select,textarea'))return;vaultFocusWidget=card.dataset.vaultFocus;render();requestAnimationFrame(()=>document.querySelector('.vault-focus-panel .readability-focus-close')?.focus());};
+      card.onclick=openFocus;card.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('input,a,select,textarea')){e.preventDefault();openFocus(e);}};
+    });
+    document.querySelectorAll('[data-vault-focus-close]').forEach(button=>button.onclick=e=>{e.stopPropagation();vaultFocusWidget='';render();});
+    const vaultBackdrop=document.querySelector('[data-vault-focus-backdrop]');if(vaultBackdrop)vaultBackdrop.onclick=e=>{if(e.target===vaultBackdrop){vaultFocusWidget='';render();}};
+    const vaultShowList=document.querySelector('[data-vault-show-list]');if(vaultShowList)vaultShowList.onclick=e=>{e.stopPropagation();vaultTypeFilter=vaultShowList.dataset.vaultShowList||'All';vaultFocusWidget='';render();requestAnimationFrame(()=>document.querySelector('.vault-records-section')?.scrollIntoView({behavior:'smooth',block:'start'}));};
     const search=$('#vault-search');if(search)search.oninput=()=>{vaultSearchQuery=search.value;const filtered=vaultFilteredRecords();const table=$('#vault-table');if(table)table.innerHTML=vaultTable(filtered);const shown=$('#vault-shown-count');if(shown)shown.textContent=String(filtered.length);};
     const type=$('#vault-type-filter');if(type)type.onchange=()=>{vaultTypeFilter=type.value;render();};
     const owner=$('#vault-owner-filter');if(owner)owner.onchange=()=>{vaultOwnerFilter=owner.value;render();};
@@ -3857,7 +4018,7 @@ function bindScreen(){
   if(screen==='itinerary'){
     $('#itinerary-coverage-months')?.addEventListener('change',e=>{itineraryCoverageMonths=Number(e.target.value)||12;render();});
     $('#itinerary-year-filter')?.addEventListener('change',e=>{itineraryYearFilter=e.target.value;render();});
-    $('#itinerary-map-range')?.addEventListener('change',e=>{itineraryMapExpandedRange=e.target.value==='All'?'All':Number(e.target.value)||12;render();});
+    $('#itinerary-map-range')?.addEventListener('change',e=>{itineraryMapExpandedRange=e.target.value==='All'?'All':Number(e.target.value)||12;itineraryMapZoom=1.65;itineraryMapPanX=0;itineraryMapPanY=0;itineraryMapPanTouched=false;render();});
     const search=$('#itinerary-search');if(search)search.oninput=()=>{itinerarySearchQuery=search.value;render();const refreshed=$('#itinerary-search');refreshed?.focus();refreshed?.setSelectionRange(itinerarySearchQuery.length,itinerarySearchQuery.length);};
   }
   if(screen==='reservations') bindReservations();
@@ -4386,6 +4547,7 @@ function runFullWorkflowTest(){
     ok('Checklist next destination sync',renderChecklist().includes('NEXT DESTINATION'));
     ok('Checklist add forms stay locked to their opening section',!simpleChecklistForm({list:'His'}).includes('data-checklist-list-option')&&simpleChecklistForm({list:'His'}).includes('Goes straight into His list.')&&simpleChecklistForm({list:'Hers'}).includes('value="Hers"'));
     ok('Vault categories retain distinct colour identities',renderVault().includes('vault-passport')&&renderVault().includes('vault-visa')&&renderVault().includes('vault-insurance')&&renderVault().includes('vault-accommodation')&&renderVault().includes('vault-emergency'));
+    const priorVaultFocus=vaultFocusWidget;vaultFocusWidget='passport';const vaultPassportFocusHtml=renderVault();vaultFocusWidget='visa';const vaultVisaFocusHtml=renderVault();vaultFocusWidget='insurance';const vaultInsuranceFocusHtml=renderVault();vaultFocusWidget='accommodation';const vaultAccommodationFocusHtml=renderVault();vaultFocusWidget='emergency';const vaultEmergencyFocusHtml=renderVault();vaultFocusWidget=priorVaultFocus;ok('Vault top category cards expand to large colour-matched detail views',[vaultPassportFocusHtml,vaultVisaFocusHtml,vaultInsuranceFocusHtml,vaultAccommodationFocusHtml,vaultEmergencyFocusHtml].every(html=>html.includes('vault-focus-panel')&&html.includes('vault-focus-list')&&html.includes('data-vault-show-list')));
     ok('Global search opens exact records',typeof bindGlobalSearch==='function'&&renderDashboard().includes('global-search'));
     ok('Global search refreshes after edits',typeof refreshGlobalSearch==='function'&&typeof globalSearchMatches==='function');
     ok('Budget verification recalculates linked totals',typeof budgetVerificationIssues==='function'&&typeof verifyAndLockBudget==='function');
@@ -4407,6 +4569,7 @@ function runFullWorkflowTest(){
     ok('Storage failure rollback protection available',typeof lastPersistedSnapshot==='object'&&saveState.toString().includes('lastPersistedSnapshot'));
     ok('Large checklist progressive rendering available',typeof checklistListPanel==='function'&&checklistListPanel.toString().includes('displayLimit=20'));
     ok('Checklist four-card expanded view available',typeof checklistFocusPanel==='function'&&['His','Hers','Permanent','Destination'].every(list=>checklistFocusPanel(list).includes('checklist-focus-panel')));
+    ok('Checklist Overview expanded readability view available',checklistFocusPanel('Overview').includes('checklist-focus-panel overview')&&checklistFocusPanel('Overview').includes('NEXT ITEMS TO FINISH'));
     ok('Journey country flags visible',journeyFlagMarkup({title:'Istanbul, Turkey',country:'Turkey',type:'Standard stay',routePoints:[]}).includes('🇹🇷')&&journeyFlagMarkup({title:'Algiers, Algeria',country:'Algeria',type:'Standard stay',routePoints:[]}).includes('🇩🇿'));
     ok('Journey route flags show origin and destination',journeyFlagMarkup({title:'Miami → Barcelona',country:'Cruise',type:'Cruise',routePoints:[{id:'flag-a',label:'Miami'},{id:'flag-b',label:'Barcelona'}]}).includes('🇺🇸')&&journeyFlagMarkup({title:'Miami → Barcelona',country:'Cruise',type:'Cruise',routePoints:[{id:'flag-a',label:'Miami'},{id:'flag-b',label:'Barcelona'}]}).includes('🇪🇸'));
     ok('Journey information widgets are expandable',typeof journeyExpandableCard==='function'&&['spend','stats','milestones','totals'].every(key=>renderJourneys().includes(`data-journey-focus="${key}"`)));
@@ -4415,6 +4578,11 @@ function runFullWorkflowTest(){
       journeyFocusWidget='spend';ok('Journey expanded spend view keeps large graph data',renderJourneys().includes('journey-focus-panel spend')&&renderJourneys().includes('journey-category-donut'));
       journeyFocusWidget='totals';ok('Journey expanded destination totals show ranked rows',renderJourneys().includes('journey-focus-panel totals')&&renderJourneys().includes('journey-total-focus-row'));
       journeyFocusWidget='stats';ok('Journey focus view has explicit close controls',renderJourneys().includes('data-journey-focus-close'));
+      journeyFocusWidget='countries';ok('Journey Countries Visited KPI expands to country list',renderJourneys().includes('journey-focus-panel kpi-countries')&&renderJourneys().includes('journey-kpi-detail-list countries'));
+      journeyFocusWidget='destinations';ok('Journey Destinations Completed KPI expands to destination list',renderJourneys().includes('journey-focus-panel kpi-destinations')&&renderJourneys().includes('journey-kpi-detail-list destinations'));
+      journeyFocusWidget='days';ok('Journey Days Travelled KPI expands to year and type detail',renderJourneys().includes('journey-focus-panel kpi-days')&&renderJourneys().includes('TRAVEL DAYS BY YEAR'));
+      journeyFocusWidget='road';ok('Journey Years on the Road KPI expands to journey detail',renderJourneys().includes('journey-focus-panel kpi-road')&&renderJourneys().includes('TRAVEL TYPE MIX'));
+      journeyFocusWidget='kpiSpend';ok('Journey top Lifetime Spend KPI expands in teal identity',renderJourneys().includes('journey-focus-panel kpi-spend')&&renderJourneys().includes('journey-category-donut'));
     }finally{journeyFocusWidget=priorJourneyFocusWidget;}
     ok('Checklist expanded view preserves add/edit/complete controls',checklistFocusPanel('Destination').includes('data-add="checklist"')&&checklistFocusPanel('Destination').includes('data-edit-row="checklist:')&&checklistFocusPanel('Destination').includes('data-check="'));
     ok('Compact map sampling preserves overview performance',typeof compactMapRouteSample==='function'&&compactMapRouteSample(state.journeys,60).length<=63);
@@ -4426,6 +4594,14 @@ function runFullWorkflowTest(){
     ok('Itinerary planning map installed',renderItinerary().includes('itinerary-map-panel')&&renderItineraryPlanningMap().includes('data-itinerary-map-expand'));
     ok('Home header country outline installed',renderDashboard().includes('home-hero-country-outline')&&countryOutlineMarkup('Egypt').includes('<path')&&Boolean(COUNTRY_OUTLINE_DATA.egypt));
     ok('Embedded itinerary map keeps true geography',renderItineraryPlanningMap().includes('itinerary-map-shell')&&renderItineraryPlanningMap().includes('world-grid'));
+    ok('Itinerary route legend locked to Flight Motorhome Cruise',(()=>{const html=renderItineraryPlanningMap({large:true,fullPage:true});return html.includes('>Flight<')&&html.includes('>Motorhome<')&&html.includes('>Cruise<')&&!html.includes('>Standard<');})());
+    ok('Itinerary offline atlas includes Split and Ljubljana',Boolean(OFFLINE_GEO.split)&&Boolean(OFFLINE_GEO.ljubljana)&&itineraryMapPointInfo({city:'Split',country:'Croatia'},0,1).located);
+    ok('Itinerary map never assigns random fallback coordinates',itineraryMapPointInfo({city:'Unknown Point',country:'Unknown Land'},0,1).point===null&&detailedRoutePointInfo({label:'Unknown Port'},0,1).point===null);
+    ok('Cruise ports resolve through offline aliases',Boolean(offlineGeoLookup('Split Ferry Port'))&&Boolean(offlineGeoLookup('Port of Miami'))&&Boolean(offlineGeoLookup('Palma de Mallorca Port')));
+    ok('Map travel modes remain Flight Motorhome Cruise',[itineraryMapTravelMode('Standard'),itineraryMapTravelMode('Motorhome'),itineraryMapTravelMode('Cruise')].join('|')==='Flight|Motorhome|Cruise');
+    ok('Itinerary route colours are distinct',new Set(['Flight','Motorhome','Cruise'].map(itineraryMapRouteColour)).size===3);
+    ok('Itinerary production map includes mode summary',(()=>{const h=renderItineraryPlanningMap({large:true,fullPage:true});return h.includes('itinerary-route-mode-summary')&&h.includes('PLANNED STOPS')&&h.includes('DETAILED ROUTE POINTS')&&h.includes('itinerary-vector-basemap');})());
+    ok('Itinerary expanded map auto-fit sentinel',itineraryMapZoom>=1&&itineraryMapZoom<=12);
     ok('Destination clock is Settings authority',validLocalDateTime(state.settings.currentDateTime)&&renderSettings().includes('save-app-clock')&&renderSettings().includes('AUTHORITATIVE APP CLOCK'));
     ok('Full-page planning map has All Future range',renderItineraryPlanningMap({large:true,fullPage:true}).includes('All Future'));
     ok('Full-page map has one return control',!renderRouteStrip({readOnly:false,large:true,fullPage:true}).includes('data-map-expand'));
