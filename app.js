@@ -1,8 +1,8 @@
 'use strict';
 
-const STORAGE_KEY = 'travelCommandCentre.v1.croatiaFullSimulation4589';
+const STORAGE_KEY = 'travelCommandCentre.v1.portugalFullSimulation4562';
 const LEGACY_STORAGE_KEYS = [];
-const APP_VERSION = '4.5.89 Croatia Full Simulation + Travel Detail Lock';
+const APP_VERSION = '4.5.89 Reservations Upcoming Expansion Lock';
 const MAX_JOURNEY_YEARS = 30;
 const MAX_VAULT_SOURCE_BYTES = 8_000_000;
 const MAX_VAULT_ATTACHMENT_BYTES = 180_000;
@@ -331,80 +331,6 @@ function demoReviewState(){
     {id:'a1',name:'Commonwealth Everyday',balance:4850},{id:'a2',name:'NAB Travel',balance:3240},{id:'a3',name:'ANZ',balance:6720},
     {id:'a4',name:'ME Everyday',balance:2540},{id:'a5',name:'ME Savings',balance:21450},{id:'a6',name:'Wise',balance:7820}
   ];
-
-  // CROATIA FULL-UPLOAD SIMULATION OVERLAY — seeded specifically for complete release testing.
-  demo.settings={...demo.settings,lastDestinationKey:'Split|Croatia|2029-07-31',lastBudgetVerifiedAt:'10/08/2029 10:15',lastCalendarCheckAt:'10/08/2029 10:10',lastJourneyCheckAt:'10/08/2029 10:05',lastVaultCheckAt:'10/08/2029 10:00'};
-  const split=demo.itinerary.find(x=>x.id==='cairo29');
-  const dubrovnik=demo.itinerary.find(x=>x.id==='alexandria29');
-  const ljubljana=demo.itinerary.find(x=>x.id==='luxor29');
-  Object.assign(split,{city:'Split',country:'Croatia',arrival:'2029-07-31',departure:'2029-08-20',type:'Standard',currency:'EUR',symbol:'€',rate:1.72,budget:6000,km:260,schengenAllowed:true,schengenStart:'2029-07-31',schengenEnd:'2029-08-31',notes:'Croatia upload simulation — current Split stay with complete seeded data.'});
-  Object.assign(dubrovnik,{city:'Dubrovnik',country:'Croatia',arrival:'2029-08-20',departure:'2029-08-31',type:'Standard',currency:'EUR',symbol:'€',rate:1.72,budget:3600,km:230,schengenAllowed:true,schengenStart:'2029-07-31',schengenEnd:'2029-08-31',notes:'Croatia upload simulation — next Dubrovnik stay.'});
-  Object.assign(ljubljana,{city:'Ljubljana',country:'Slovenia',arrival:'2029-08-31',departure:'2029-09-10',type:'Standard',currency:'EUR',symbol:'€',rate:1.72,budget:3000,km:620,schengenAllowed:true,schengenStart:'2029-07-31',schengenEnd:'2029-09-10',notes:'Croatia upload simulation — onward Schengen stay.'});
-
-  // Replace the current-stay Cairo expense slice with realistic Split EUR spending across every living category.
-  demo.expenses=demo.expenses.filter(x=>!(x.date>='2029-07-31'&&x.date<='2029-08-10')).concat([
-    {id:'cro-exp-1',date:'2029-08-01',category:'Groceries',amount:220,currency:'EUR',symbol:'€',rate:1.72,notes:'Split groceries and apartment supplies',verified:true},
-    {id:'cro-exp-2',date:'2029-08-03',category:'Eating Out',amount:360,currency:'EUR',symbol:'€',rate:1.72,notes:'Riva dinners and local cafés',verified:true},
-    {id:'cro-exp-3',date:'2029-08-05',category:'Transport',amount:170,currency:'EUR',symbol:'€',rate:1.72,notes:'Local buses, taxis and ferry transfers',verified:true},
-    {id:'cro-exp-4',date:'2029-08-07',category:'Entertainment',amount:250,currency:'EUR',symbol:'€',rate:1.72,notes:'Museums and organised day activities',verified:true},
-    {id:'cro-exp-5',date:'2029-08-09',category:'Shopping',amount:140,currency:'EUR',symbol:'€',rate:1.72,notes:'Markets and travel supplies',verified:true},
-    {id:'cro-exp-6',date:'2029-08-10',category:'Miscellaneous',amount:95,currency:'EUR',symbol:'€',rate:1.72,notes:'Laundry and small travel costs',verified:true}
-  ]);
-
-  // Replace current/next linked bookings so every Reservations category and budget-allocation state is exercised.
-  demo.reservations=demo.reservations.filter(r=>!['cairo29','alexandria29','luxor29'].includes(String(r.itineraryId||'')));
-  demo.reservations.push(
-    {id:'cro-res-flight',title:'Istanbul → Split Flight',type:'Flight',date:'2029-07-31',time:'09:20',currency:'EUR',original:420,rate:1.72,aud:722.40,status:'Paid',destinationBudget:'No',travellers:2,itineraryId:'cairo29',reference:'OU-SPLIT-731',operator:'Croatia Airlines',serviceNumber:'OU 451',departureLocation:'Istanbul Airport (IST)',arrivalLocation:'Split Airport (SPU)',terminal:'International departures',seat:'14A / 14B',baggage:'2 × checked bags + cabin bags',depositPaidAud:722.40,balanceDueAud:0,paymentDueDate:'',cancellationDeadline:'',refundPolicy:'Check booking terms',notes:'Annual Budget allocation. Checked baggage included.',verified:true},
-    {id:'cro-res-hotel',title:'Split Waterfront Hotel',type:'Hotel',date:'2029-07-31',endDate:'2029-08-20',time:'15:00',currency:'AUD',original:2900,rate:1,aud:2900,status:'Paid',destinationBudget:'No',travellers:2,itineraryId:'cairo29',reference:'SPL-HOTEL-729',propertyAddress:'Obala Hrvatskog narodnog preporoda 12, Split, Croatia',propertyContact:'+385 21 555 010 · Reception',checkInTime:'15:00',checkOutTime:'10:00',depositPaidAud:2900,balanceDueAud:0,paymentDueDate:'',cancellationDeadline:'2029-07-24',refundPolicy:'Partially refundable',notes:'AUD only. Annual Budget only. Fully paid.',verified:true},
-    {id:'cro-res-rv',title:'Dalmatian Coast RV Day Hire',type:'RV',date:'2029-08-13',endDate:'2029-08-14',time:'08:30',currency:'EUR',original:240,rate:1.72,aud:412.80,status:'Paid',destinationBudget:'Yes',travellers:2,itineraryId:'cairo29',reference:'SPL-RV-813',operator:'Adriatic Camper Hire',pickupLocation:'Split depot',pickupTime:'08:30',returnLocation:'Split depot',returnTime:'18:00',depositPaidAud:200,balanceDueAud:212.80,paymentDueDate:'2029-08-12',cancellationDeadline:'2029-08-11',refundPolicy:'Refundable',notes:'Destination Budget allocation for local touring.',verified:true},
-    {id:'cro-res-cruise',title:'Adriatic Islands Mini Cruise',type:'Cruise',date:'2029-08-17',endDate:'2029-08-18',time:'08:00',currency:'EUR',original:520,rate:1.72,aud:894.40,status:'Unpaid',destinationBudget:'No',travellers:2,itineraryId:'cairo29',reference:'ADR-CRUISE-817',operator:'Adriatic Explorer',shipName:'MS Dalmatia',departureLocation:'Split Port',arrivalLocation:'Split Port',cabin:'Oceanview 214',depositPaidAud:300,balanceDueAud:594.40,paymentDueDate:'2029-08-14',cancellationDeadline:'2029-08-12',refundPolicy:'Partially refundable',notes:'Annual Budget allocation. Balance intentionally left unpaid for simulation alert testing.',verified:true},
-    {id:'cro-res-ticket1',title:"Diocletian's Palace Cellars",type:'Tickets & Attractions',date:'2029-08-12',time:'10:00',currency:'EUR',original:36,rate:1.72,aud:61.92,status:'Paid',destinationBudget:'Yes',travellers:2,itineraryId:'cairo29',reference:'SPL-PALACE-812',venue:"Diocletian's Palace Cellars, Split",entryTime:'10:00',depositPaidAud:61.92,balanceDueAud:0,paymentDueDate:'',cancellationDeadline:'',refundPolicy:'Non-refundable',notes:'Destination Budget ticket.',verified:true},
-    {id:'cro-res-ticket2',title:'Blue Cave & Hvar Day Tour',type:'Tickets & Attractions',date:'2029-08-15',time:'07:30',currency:'EUR',original:220,rate:1.72,aud:378.40,status:'Booked',destinationBudget:'Yes',travellers:2,itineraryId:'cairo29',reference:'HVAR-815',venue:'Riva promenade tour meeting point',entryTime:'07:30',depositPaidAud:150,balanceDueAud:228.40,paymentDueDate:'2029-08-13',cancellationDeadline:'2029-08-13',refundPolicy:'Refundable',notes:'Destination Budget attraction booking.',verified:true},
-    {id:'cro-res-train',title:'Split → Dubrovnik Transfer',type:'Train',date:'2029-08-20',time:'09:00',currency:'EUR',original:70,rate:1.72,aud:120.40,status:'Booked',destinationBudget:'No',travellers:2,itineraryId:'alexandria29',reference:'SPL-DBV-820',operator:'Croatia Rail / transfer simulation',serviceNumber:'HZ 820',departureLocation:'Split Central',arrivalLocation:'Dubrovnik transfer stop',carriage:'Coach 2',seat:'21 / 22',depositPaidAud:60,balanceDueAud:60.40,paymentDueDate:'2029-08-18',cancellationDeadline:'',refundPolicy:'Check booking terms',notes:'Annual Budget transport allocation.',verified:true},
-    {id:'cro-res-airbnb',title:'Dubrovnik Old Town Airbnb',type:'Airbnb',date:'2029-08-20',endDate:'2029-08-31',time:'15:00',currency:'AUD',original:1750,rate:1,aud:1750,status:'Booked',destinationBudget:'No',travellers:2,itineraryId:'alexandria29',reference:'DBV-AIRBNB-820',propertyAddress:'Old Town, Dubrovnik, Croatia',propertyContact:'Host Ana · +385 98 555 820',checkInTime:'15:00',checkOutTime:'10:00',depositPaidAud:875,balanceDueAud:875,paymentDueDate:'2029-08-15',cancellationDeadline:'2029-08-10',refundPolicy:'Partially refundable',notes:'AUD only. Annual Budget only.',verified:true},
-    {id:'cro-res-tobook',title:'Dubrovnik City Walls',type:'Tickets & Attractions',date:'2029-08-24',time:'09:30',currency:'EUR',original:70,rate:1.72,aud:120.40,status:'To Book',destinationBudget:'Yes',travellers:2,itineraryId:'alexandria29',reference:'',venue:'Pile Gate / Dubrovnik City Walls',entryTime:'09:30',depositPaidAud:0,balanceDueAud:120.40,paymentDueDate:'',cancellationDeadline:'',refundPolicy:'Check booking terms',notes:'Intentionally left To Book to exercise future-booking workflow.',verified:true},
-    {id:'cro-res-lju-hotel',title:'Ljubljana City Hotel',type:'Hotel',date:'2029-08-31',endDate:'2029-09-10',time:'15:00',currency:'AUD',original:1450,rate:1,aud:1450,status:'Booked',destinationBudget:'No',travellers:2,itineraryId:'luxor29',reference:'LJU-HOTEL-831',propertyAddress:'Ljubljana City Centre, Slovenia',propertyContact:'Simulation hotel reception',checkInTime:'15:00',checkOutTime:'10:00',depositPaidAud:725,balanceDueAud:725,paymentDueDate:'2029-08-25',cancellationDeadline:'2029-08-24',refundPolicy:'Refundable',notes:'AUD only. Annual Budget only.',verified:true}
-  );
-
-  demo.events=[
-    {id:'evt-cro-1',title:"Diocletian's Palace & Old Town",date:'2029-08-12',time:'10:00',notes:'Palace cellars ticket already paid.'},
-    {id:'evt-cro-2',title:'Marjan Hill & waterfront afternoon',date:'2029-08-13',time:'14:00',notes:'Easy local afternoon.'},
-    {id:'evt-cro-3',title:'Blue Cave & Hvar day tour',date:'2029-08-15',time:'07:30',notes:'Booked attraction and boat day.'},
-    {id:'evt-cro-4',title:'Krka National Park day',date:'2029-08-17',time:'08:00',notes:'Day trip and photography.'},
-    {id:'evt-cro-5',title:'Split market & dinner',date:'2029-08-18',time:'17:00',notes:'Market visit and local dinner.'},
-    {id:'evt-cro-6',title:'Prepare for Dubrovnik transfer',date:'2029-08-19',time:'16:00',notes:'Pack, confirm transfer and Airbnb details.'},
-    {id:'evt-dbv-1',title:'Dubrovnik Old Town orientation',date:'2029-08-21',time:'10:00',notes:'Easy first full day.'},
-    {id:'evt-dbv-2',title:'Dubrovnik City Walls',date:'2029-08-24',time:'09:30',notes:'Ticket intentionally still To Book.'},
-    {id:'evt-dbv-3',title:'Lokrum Island',date:'2029-08-27',time:'09:00',notes:'Ferry and gardens.'},
-    {id:'evt-lju-1',title:'Ljubljana castle and market',date:'2029-09-02',time:'10:00',notes:'Future Slovenia event.'}
-  ];
-
-  demo.checklist=[
-    {id:'cro-ck1',list:'Permanent',phase:'Current Stay',task:'Check passports are stored safely',done:true,due:'',required:true,notes:'Both passports secured.'},
-    {id:'cro-ck2',list:'Permanent',phase:'Before You Leave',task:'Check travel insurance remains current',done:true,due:'2029-08-18',required:true,notes:'Policy valid.'},
-    {id:'cro-ck3',list:'Permanent',phase:'Travel Day',task:'Charge iPad and power banks',done:false,due:'2029-08-20',required:true,notes:'Do night before transfer.'},
-    {id:'cro-ck4',list:'Destination',phase:'Before You Leave',task:'Confirm Dubrovnik Airbnb details',done:true,due:'2029-08-18',required:true,notes:'Airbnb confirmed.'},
-    {id:'cro-ck5',list:'Destination',phase:'Before You Leave',task:'Confirm Split to Dubrovnik transfer',done:true,due:'2029-08-19',required:true,notes:'Reference SPL-DBV-820.'},
-    {id:'cro-ck6',list:'Destination',phase:'Before You Leave',task:'Book Dubrovnik City Walls',done:false,due:'2029-08-22',required:false,notes:'Matches To Book reservation.'},
-    {id:'cro-ck7',list:'Destination',phase:'Travel Day',task:'Check out in Split and travel to Dubrovnik',done:false,due:'2029-08-20',required:true,notes:''},
-    {id:'cro-ck8',list:'Destination',phase:'Arrival & Settle In',task:'Check in and save Dubrovnik local transport details',done:false,due:'2029-08-20',required:true,notes:''},
-    {id:'cro-his1',list:'His',phase:'Current Stay',task:'Visit a Croatian motoring or transport collection',done:false,due:'',required:false,notes:''},
-    {id:'cro-his2',list:'His',phase:'Current Stay',task:'Check Carlton replay availability',done:true,due:'',required:false,notes:'Replay checked.'},
-    {id:'cro-hers1',list:'Hers',phase:'Current Stay',task:'Visit Split market and waterfront shops',done:false,due:'',required:false,notes:''},
-    {id:'cro-hers2',list:'Hers',phase:'Current Stay',task:'Choose a Croatian garden or historic site day',done:true,due:'',required:false,notes:'Krka selected.'}
-  ];
-
-  demo.vault=[
-    {id:'cro-v1',name:'Cameron Passport',type:'Passport',identityKind:'Passport',owner:'Cameron',country:'Australia',reference:'P••••123',issueDate:'2021-04-19',expiry:'2031-04-18',notes:'Australian passport',attachments:[]},
-    {id:'cro-v2',name:'Kym Passport',type:'Passport',identityKind:'Passport',owner:'Kym',country:'Australia',reference:'P••••456',issueDate:'2020-11-03',expiry:'2030-11-02',notes:'Australian passport',attachments:[]},
-    {id:'cro-v3',name:'Annual Travel Insurance',type:'Insurance',owner:'Shared',country:'Worldwide',reference:'INS-2029',insuranceProvider:'Simulation Travel Insurance',policyStart:'2029-01-14',assistancePhone:'+61 2 9000 0000',expiry:'2030-01-13',notes:'Simulation emergency assistance details saved.',attachments:[]},
-    {id:'cro-v4',name:'Schengen Travel Notes',type:'Visa',owner:'Shared',country:'Croatia',reference:'SCHENGEN-2029',validFrom:'2029-07-31',visaEntries:'Multiple',permittedStayDays:90,expiry:'2029-10-28',notes:'Croatia/Slovenia Schengen dates are entered in Itinerary.',attachments:[]},
-    {id:'cro-v5',name:'Split Waterfront Hotel Details',type:'Accommodation details',owner:'Shared',country:'Croatia',reference:'SPL-HOTEL-729',expiry:'',notes:'Current Split hotel — fully paid in AUD.',attachments:[]},
-    {id:'cro-v6',name:'Dubrovnik Old Town Airbnb Details',type:'Accommodation details',owner:'Shared',country:'Croatia',reference:'DBV-AIRBNB-820',expiry:'',notes:'Upcoming Dubrovnik Airbnb — AUD annual budget only.',attachments:[]},
-    {id:'cro-v7',name:'Emergency Contact Australia',type:'Emergency contact',owner:'Shared',country:'Australia',reference:'',expiry:'',notes:'Family emergency contact details.',attachments:[]},
-    {id:'cro-v8',name:'Cameron International Driving Permit',type:'Passport',identityKind:'International Driving Permit',owner:'Cameron',country:'Australia',reference:'IDP-2029-SIM',issueDate:'2029-01-10',expiry:'2030-01-09',notes:'Simulation IDP record for RV travel.',attachments:[]}
-  ];
-  demo.alerts=[];
   return demo;
 }
 
@@ -1220,7 +1146,7 @@ function init(){
   addBtn.addEventListener('click', () => { const action=headerActions[screen]; if(action) openForm(action.kind); });
   restoreInput.addEventListener('change', restoreFile);
   window.addEventListener('tcc:datachanged',event=>scheduleScreenRefresh(event.detail?.entity||'all'));
-  if (navigator.serviceWorker && typeof navigator.serviceWorker.register === 'function') navigator.serviceWorker.register('./sw.js?v=4.5.89-reservation-upcoming-20260816').catch(() => {});
+  if (navigator.serviceWorker && typeof navigator.serviceWorker.register === 'function') navigator.serviceWorker.register('./sw.js?v=4.5.89-reservation-colour-lock-20260816').catch(() => {});
   const appDate=parseDate(itineraryReferenceDate()); if(appDate) calendarCursor=appDate;
   requirePinThenRender();
   const splash=$('#splash'),root=document.documentElement;const LAUNCH_HOLD_MS=3000,LAUNCH_FADE_MS=800;if(splash){setTimeout(()=>{root.classList.add('tcc-app-reveal');splash.classList.add('hide');setTimeout(()=>{splash.remove();root.classList.add('tcc-launch-complete');},LAUNCH_FADE_MS);},LAUNCH_HOLD_MS);}else{root.classList.add('tcc-app-reveal','tcc-launch-complete');}
@@ -1479,6 +1405,11 @@ function readabilityExpandableCard(title,content,extra,scope,key,label=''){
 }
 function readabilityFocusOverlay(scope,title,content,tone='info',footer='Information updates automatically from the records already saved in the app.'){
   return `<div class="readability-focus-backdrop ${scope}-focus-backdrop" data-${scope}-focus-backdrop role="presentation"><section class="readability-focus-panel ${scope}-focus-panel ${tone}" role="dialog" aria-modal="true" aria-label="Expanded ${esc(String(title).replace(/<[^>]+>/g,' '))}"><header class="readability-focus-head"><div><small>EXPANDED READABILITY VIEW</small><h2>${title}</h2><p>Large-text detail view for easier reading on iPad.</p></div><button class="readability-focus-close" data-${scope}-focus-close aria-label="Close expanded view">×</button></header><div class="readability-focus-content">${content}</div><footer><span>${esc(footer)}</span><button data-${scope}-focus-close>CLOSE EXPANDED VIEW</button></footer></section></div>`;
+}
+function reservationCategoryToneClass(category){
+  const tabs=['Flights','Trains','Cruises','RV','Hotels','Airbnb','Tickets & Attractions','Completed'];
+  const index=tabs.indexOf(String(category||''));
+  return index>=0?`reservation-tone-${index}`:'reservation-tone-default';
 }
 function readabilityMetric(label,value,sub='',tone=''){
   return `<span class="readability-metric ${tone}"><small>${esc(label)}</small><b>${value}</b>${sub?`<em>${sub}</em>`:''}</span>`;
@@ -2549,7 +2480,8 @@ function renderReservations(){
   const focusBooked=focusRows.filter(x=>x.status==='Booked').length;
   const focusNext=focusRows[0]||null;
   const reservationFocusBody=reservationCategoryFocus?`<div class="readability-metric-grid">${readabilityMetric(focusCompleted?'COMPLETED':'UPCOMING',String(focusRows.length),focusCompleted?'completed bookings':'bookings still ahead')}${readabilityMetric('TOTAL VALUE',money(focusValue),'AUD')}${readabilityMetric(focusCompleted?'PAID':'NEXT BOOKING',focusCompleted?String(focusPaid):(focusNext?dateFmt(focusNext.date):'—'),focusCompleted?'completed + paid':(focusNext?esc(focusNext.title):'No upcoming booking'),focusCompleted||focusNext?'good':'')}${readabilityMetric('UNPAID',String(focusUnpaid),focusUnpaid?'needs payment':'nothing outstanding',focusUnpaid?'bad':'good')}</div><div class="reservation-focus-actions"><span>${focusCompleted?'Completed history is shown newest first.':'Only upcoming / active confirmed bookings are shown. To Book and completed records are excluded.'}</span>${!focusCompleted?`<button data-reservation-focus-main="${esc(reservationCategoryFocus)}">SHOW ${esc(reservationCategoryFocus).toUpperCase()} IN MAIN LIST</button>`:''}</div><div class="reservation-focus-list">${focusRows.map(x=>{const travel=reservationTravelFields(x.type).map(name=>String(x[name]||'').trim()).filter(Boolean).slice(0,3).join(' · ');const obligation=x.paymentDueDate&&Number(x.balanceDueAud||0)>0?`Balance ${money(Number(x.balanceDueAud||0))} due ${dateFmt(x.paymentDueDate)}`:'';return `<button class="reservation-focus-row" data-edit="reservations:${x.id}" aria-label="Open ${esc(x.title)}"><span class="reservation-focus-date"><b>${dateFmt(x.date)}</b><small>${x.endDate&&x.endDate!==x.date?`to ${dateFmt(x.endDate)}`:esc(reservationRelativeDate(x))}</small></span><span class="reservation-focus-icon">${iconMarkup(reservationIconName(x.type),'reservation-focus-mark')}</span><span class="reservation-focus-copy"><b>${esc(x.title)}</b><small>${esc(reservationDestination(x)||'No destination')} · ${esc(x.reference||'No reference')}</small>${travel||obligation?`<em>${esc([travel,obligation].filter(Boolean).join(' · '))}</em>`:''}</span><span class="reservation-focus-value"><b>${money(reservationAudValue(x))}</b><small class="${reservationStatusClass(x.status)}">${esc(x.status)}</small><em>${x.destinationBudget==='Yes'?'Destination budget':'Annual budget'}</em></span><i>›</i></button>`}).join('')||empty(focusCompleted?'No completed bookings in this category.':'No upcoming bookings in this category.')}</div>`:'';
-  const reservationFocusOverlay=reservationCategoryFocus?readabilityFocusOverlay('reservation',`${esc(reservationCategoryFocus)} · ${focusCompleted?'COMPLETED':'UPCOMING'}`,reservationFocusBody,'reservation-category',focusCompleted?'Completed bookings remain available in history and are not included in upcoming category counts.':'Reservation category cards count and show upcoming / active bookings only.'):'';
+  const reservationFocusTone=reservationCategoryFocus?`reservation-category ${reservationCategoryToneClass(reservationCategoryFocus)}`:'reservation-category';
+  const reservationFocusOverlay=reservationCategoryFocus?readabilityFocusOverlay('reservation',`${esc(reservationCategoryFocus)} · ${focusCompleted?'COMPLETED':'UPCOMING'}`,reservationFocusBody,reservationFocusTone,focusCompleted?'Completed bookings remain available in history and are not included in upcoming category counts.':'Reservation category cards count and show upcoming / active bookings only.'):'';
   const pagination=visibleUpcoming.length>reservationPageSize?`<div class="reservation-pagination"><span>Showing ${pageStart+1}–${Math.min(pageStart+reservationPageSize,visibleUpcoming.length)} of ${visibleUpcoming.length}</span><div><button id="reservation-prev" aria-label="Previous reservations page" ${reservationPage===1?'disabled':''}>‹</button><b>Page ${reservationPage} of ${maxPage}</b><button id="reservation-next" aria-label="Next reservations page" ${reservationPage===maxPage?'disabled':''}>›</button></div></div>`:'';
   return `${cinematicHero('reservations')}<div class="reservation-layout reservations-approved"><div class="reservation-main">
   <div class="reservation-heading"><div><h2>RESERVATIONS</h2></div><div class="reservation-view-controls"><label>SORT BY<select id="reservation-sort"><option ${reservationSort==='Date'?'selected':''}>Date</option><option ${reservationSort==='Title'?'selected':''}>Title</option><option ${reservationSort==='Cost'?'selected':''}>Cost</option><option ${reservationSort==='Status'?'selected':''}>Status</option></select></label><button id="reservation-sort-direction" class="secondary icon-button" title="Reverse sort order" aria-label="Reverse sort order">${reservationSortDirection==='asc'?'↑':'↓'}</button><label>FILTER<select id="reservation-status-filter"><option ${reservationStatusFilter==='All'?'selected':''}>All</option><option ${reservationStatusFilter==='Paid'?'selected':''}>Paid</option><option ${reservationStatusFilter==='Booked'?'selected':''}>Booked</option><option ${reservationStatusFilter==='Unpaid'?'selected':''}>Unpaid</option><option ${reservationStatusFilter==='To Book'?'selected':''}>To Book</option></select></label></div></div>
@@ -3004,7 +2936,7 @@ function vaultFilteredRecords(){
   const q=vaultSearchQuery.trim().toLowerCase();
   return state.vault.filter(record=>{
     const status=vaultRecordStatus(record);
-    const hay=[record.name,record.type,record.owner,record.country,record.reference,record.notes,status].join(' ').toLowerCase();
+    const hay=[record.name,record.type,record.identityKind,record.owner,record.country,record.reference,record.notes,record.insuranceProvider,record.assistancePhone,record.visaEntries,record.permittedStayDays,status].join(' ').toLowerCase();
     return (!q||hay.includes(q))&&(vaultTypeFilter==='All'||record.type===vaultTypeFilter)&&(vaultOwnerFilter==='All'||record.owner===vaultOwnerFilter)&&(vaultCountryFilter==='All'||record.country===vaultCountryFilter);
   }).sort((a,b)=>String(b.updatedAt||b.addedAt||'').localeCompare(String(a.updatedAt||a.addedAt||''))||String(a.name||'').localeCompare(String(b.name||'')));
 }
@@ -3016,6 +2948,9 @@ function vaultIssueList(){
     if(!['Cameron','Kym','Shared'].includes(record.owner)) issues.push(`${record.name||'A record'} is missing a valid owner.`);
     if(record.expiry&&!/^\d{4}-\d{2}-\d{2}$/.test(record.expiry)) issues.push(`${record.name||'A record'} has an invalid expiry date.`);
     if(record.type==='Emergency contact'&&!String(record.notes||'').trim()) issues.push(`${record.name||'Emergency contact'} needs contact details in Notes.`);
+    if(record.type==='Passport'&&record.issueDate&&record.expiry&&record.expiry<record.issueDate) issues.push(`${record.name||'Travel ID'} expires before its issue date.`);
+    if(record.type==='Visa'&&record.validFrom&&record.expiry&&record.expiry<record.validFrom) issues.push(`${record.name||'Visa'} expires before its valid-from date.`);
+    if(record.type==='Insurance'&&record.policyStart&&record.expiry&&record.expiry<record.policyStart) issues.push(`${record.name||'Insurance'} ends before the policy start date.`);
     if(record.attachments&&!Array.isArray(record.attachments)) issues.push(`${record.name||'A record'} has invalid screenshot data.`);
   });
   const keys=new Map();
@@ -3061,7 +2996,8 @@ function vaultTable(list){
   return `<div class="vault-record-list">${list.map(record=>{
     const status=vaultRecordStatus(record);
     const count=Array.isArray(record.attachments)?record.attachments.length:0;
-    const details=[record.country,vaultTypeLabel(record.type),record.reference].filter(Boolean).join(' · ');
+    const subtype=record.type==='Passport'&&record.identityKind&&record.identityKind!=='Passport'?record.identityKind:record.type==='Insurance'&&record.insuranceProvider?record.insuranceProvider:record.type==='Visa'&&record.visaEntries?`${record.visaEntries} entry`:vaultTypeLabel(record.type);
+    const details=[record.country,subtype,record.reference].filter(Boolean).join(' · ');
     const tone={'Passport':'vault-record-passport','Visa':'vault-record-visa','Insurance':'vault-record-insurance','Accommodation details':'vault-record-accommodation','Emergency contact':'vault-record-emergency'}[record.type]||'vault-record-default';
     const statusClass=status.toLowerCase().replaceAll(' ','-');
     const screenshots=count?`<button class="vault-attachment-button vault-record-attachment" data-vault-attachments="${record.id}" aria-label="Open ${count} screenshot attachment${count===1?'':'s'} for ${esc(record.name)}">${iconMarkup('vault','attachment-icon')}<span>${count}</span></button>`:`<span class="vault-attachment-zero" aria-label="No screenshot attachments for ${esc(record.name)}">0</span>`;
@@ -3948,7 +3884,7 @@ function globalSearchMatches(query=globalSearchQuery){
   state.reservations.forEach(x=>add(x.title,`${x.type} ${x.status||''} ${x.notes||''}`,'reservations',`reservations:${x.id}`));
   state.itinerary.forEach(x=>add(itineraryTitle(x),`${x.type} ${x.country||''} ${x.notes||''}`,'itinerary',`itinerary:${x.id}`));
   state.journeys.forEach(x=>add(x.title,`${x.type} ${x.notes||''}`,'journeys',`journeys:${x.id}`));
-  state.vault.forEach(x=>add(x.name,`${x.type} ${x.owner||''} ${x.notes||''}`,'vault',`vault:${x.id}`));
+  state.vault.forEach(x=>add(x.name,`${x.type} ${x.identityKind||''} ${x.owner||''} ${x.country||''} ${x.reference||''} ${x.insuranceProvider||''} ${x.assistancePhone||''} ${x.visaEntries||''} ${x.permittedStayDays||''} ${x.notes||''}`,'vault',`vault:${x.id}`));
   state.events.forEach(x=>add(x.title,x.notes||'','calendar',`events:${x.id}`));
   state.expenses.forEach(x=>add(x.category,`${x.currency||''} ${x.notes||''}`,'budget',`expenses:${x.id}`));
   state.checklist.forEach(x=>add(x.task,`${x.list||''} ${x.notes||''}`,'checklist',`checklist:${x.id}`));
