@@ -21907,3 +21907,1108 @@ body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning
 html,body{background-color:#000!important}
 #splash{background:#000!important}
 #app{background:#000}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — DEDICATED HEADER BORDER + VAULT PRIVACY / STREAMING LOCK    */
+/* Locked from physical-iPad review: all four photographic headers receive a */
+/* complete clean border. Vault hides every right-side status/streaming layer */
+/* while locked. Streaming opens as a logo grid and stores no email address.  */
+/* ========================================================================== */
+body[data-screen="journeys"] #screen .dedicated-lock-hero.dedicated-journeys,
+body[data-screen="checklist"] #screen .dedicated-lock-hero.dedicated-checklist,
+body[data-screen="vault"] #screen .dedicated-lock-hero.dedicated-vault,
+body[data-screen="settings"] #screen .dedicated-lock-hero.dedicated-settings{
+  box-sizing:border-box!important;
+  border:1px solid rgba(121,197,238,.82)!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
+  outline:0!important;
+  background-clip:padding-box!important;
+}
+
+/* Permanently blank the obsolete status panel baked into the Vault artwork.
+   Live widgets are rendered above this mask only after the Vault is unlocked. */
+body[data-screen="vault"] #screen .dedicated-lock-hero.dedicated-vault::after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  top:1px;
+  right:1px;
+  bottom:1px;
+  width:18.8%;
+  pointer-events:none;
+  border-radius:0 15px 15px 0;
+  background:linear-gradient(90deg,rgba(2,11,18,.74) 0%,rgba(2,11,18,.97) 18%,#020b12 100%);
+}
+body[data-screen="vault"] #screen .dedicated-vault-live-status{z-index:4!important}
+body[data-screen="vault"] #screen .vault-streaming-launch{z-index:5!important}
+body[data-screen="vault"] #screen .vault-secret-unlock-target{z-index:12!important}
+body[data-screen="vault"] #screen .dedicated-vault.vault-hero-locked .dedicated-vault-live-status,
+body[data-screen="vault"] #screen .dedicated-vault.vault-hero-locked .vault-streaming-launch{display:none!important}
+
+/* TV / STREAMING — logo-first launcher. */
+body[data-screen="vault"] .vault-streaming-panel{
+  width:min(1040px,94vw)!important;
+  max-height:90vh!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+}
+body[data-screen="vault"] .vault-streaming-content{
+  min-height:0!important;
+  overflow:auto!important;
+  padding:18px 20px 20px!important;
+  background:radial-gradient(circle at 50% 0%,rgba(32,112,158,.10),transparent 40%),rgba(3,15,25,.72)!important;
+}
+body[data-screen="vault"] .vault-streaming-app-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:13px!important;
+  align-content:start!important;
+}
+body[data-screen="vault"] .vault-streaming-app-tile{
+  position:relative!important;
+  min-height:94px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:12px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(93,145,178,.46)!important;
+  border-radius:15px!important;
+  background:linear-gradient(150deg,#0b2234,#061522)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.035)!important;
+  color:#fff!important;
+}
+body[data-screen="vault"] .vault-streaming-app-tile:active{transform:translateY(1px)!important}
+body[data-screen="vault"] .vault-streaming-app-tile.is-saved{border-color:rgba(83,217,151,.64)!important}
+body[data-screen="vault"] .vault-streaming-saved-dot{
+  position:absolute!important;
+  right:9px!important;
+  top:9px!important;
+  width:9px!important;
+  height:9px!important;
+  border-radius:50%!important;
+  background:#52df98!important;
+  box-shadow:0 0 10px rgba(82,223,152,.42)!important;
+}
+body[data-screen="vault"] .vault-streaming-brand{
+  display:grid!important;
+  place-items:center!important;
+  max-width:100%!important;
+  min-height:48px!important;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;
+  font-size:25px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  letter-spacing:-.035em!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+body[data-screen="vault"] .brand-netflix{font-family:Arial Black,Arial,sans-serif!important;font-size:46px!important;color:#e50914!important;text-shadow:0 0 13px rgba(229,9,20,.24)!important}
+body[data-screen="vault"] .brand-disney{font-family:Georgia,"Times New Roman",serif!important;font-style:italic!important;color:#dbe8ff!important}
+body[data-screen="vault"] .brand-prime{font-size:20px!important;color:#71c9ff!important}
+body[data-screen="vault"] .brand-apple{font-size:26px!important;color:#fff!important}
+body[data-screen="vault"] .brand-max{font-size:34px!important;text-transform:lowercase!important;color:#92a1ff!important}
+body[data-screen="vault"] .brand-paramount{font-size:16px!important;letter-spacing:.03em!important;color:#d8e6ff!important}
+body[data-screen="vault"] .brand-stan{font-size:32px!important;color:#ff57ad!important}
+body[data-screen="vault"] .brand-binge{font-size:27px!important;letter-spacing:.04em!important;color:#14e2cb!important}
+body[data-screen="vault"] .brand-kayo{font-size:30px!important;letter-spacing:.04em!important;color:#7fe256!important}
+body[data-screen="vault"] .brand-youtube{font-size:20px!important;color:#ff5656!important}
+body[data-screen="vault"] .brand-afl{
+  width:76px!important;min-height:42px!important;border:3px solid #fff!important;border-radius:50%!important;
+  background:#174da0!important;color:#fff!important;font-size:24px!important;font-style:italic!important;letter-spacing:.02em!important;
+}
+body[data-screen="vault"] .brand-nfl{
+  width:62px!important;min-height:52px!important;border:2px solid #fff!important;border-radius:12px 12px 19px 19px!important;
+  background:#174b8a!important;color:#fff!important;font-size:20px!important;letter-spacing:.04em!important;
+}
+body[data-screen="vault"] .brand-abc{font-size:20px!important;color:#fff!important}
+body[data-screen="vault"] .brand-sbs{font-size:27px!important;color:#f4f4f4!important}
+body[data-screen="vault"] .brand-seven{font-size:34px!important;color:#ff5d52!important}
+body[data-screen="vault"] .brand-nine{font-size:24px!important;color:#69c7ff!important}
+
+body[data-screen="vault"] .vault-streaming-detail{
+  position:relative!important;
+  min-height:395px!important;
+  display:grid!important;
+  grid-template-rows:auto auto 1fr auto!important;
+  gap:16px!important;
+  padding:8px 8px 2px!important;
+}
+body[data-screen="vault"] .vault-streaming-back{
+  justify-self:start!important;
+  min-height:42px!important;
+  padding:8px 14px!important;
+  border:1px solid rgba(106,171,209,.54)!important;
+  border-radius:11px!important;
+  background:#0a2235!important;
+  color:#dff5ff!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  letter-spacing:.08em!important;
+}
+body[data-screen="vault"] .vault-streaming-selected-brand{
+  min-height:78px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-bottom:1px solid rgba(85,142,177,.28)!important;
+  padding-bottom:12px!important;
+}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand{font-size:34px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .brand-netflix{font-size:56px!important}
+body[data-screen="vault"] .vault-streaming-credential-readout,
+body[data-screen="vault"] .vault-streaming-credential-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+body[data-screen="vault"] .vault-streaming-credential-readout>div,
+body[data-screen="vault"] .vault-streaming-credential-grid>label{
+  min-height:112px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:9px!important;
+  padding:16px!important;
+  border:1px solid rgba(91,151,187,.45)!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,rgba(12,42,62,.96),rgba(6,23,36,.98))!important;
+}
+body[data-screen="vault"] .vault-streaming-credential-readout span,
+body[data-screen="vault"] .vault-streaming-credential-grid label>span{
+  color:#7bdcff!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.18em!important;
+}
+body[data-screen="vault"] .vault-streaming-credential-readout b{font-size:22px!important;line-height:1.1!important;color:#fff!important}
+body[data-screen="vault"] .vault-streaming-password{letter-spacing:.08em!important}
+body[data-screen="vault"] .vault-streaming-credential-readout button{align-self:flex-start!important;min-height:34px!important;padding:5px 12px!important;font-size:10px!important}
+body[data-screen="vault"] .vault-streaming-credential-grid select,
+body[data-screen="vault"] .vault-streaming-credential-grid input{
+  width:100%!important;
+  min-height:48px!important;
+  border:1px solid rgba(112,181,220,.58)!important;
+  border-radius:10px!important;
+  background:#061929!important;
+  color:#fff!important;
+  font-size:17px!important;
+  font-weight:750!important;
+  padding:10px 12px!important;
+}
+body[data-screen="vault"] .vault-streaming-detail-actions{
+  display:flex!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+  padding-top:2px!important;
+}
+body[data-screen="vault"] .vault-streaming-detail-actions button{min-width:150px!important;min-height:48px!important;font-weight:850!important}
+body[data-screen="vault"] .vault-streaming-panel>footer span{font-size:12px!important;color:#b8ceda!important}
+
+@media(max-width:1080px){
+  body[data-screen="vault"] .vault-streaming-app-grid{gap:10px!important}
+  body[data-screen="vault"] .vault-streaming-app-tile{min-height:82px!important;padding:9px!important}
+  body[data-screen="vault"] .vault-streaming-brand{font-size:21px!important}
+  body[data-screen="vault"] .brand-netflix{font-size:40px!important}
+  body[data-screen="vault"] .vault-streaming-credential-readout>div,
+  body[data-screen="vault"] .vault-streaming-credential-grid>label{min-height:98px!important;padding:12px!important}
+}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — JOURNEY HISTORY PHYSICAL-IPAD READABILITY LOCK              */
+/* Cameron-approved readability correction only. Information, calculations,  */
+/* column order, filters, map and layout structure are unchanged.             */
+/* ========================================================================== */
+body[data-screen="journeys"] #screen .journey-table-locked th{
+  font-size:11.5px!important;
+  line-height:1.12!important;
+  font-weight:950!important;
+  letter-spacing:.065em!important;
+}
+body[data-screen="journeys"] #screen .journey-table-locked td{
+  height:102px!important;
+  font-size:14.5px!important;
+  line-height:1.24!important;
+  font-weight:720!important;
+}
+body[data-screen="journeys"] #screen .journey-table-locked td:first-child{
+  font-size:17px!important;
+  font-weight:850!important;
+}
+body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(2){
+  font-size:16.5px!important;
+  line-height:1.22!important;
+  font-weight:900!important;
+}
+body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(6){
+  font-size:14.5px!important;
+  font-weight:800!important;
+}
+body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(7){
+  font-size:16px!important;
+  font-weight:950!important;
+}
+body[data-screen="journeys"] #screen .journey-table-km{
+  font-size:13px!important;
+  font-weight:750!important;
+}
+body[data-screen="journeys"] #screen .journey-table-km b{
+  font-size:20px!important;
+}
+
+body[data-screen="journeys"] #screen .journey-side-stats-locked>h3{
+  font-size:18px!important;
+  line-height:1.12!important;
+  font-weight:950!important;
+  letter-spacing:.10em!important;
+}
+body[data-screen="journeys"] #screen .journey-side-stats-locked .journey-stat-list>div{
+  padding:8px 0!important;
+  gap:12px!important;
+}
+body[data-screen="journeys"] #screen .journey-side-stats-locked .journey-stat-list span{
+  font-size:12.5px!important;
+  line-height:1.25!important;
+  font-weight:780!important;
+  color:#c7d5de!important;
+}
+body[data-screen="journeys"] #screen .journey-side-stats-locked .journey-stat-list b{
+  font-size:14.5px!important;
+  line-height:1.24!important;
+  font-weight:900!important;
+  max-width:205px!important;
+}
+
+/* Do not let the 11-inch iPad landscape compression rules shrink these two
+   approved readability targets back to the previous small type. */
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="journeys"] #screen .journey-table-locked th{
+    font-size:10.5px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-table-locked td{
+    height:98px!important;
+    font-size:13.5px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-table-locked td:first-child{
+    font-size:16px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(2){
+    font-size:15.5px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(6){
+    font-size:13.5px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-table-locked td:nth-child(7){
+    font-size:15px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-side-stats-locked>h3{
+    font-size:17px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-side-stats-locked .journey-stat-list span{
+    font-size:11.5px!important;
+  }
+  body[data-screen="journeys"] #screen .journey-side-stats-locked .journey-stat-list b{
+    font-size:13.25px!important;
+    max-width:180px!important;
+  }
+}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — JOURNEY TOTALS + LIFETIME SPEND GRAPH REBUILD LOCK          */
+/* Cameron-approved content-preserving visual rebuild for physical iPad.      */
+/* Destination Totals adds average/day. Lifetime Spend removes centre count.  */
+/* ========================================================================== */
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-chart{
+  display:grid!important;
+  gap:7px!important;
+  margin-top:10px!important;
+  width:100%!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row{
+  display:grid!important;
+  grid-template-columns:minmax(82px,.9fr) minmax(74px,1.25fr) 66px 34px!important;
+  gap:7px!important;
+  align-items:center!important;
+  min-height:25px!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-label{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  min-width:0!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-label i{
+  width:10px!important;height:10px!important;min-width:10px!important;border-radius:50%!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-label b{
+  min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+  font-size:10px!important;line-height:1.1!important;font-weight:850!important;color:#edf7fb!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-track{
+  height:10px!important;border-radius:999px!important;background:rgba(92,113,132,.26)!important;
+  overflow:hidden!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-track span{
+  display:block!important;height:100%!important;border-radius:999px!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row>strong{
+  font-size:10px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-align:right!important;white-space:nowrap!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row>small{
+  font-size:8.5px!important;line-height:1!important;font-weight:800!important;color:#b9c8d2!important;text-align:right!important;white-space:nowrap!important;
+}
+
+/* Expanded Lifetime Spend graph — full-width horizontal comparison, no donut. */
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-chart,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-chart{
+  display:grid!important;
+  gap:13px!important;
+  margin-top:26px!important;
+  width:100%!important;
+  max-width:1180px!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row{
+  display:grid!important;
+  grid-template-columns:185px minmax(260px,1fr) 145px 70px!important;
+  gap:16px!important;
+  align-items:center!important;
+  min-height:58px!important;
+  padding:7px 0!important;
+  border-bottom:1px solid rgba(var(--focus-rgb),.28)!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-label,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-label{
+  display:flex!important;align-items:center!important;gap:11px!important;min-width:0!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-label i,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-label i{
+  width:15px!important;height:15px!important;min-width:15px!important;border-radius:50%!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-label b,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-label b{
+  font-size:17px!important;line-height:1.1!important;font-weight:850!important;color:#f5f6fa!important;white-space:nowrap!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-track,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-track{
+  height:18px!important;border-radius:999px!important;background:rgba(117,108,129,.28)!important;overflow:hidden!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-track span,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-track span{
+  display:block!important;height:100%!important;border-radius:999px!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row>strong,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row>strong{
+  font-size:19px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-align:right!important;white-space:nowrap!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row>small,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row>small{
+  font-size:14px!important;line-height:1!important;font-weight:800!important;color:#c9c1d1!important;text-align:right!important;white-space:nowrap!important;
+}
+
+/* Expanded Destination Totals — ranked spend bars with explicit daily average. */
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-chart{
+  display:grid!important;
+  gap:10px!important;
+  width:100%!important;
+  max-width:1240px!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-row{
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr) 170px!important;
+  gap:15px!important;
+  align-items:center!important;
+  min-height:94px!important;
+  padding:13px 17px!important;
+  border:1px solid rgba(76,136,171,.58)!important;
+  border-radius:13px!important;
+  background:linear-gradient(90deg,rgba(7,34,52,.88),rgba(5,23,36,.62))!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-row>em{
+  font-style:normal!important;font-size:18px!important;font-weight:950!important;color:#73d6ff!important;text-align:center!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-main{
+  min-width:0!important;display:grid!important;grid-template-columns:1fr!important;gap:5px!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-main>b{
+  font-size:20px!important;line-height:1.08!important;font-weight:900!important;color:#fff!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-main>small{
+  font-size:12.5px!important;line-height:1.15!important;font-weight:700!important;color:#aac1d0!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-track{
+  height:13px!important;margin-top:3px!important;border-radius:999px!important;background:rgba(49,87,110,.38)!important;overflow:hidden!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.045)!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-track>span{
+  display:block!important;height:100%!important;border-radius:999px!important;
+  background:linear-gradient(90deg,#2aa9e8,#72ddff)!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-money{
+  display:grid!important;gap:7px!important;text-align:right!important;align-content:center!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-money>strong{
+  font-size:23px!important;line-height:1!important;font-weight:950!important;color:#7de8a4!important;white-space:nowrap!important;
+}
+body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-money>small{
+  font-size:14px!important;line-height:1!important;font-weight:900!important;color:#d7f7e3!important;white-space:nowrap!important;
+}
+
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-chart,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-chart{gap:8px!important;margin-top:16px!important}
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row{
+    grid-template-columns:150px minmax(170px,1fr) 116px 55px!important;gap:10px!important;min-height:45px!important;padding:4px 0!important;
+  }
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-label b,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-label b{font-size:14px!important}
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row>strong,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row>strong{font-size:16px!important}
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-bar-row>small,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-bar-row>small{font-size:12px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-chart{gap:7px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-row{
+    grid-template-columns:38px minmax(0,1fr) 145px!important;gap:11px!important;min-height:72px!important;padding:9px 12px!important;
+  }
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-row>em{font-size:15px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-main>b{font-size:17px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-main>small{font-size:10.5px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-money>strong{font-size:20px!important}
+  body[data-screen="journeys"] .journey-focus-panel.totals .journey-destination-rank-money>small{font-size:12px!important}
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — RESERVATIONS PRIORITY + COLLAPSE LOCK                       */
+/* Future Bookings is the wide priority widget above the booking accordions. */
+/* Upcoming / Completed use one identical chevron treatment.                 */
+/* ========================================================================== */
+body[data-screen="reservations"] .reservation-future-wide{width:100%!important;min-height:0!important;margin:10px 0 12px!important;padding:15px!important;border:1px solid #d2a13a!important;border-radius:13px!important;background:linear-gradient(145deg,rgba(117,76,11,.84),rgba(48,31,5,.98))!important;box-shadow:inset 0 0 34px rgba(213,159,45,.10)!important}
+body[data-screen="reservations"] .reservation-future-wide>h3{margin:0 0 12px!important;color:#ffd978!important;font-size:17px!important;letter-spacing:.10em!important}
+body[data-screen="reservations"] .reservation-future-wide .empty{min-height:96px!important;display:grid!important;place-items:center!important;text-align:center!important;border:1px dashed rgba(216,180,99,.58)!important;border-radius:11px!important;color:#e2e5e6!important;background:rgba(10,19,24,.28)!important;font-size:15px!important}
+body[data-screen="reservations"] .reservation-future-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+body[data-screen="reservations"] .reservation-future-wide .reservation-future-row{min-height:70px!important;margin:0!important;padding:10px 12px!important;border:1px solid rgba(226,180,72,.28)!important;border-radius:10px!important;background:rgba(255,189,46,.065)!important}
+body[data-screen="reservations"] .reservation-future-wide .reservation-future-row b{font-size:14px!important}
+body[data-screen="reservations"] .reservation-future-wide .reservation-future-row small{font-size:10px!important}
+body[data-screen="reservations"] .reservation-future-wide .card-footer-link{margin-top:10px!important}
+body[data-screen="reservations"] .reservation-collapse-block{margin-top:10px!important;border:1px solid #365c76!important;border-radius:12px!important;background:#071827!important;overflow:hidden!important}
+body[data-screen="reservations"] .reservation-collapse-block>summary{min-height:58px!important;padding:10px 14px!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important;list-style:none!important;user-select:none!important}
+body[data-screen="reservations"] .reservation-collapse-block>summary::-webkit-details-marker{display:none!important}
+body[data-screen="reservations"] .reservation-collapse-block>summary::after{content:'⌄'!important;width:34px!important;height:34px!important;min-width:34px!important;margin-left:12px!important;display:grid!important;place-items:center!important;border:1px solid rgba(104,174,218,.46)!important;border-radius:9px!important;background:rgba(8,37,56,.86)!important;color:#91ddff!important;font-size:20px!important;line-height:1!important;transform:none!important;transition:transform .16s ease!important}
+body[data-screen="reservations"] .reservation-collapse-block[open]>summary::after{transform:rotate(180deg)!important}
+body[data-screen="reservations"] .reservation-collapse-block[open]>summary{border-bottom:1px solid rgba(73,126,160,.42)!important}
+body[data-screen="reservations"] .reservation-completed-block>summary{height:auto!important;min-height:58px!important;border:0!important}
+@media (max-width:1250px) and (orientation:landscape){body[data-screen="reservations"] .reservation-future-list{grid-template-columns:1fr!important}body[data-screen="reservations"] .reservation-future-wide{padding:12px!important}body[data-screen="reservations"] .reservation-future-wide>h3{font-size:15px!important}}
+/* Reservation dropdown arrow authority: tools, upcoming and completed all use the same control. */
+body[data-screen="reservations"] .reservation-tools>summary::after{
+  content:'⌄'!important;width:34px!important;height:34px!important;min-width:34px!important;margin-left:auto!important;
+  display:grid!important;place-items:center!important;border:1px solid rgba(104,174,218,.46)!important;border-radius:9px!important;
+  background:rgba(8,37,56,.86)!important;color:#91ddff!important;font-size:20px!important;line-height:1!important;
+  transform:none!important;transition:transform .16s ease!important;
+}
+body[data-screen="reservations"] .reservation-tools[open]>summary::after{transform:rotate(180deg)!important}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — HOME UPCOMING DATE TILE + ALERT DELETE LOCK                 */
+/* Upcoming Events uses a clean calendar-style day tile. Expanded Alerts can */
+/* delete manual alerts or persistently dismiss automatically generated ones. */
+/* ========================================================================== */
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row{
+  grid-template-columns:54px minmax(0,1fr)!important;
+  grid-template-areas:'date title' 'date type'!important;
+  column-gap:9px!important;
+  min-height:54px!important;
+  height:auto!important;
+  padding:5px 2px!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>b.home-event-date-tile{
+  grid-area:date!important;
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  align-self:center!important;
+  border:1px solid #4388ae!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,#163c57,#0b2538)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.08),0 4px 10px rgba(0,0,0,.20)!important;
+  color:#f3fbff!important;
+  font-size:25px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:-.02em!important;
+  text-align:center!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>span{
+  grid-area:title!important;
+  align-self:end!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>small{
+  grid-area:type!important;
+  align-self:start!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .event-source-icon{display:none!important}
+
+body[data-screen="dashboard"] .home-focus-event-row{
+  grid-template-columns:72px minmax(0,1fr) auto!important;
+}
+body[data-screen="dashboard"] .home-focus-event-row>.home-event-date-tile.focus{
+  width:58px!important;
+  height:58px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid #4e9bc7!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#174763,#0a283c)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.09)!important;
+}
+body[data-screen="dashboard"] .home-focus-event-row>.home-event-date-tile.focus>b{
+  font-size:30px!important;
+  line-height:1!important;
+  font-weight:950!important;
+}
+
+body[data-screen="dashboard"] .home-focus-alert-list .readability-list-row{
+  grid-template-columns:105px minmax(0,1fr) 112px!important;
+}
+body[data-screen="dashboard"] .home-alert-delete{
+  min-width:104px!important;
+  min-height:44px!important;
+  padding:8px 11px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  border:1px solid #a64b59!important;
+  border-radius:9px!important;
+  background:linear-gradient(180deg,#7b2d3b,#4a1d28)!important;
+  color:#fff!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.06em!important;
+}
+body[data-screen="dashboard"] .home-alert-delete .action-glyph{
+  width:18px!important;
+  height:18px!important;
+}
+body[data-screen="dashboard"] .home-alert-delete:active{transform:translateY(1px)!important}
+
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row{
+    grid-template-columns:48px minmax(0,1fr)!important;
+    min-height:49px!important;
+    padding:3px 1px!important;
+  }
+  body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>b.home-event-date-tile{
+    width:41px!important;
+    height:41px!important;
+    min-width:41px!important;
+    border-radius:9px!important;
+    font-size:22px!important;
+  }
+  body[data-screen="dashboard"] .home-focus-alert-list .readability-list-row{
+    grid-template-columns:88px minmax(0,1fr) 102px!important;
+  }
+  body[data-screen="dashboard"] .home-alert-delete{min-width:94px!important}
+}
+
+
+/* 4.5.89 Accounts display-only + Itinerary summary expansion lock */
+body[data-screen="budget"] .budget-accounts-card .account-head-actions{display:none!important}
+body[data-screen="budget"] .account-list-readonly .account-row{grid-template-columns:minmax(0,1fr)!important}
+body[data-screen="budget"] .account-main-readonly{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 2px;color:#fff;cursor:inherit}
+body[data-screen="budget"] .account-main-readonly .account-label{min-width:0}
+body[data-screen="budget"] .account-main-readonly b{font-size:15px!important;white-space:nowrap!important}
+body[data-screen="budget"] .budget-accounts-card .account-readonly-note{margin:8px 2px 0!important;font-size:10px!important;color:#b9ccda!important}
+.readability-focus-panel.budget-accounts .budget-expanded-accounts-editor{display:grid;gap:14px}
+.readability-focus-panel.budget-accounts .budget-account-expanded-add{min-height:48px!important;padding:10px 18px!important;white-space:nowrap}
+.readability-focus-panel.budget-accounts .account-list-editable{display:grid;gap:8px}
+.readability-focus-panel.budget-accounts .account-row-editable{min-height:64px!important;border:1px solid rgba(94,169,196,.30)!important;border-radius:12px!important;padding:7px 8px!important;background:rgba(4,25,37,.52)!important}
+.readability-focus-panel.budget-accounts .account-main{font-size:16px!important}
+.readability-focus-panel.budget-accounts .account-main b{font-size:18px!important}
+.readability-focus-panel.budget-accounts .account-actions button{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important}
+
+body[data-screen="itinerary"] .itinerary-locked-metrics>.itinerary-metric{appearance:none;-webkit-appearance:none;font-family:inherit;cursor:pointer;position:relative;transition:transform .14s ease,filter .14s ease,border-color .14s ease}
+body[data-screen="itinerary"] .itinerary-locked-metrics>.itinerary-metric::after{content:'↗';position:absolute;right:8px;top:7px;font-size:10px;font-weight:900;color:#8fdfff;opacity:.82}
+body[data-screen="itinerary"] .itinerary-locked-metrics>.itinerary-metric:focus-visible{outline:2px solid #72d8ff!important;outline-offset:2px!important}
+body[data-screen="itinerary"] .itinerary-locked-metrics>.itinerary-metric:active{transform:scale(.985)}
+.readability-focus-panel.itinerary-countries{border-color:#3ca77a!important;background:linear-gradient(145deg,#0f4937,#0a2d2c 58%,#07141f)!important}
+.readability-focus-panel.itinerary-routes{border-color:#477fc0!important;background:linear-gradient(145deg,#123e6a,#0a2944 58%,#07141f)!important}
+.readability-focus-panel.itinerary-stops{border-color:#8665bd!important;background:linear-gradient(145deg,#3b2857,#211b3d 58%,#07141f)!important}
+.readability-focus-panel.itinerary-gaps{border-color:#c95d72!important;background:linear-gradient(145deg,#53202d,#321622 58%,#07141f)!important}
+.readability-focus-panel.itinerary-missing{border-color:#c9932b!important;background:linear-gradient(145deg,#563b12,#322509 58%,#07141f)!important}
+.readability-focus-panel.itinerary-overlaps{border-color:#408aa9!important;background:linear-gradient(145deg,#123d4e,#0a2935 58%,#07141f)!important}
+.readability-focus-panel[class*="itinerary-"] .itinerary-focus-list{display:grid;gap:8px}
+.readability-focus-panel[class*="itinerary-"] .itinerary-focus-row{min-height:60px!important;border-radius:10px!important}
+.readability-focus-panel[class*="itinerary-"] button.itinerary-focus-row{width:100%;text-align:left;font-family:inherit;color:inherit;cursor:pointer}
+.readability-focus-panel[class*="itinerary-"] .itinerary-focus-row>div>b{font-size:16px!important}
+.readability-focus-panel[class*="itinerary-"] .itinerary-focus-row>div>small{font-size:11px!important}
+.readability-focus-panel[class*="itinerary-"] .itinerary-focus-row>strong{font-size:12px!important;color:#9ce7ff!important;white-space:nowrap}
+
+/* 17 AUG 2026 — Calendar readability + destination-colour day-view lock */
+body[data-screen="calendar"] #screen .calendar-large{
+  grid-template-rows:42px repeat(6,auto)!important;
+  gap:0!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day-head{
+  min-height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:15px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.08em!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day{
+  min-height:138px!important;
+  padding:10px 8px!important;
+  gap:6px!important;
+  overflow:hidden!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .day-num{
+  position:relative!important;
+  inset:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  min-height:30px!important;
+  margin:0 0 2px!important;
+  font-size:26px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:-.035em!important;
+  color:#fff!important;
+  z-index:3!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .day-num em{
+  font-size:8.5px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.16em!important;
+  color:#88e8ff!important;
+  background:rgba(5,25,38,.72)!important;
+  border:1px solid rgba(110,224,255,.42)!important;
+  padding:5px 7px!important;
+  border-radius:7px!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .event{
+  min-height:52px!important;
+  padding:7px 8px!important;
+  grid-template-columns:22px minmax(0,1fr)!important;
+  column-gap:7px!important;
+  row-gap:3px!important;
+  border-radius:10px!important;
+  background:rgba(7,31,48,.82)!important;
+  border:1px solid color-mix(in srgb,var(--destination-colour,#48b8ef) 46%,rgba(110,170,205,.36))!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.18)!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .event>i{
+  width:22px!important;min-width:22px!important;height:22px!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .event>small{
+  font-size:10.5px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  color:#d8f4ff!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .event>b{
+  font-size:12px!important;
+  line-height:1.16!important;
+  font-weight:900!important;
+  color:#fff!important;
+  -webkit-line-clamp:2!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .destination-stay-label{
+  min-height:38px!important;
+  padding:7px 8px!important;
+  margin:2px 0!important;
+  border-radius:9px!important;
+  background:color-mix(in srgb,var(--destination-colour,#307fba) 40%,rgba(5,23,36,.92))!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .destination-stay-label b,
+body[data-screen="calendar"] #screen .calendar-large .day.transition-day .destination-stay-label.transition-label>b,
+body[data-screen="calendar"] #screen .calendar-large .day.transition-day .destination-stay-label.transition-label>b span{
+  font-size:11.5px!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .destination-stay-label small,
+body[data-screen="calendar"] #screen .calendar-large .day.transition-day .destination-stay-label.transition-label>small{
+  font-size:9px!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day .more-events{
+  margin-top:1px!important;
+  padding:5px 7px!important;
+  border-radius:8px!important;
+  background:rgba(7,24,37,.80)!important;
+  border:1px solid rgba(103,184,224,.30)!important;
+  font-size:10.5px!important;
+  line-height:1.05!important;
+  font-weight:950!important;
+  color:#d9f4ff!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day{
+  min-height:156px!important;
+  border:2px solid color-mix(in srgb,var(--destination-colour,#67d9ff) 76%,#a7eeff)!important;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--destination-colour,#1c7fb6) 34%,#072034),rgba(5,20,32,.96))!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 18px color-mix(in srgb,var(--destination-colour,#48b8ef) 28%,transparent)!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .day-num{
+  font-size:34px!important;
+  color:color-mix(in srgb,var(--destination-colour,#75ddff) 66%,#fff)!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .event{
+  min-height:60px!important;
+  padding:8px 9px!important;
+  background:color-mix(in srgb,var(--destination-colour,#2279ad) 22%,rgba(5,25,39,.94))!important;
+  border-color:color-mix(in srgb,var(--destination-colour,#62d3ff) 72%,#93dfff)!important;
+}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .event>small{font-size:11px!important}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .event>b{font-size:13.2px!important;line-height:1.18!important}
+body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day.transition-day{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--departing-colour) 48%,#071524) 0 49.5%,color-mix(in srgb,var(--arriving-colour) 52%,#071524) 50.5% 100%)!important;
+  border-color:#86e4ff!important;
+}
+
+/* Single-list day view: no status clutter, colour inherited from the destination. */
+body[data-screen="calendar"] #screen .calendar-simple-day{
+  min-height:calc(100vh - 34px)!important;
+  padding:16px!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 74%,#8de8ff)!important;
+  background:
+    radial-gradient(circle at 82% 0%,color-mix(in srgb,var(--day-accent) 26%,transparent),transparent 40%),
+    linear-gradient(150deg,color-mix(in srgb,var(--day-accent) 16%,#071827),#061522 52%,#04111b)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 12px 34px rgba(0,0,0,.30)!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day.transition-day-view{
+  background:
+    radial-gradient(circle at 16% 0%,color-mix(in srgb,var(--day-secondary-accent) 24%,transparent),transparent 38%),
+    radial-gradient(circle at 84% 0%,color-mix(in srgb,var(--day-accent) 28%,transparent),transparent 42%),
+    linear-gradient(150deg,#071827,#04111b 62%)!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header{
+  min-height:154px!important;
+  display:grid!important;
+  grid-template-columns:210px minmax(0,1fr) 240px!important;
+  gap:22px!important;
+  align-items:center!important;
+  padding:22px 24px!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 74%,#8de8ff)!important;
+  border-radius:16px!important;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--day-accent) 38%,#0b2c43),color-mix(in srgb,var(--day-accent) 14%,#071827))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.22)!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header>div>span{
+  display:block!important;
+  margin-bottom:8px!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.20em!important;
+  color:color-mix(in srgb,var(--day-accent) 45%,#dff8ff)!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header h2{
+  margin:0!important;
+  font-size:34px!important;
+  line-height:1.04!important;
+  font-weight:950!important;
+  color:#fff!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header p{
+  margin:8px 0 0!important;
+  font-size:17px!important;
+  line-height:1.2!important;
+  font-weight:750!important;
+  color:#d8e8f3!important;
+}
+body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header>button{
+  min-height:58px!important;
+  border-radius:12px!important;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+body[data-screen="calendar"] #screen .calendar-day-agenda{
+  margin-top:16px!important;
+  padding:18px!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 58%,#35647d)!important;
+  border-radius:16px!important;
+  background:rgba(4,20,31,.74)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.04)!important;
+}
+body[data-screen="calendar"] #screen .calendar-day-agenda .day-agenda-title{
+  min-height:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  padding:0 4px 12px!important;
+  border-bottom:1px solid color-mix(in srgb,var(--day-accent) 32%,rgba(120,185,220,.25))!important;
+}
+body[data-screen="calendar"] #screen .calendar-day-agenda .day-agenda-title>span{
+  font-size:14px!important;
+  font-weight:950!important;
+  letter-spacing:.16em!important;
+  color:color-mix(in srgb,var(--day-accent) 46%,#e5fbff)!important;
+}
+body[data-screen="calendar"] #screen .calendar-day-agenda .day-agenda-title>b{
+  font-size:12px!important;
+  font-weight:900!important;
+  color:#b9d3e2!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-row{
+  width:100%!important;
+  min-height:90px!important;
+  display:grid!important;
+  grid-template-columns:96px 54px minmax(0,1fr) 28px!important;
+  align-items:center!important;
+  gap:14px!important;
+  margin-top:10px!important;
+  padding:12px 14px!important;
+  text-align:left!important;
+  font-family:inherit!important;
+  color:inherit!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 45%,#315a72)!important;
+  border-left:6px solid var(--day-accent)!important;
+  border-radius:14px!important;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--day-accent) 16%,rgba(9,37,55,.92)),rgba(7,28,43,.92))!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.16)!important;
+  cursor:pointer!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-row:active{transform:translateY(1px)!important}
+body[data-screen="calendar"] #screen .day-agenda-time{
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  color:#fff!important;
+  font-variant-numeric:tabular-nums!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-symbol{
+  width:48px!important;
+  height:48px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 60%,#4f8dad)!important;
+  border-radius:12px!important;
+  background:color-mix(in srgb,var(--day-accent) 28%,#0a2b40)!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-symbol svg,
+body[data-screen="calendar"] #screen .day-agenda-symbol img{
+  width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-copy{min-width:0!important}
+body[data-screen="calendar"] #screen .day-agenda-copy>b{
+  display:block!important;
+  font-size:20px!important;
+  line-height:1.12!important;
+  font-weight:900!important;
+  color:#fff!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-copy>small{
+  display:block!important;
+  margin-top:5px!important;
+  font-size:13.5px!important;
+  line-height:1.18!important;
+  font-weight:650!important;
+  color:#b9ccda!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-open{
+  font-size:30px!important;
+  line-height:1!important;
+  font-weight:600!important;
+  color:color-mix(in srgb,var(--day-accent) 62%,#fff)!important;
+  text-align:center!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-empty{
+  min-height:190px!important;
+  margin-top:12px!important;
+  display:grid!important;
+  place-items:center!important;
+  align-content:center!important;
+  gap:8px!important;
+  text-align:center!important;
+  border:1px dashed color-mix(in srgb,var(--day-accent) 46%,#315a72)!important;
+  border-radius:14px!important;
+  background:rgba(5,24,37,.62)!important;
+}
+body[data-screen="calendar"] #screen .day-agenda-empty>b{font-size:24px!important;color:#fff!important}
+body[data-screen="calendar"] #screen .day-agenda-empty>small{font-size:14px!important;color:#b8ccda!important}
+body[data-screen="calendar"] #screen .day-agenda-footer{
+  margin-top:14px!important;
+  padding:16px!important;
+  text-align:center!important;
+  border-radius:12px!important;
+  border:1px solid color-mix(in srgb,var(--day-accent) 35%,#284e64)!important;
+  background:color-mix(in srgb,var(--day-accent) 10%,rgba(5,21,32,.88))!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  color:#d9eaf4!important;
+}
+
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="calendar"] #screen .calendar-large .day{min-height:130px!important;padding:8px 6px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day .day-num{font-size:23px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day .event{min-height:48px!important;padding:6px!important;grid-template-columns:19px minmax(0,1fr)!important;column-gap:5px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day .event>i{width:19px!important;min-width:19px!important;height:19px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day .event>small{font-size:9.5px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day .event>b{font-size:10.8px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day{min-height:148px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .day-num{font-size:30px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .event{min-height:56px!important}
+  body[data-screen="calendar"] #screen .calendar-large .day.calendar-major-day .event>b{font-size:12px!important}
+  body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header{grid-template-columns:180px minmax(0,1fr) 215px!important;gap:16px!important;padding:18px!important}
+  body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header h2{font-size:29px!important}
+  body[data-screen="calendar"] #screen .calendar-simple-day .simple-day-header p{font-size:14px!important}
+  body[data-screen="calendar"] #screen .day-agenda-row{grid-template-columns:82px 48px minmax(0,1fr) 24px!important;min-height:82px!important;gap:11px!important;padding:10px 12px!important}
+  body[data-screen="calendar"] #screen .day-agenda-symbol{width:44px!important;height:44px!important}
+  body[data-screen="calendar"] #screen .day-agenda-time{font-size:16px!important}
+  body[data-screen="calendar"] #screen .day-agenda-copy>b{font-size:18px!important}
+  body[data-screen="calendar"] #screen .day-agenda-copy>small{font-size:12.5px!important}
+}
+
+/* ========================================================================== */
+/* BUILD 4.5.89 — DUAL MAP SYSTEM OVERHAUL LOCK — 17 AUG 2026               */
+/* Forward Journey Plan + Journey History share a clear fit-to-route grammar. */
+/* Embedded maps are deliberately larger; expanded maps open already fitted. */
+/* Route lines stay on true geography while collision-separated pins use      */
+/* leaders. FIT ROUTE replaces meaningless percentage-reset labels.           */
+/* ========================================================================== */
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page)>.journey-map-shell,
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .journey-map-viewport{
+  height:420px!important;min-height:420px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .journey-map-viewport>.world-grid{
+  height:var(--map-render-size,100%)!important;min-height:0!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin{
+  width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin>span{
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;border-width:2px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin.current-route>span,
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin.next-route>span{
+  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  outline:2px solid rgba(255,255,255,.84)!important;outline-offset:3px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin>span i{font-size:15px!important}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin.label-visible>b{
+  display:block!important;font-size:12px!important;font-weight:950!important;line-height:1.05!important;min-width:130px!important;max-width:210px!important;padding:6px 9px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-planning-pin.label-visible>small{
+  display:block!important;font-size:9.5px!important;font-weight:800!important;min-width:130px!important;max-width:210px!important;padding:5px 9px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-shell .route-shadow{stroke-width:6.2!important;opacity:.62!important}
+body[data-screen="itinerary"] .itinerary-map-shell .route-segment{stroke-width:2.9!important;opacity:1!important;filter:drop-shadow(0 0 5px var(--route-colour))!important}
+body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .itinerary-geo-labels span{font-size:9.4px!important;font-weight:850!important;opacity:.82!important;text-shadow:0 2px 5px rgba(0,0,0,.85)!important}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-geo-labels span{font-size:11px!important;font-weight:850!important;opacity:.88!important;text-shadow:0 2px 6px rgba(0,0,0,.88)!important}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin:not(.route-detail-pin)>span{
+  width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin.current-route>span,
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin.next-route>span{
+  width:47px!important;height:47px!important;min-width:47px!important;min-height:47px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin.route-detail-pin>span{
+  width:31px!important;height:31px!important;min-width:31px!important;min-height:31px!important;
+}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin.route-detail-pin>span i{font-size:14px!important}
+body[data-screen="itinerary"] .itinerary-map-tools button[data-itinerary-map-zoom="reset"]{min-width:104px!important;font-size:10px!important;font-weight:950!important;letter-spacing:.08em!important}
+
+/* Journey History embedded map now uses the same crisp layout-based fit engine. */
+body[data-screen="journeys"] .journey-history-map .history-route-map .journey-map-viewport{
+  position:relative!important;overflow:hidden!important;background:#041522!important;height:390px!important;min-height:390px!important;
+}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .journey-map-viewport>.world-grid{
+  position:absolute!important;width:var(--map-render-size,100%)!important;min-width:var(--map-render-size,100%)!important;
+  height:var(--map-render-size,100%)!important;min-height:0!important;left:var(--map-layout-left,0%)!important;top:var(--map-layout-top,0%)!important;
+  transform:none!important;transform-origin:initial!important;transition:left .12s ease-out,top .12s ease-out,width .12s ease-out,height .12s ease-out!important;
+}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map){height:390px!important;min-height:390px!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin{width:50px!important;min-width:50px!important;height:50px!important;min-height:50px!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin>span{
+  width:35px!important;height:35px!important;min-width:35px!important;min-height:35px!important;border:2px solid #06131d!important;
+}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin>span i{font-size:13px!important;font-weight:950!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin>span em{
+  display:block!important;position:absolute!important;right:-5px!important;bottom:-5px!important;min-width:17px!important;height:17px!important;padding:1px 4px!important;
+  border-radius:999px!important;background:#061522!important;border:1px solid rgba(166,224,250,.78)!important;color:#fff!important;font-size:7px!important;line-height:13px!important;font-style:normal!important;font-weight:950!important;
+}
+body[data-screen="journeys"] .journey-history-map .history-route-map .route-segment{stroke-width:1.9!important;opacity:.90!important;filter:drop-shadow(0 0 3px var(--route-colour))!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map.history-dense-overview .route-segment{stroke-width:1.45!important;opacity:.58!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map .map-pin-leader{opacity:.55!important;stroke-width:.8px!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin.selected-route>b{font-size:12px!important;min-width:145px!important;max-width:220px!important;padding:7px 9px!important}
+body[data-screen="journeys"] .journey-history-map .history-route-map:not(.full-page-map) .geo-pin.selected-route>small{font-size:9.5px!important;min-width:145px!important;max-width:220px!important;padding:6px 9px!important;top:31px!important}
+
+/* Expanded Journey History: larger mode-first pins and readable selected label. */
+.journey-expanded-map-page .history-route-map .geo-pin:not(.route-detail-pin)>span{
+  width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+  border-width:2px!important;box-shadow:0 0 0 3px rgba(105,199,237,.12),0 4px 12px rgba(0,0,0,.50)!important;
+}
+.journey-expanded-map-page .history-route-map .geo-pin:not(.route-detail-pin)>span i{font-size:15px!important;font-weight:950!important}
+.journey-expanded-map-page .history-route-map .geo-pin:not(.route-detail-pin)>span em{
+  display:block!important;position:absolute!important;right:-6px!important;bottom:-6px!important;min-width:18px!important;height:18px!important;padding:1px 4px!important;
+  border-radius:999px!important;background:#061522!important;border:1px solid rgba(180,232,255,.84)!important;color:#fff!important;font-size:7.5px!important;line-height:14px!important;font-style:normal!important;font-weight:950!important;
+}
+.journey-expanded-map-page .history-route-map .geo-pin.route-detail-pin>span{width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important}
+.journey-expanded-map-page .history-route-map .route-segment{stroke-width:2.05!important;opacity:.9!important;filter:drop-shadow(0 0 2.5px var(--route-colour))!important}
+.journey-expanded-map-page .map-tools button[data-map-zoom="reset"]{min-width:104px!important;font-size:10px!important;font-weight:950!important;letter-spacing:.08em!important}
+.journey-expanded-map-page .history-route-map .geo-pin.selected-route>b{font-size:13px!important;font-weight:950!important;min-width:160px!important;max-width:235px!important;padding:7px 10px!important}
+.journey-expanded-map-page .history-route-map .geo-pin.selected-route>small{font-size:10px!important;font-weight:800!important;min-width:160px!important;max-width:235px!important;padding:6px 10px!important}
+
+@media(max-width:1200px) and (orientation:landscape){
+  body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page)>.journey-map-shell,
+  body[data-screen="itinerary"] .itinerary-map-panel:not(.full-page) .journey-map-viewport{height:380px!important;min-height:380px!important}
+  body[data-screen="journeys"] .journey-history-map .history-route-map,
+  body[data-screen="journeys"] .journey-history-map .history-route-map .journey-map-viewport{height:350px!important;min-height:350px!important}
+}
+
+
+/* ========================================================================== */
+/* BUILD 4.5.89 — FULL FORENSIC VISUAL AUDIT LOCK — 17 AUG 2026             */
+/* Final release QA correction: streaming overlay must fit the app workspace  */
+/* at every approved iPad landscape width. The overlay is rendered inside a  */
+/* transformed app shell, so viewport-width units could extend under/through  */
+/* the fixed sidebar at 1180/1194 widths. Size it from its actual containing   */
+/* workspace instead.                                                         */
+/* ========================================================================== */
+body[data-screen="vault"] .vault-streaming-panel{
+  width:min(1040px,calc(100% - 36px))!important;
+  max-width:calc(100% - 36px)!important;
+}
+@media(max-width:1200px) and (orientation:landscape){
+  body[data-screen="vault"] .vault-streaming-backdrop{padding:16px!important}
+  body[data-screen="vault"] .vault-streaming-panel{
+    width:calc(100% - 24px)!important;
+    max-width:calc(100% - 24px)!important;
+  }
+  body[data-screen="vault"] .vault-streaming-app-grid{gap:10px!important}
+}
+
+
+/* 17 AUG 2026 — FORENSIC VAULT STREAMING VIEWPORT LOCK */
+/* The whole-app colour filter creates a containing block for fixed children. */
+/* Remove it only while TV & Streaming is open, then keep the overlay inside */
+/* the visible main workspace so the permanent left navigation stays exposed. */
+body.vault-streaming-open{overflow:hidden!important}
+body.vault-streaming-open #screen{filter:none!important}
+body.vault-streaming-open #app>main{transform:none!important;overflow:visible!important}
+body.vault-streaming-open .vault-streaming-backdrop{
+  position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:clamp(214px,19vw,230px)!important;
+  width:auto!important;height:auto!important;padding:18px!important;
+}
+body.vault-streaming-open .vault-streaming-panel{
+  width:min(1040px,calc(100% - 24px))!important;max-width:calc(100% - 24px)!important;
+  max-height:calc(100vh - 36px)!important;
+}
+@media(max-width:1200px) and (orientation:landscape){
+  body.vault-streaming-open .vault-streaming-backdrop{padding:12px!important}
+  body.vault-streaming-open .vault-streaming-panel{
+    width:calc(100% - 16px)!important;max-width:calc(100% - 16px)!important;max-height:calc(100vh - 24px)!important;
+  }
+}

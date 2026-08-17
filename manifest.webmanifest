@@ -1,7 +1,7 @@
 {
   "name": "Travel Command Centre",
   "short_name": "Travel Command",
-  "start_url": "./index.html?v=4.5.89-black-launch-smooth-20260817",
+  "start_url": "./index.html?v=4.5.89-full-forensic-visual-audit-20260817",
   "display": "standalone",
   "orientation": "landscape",
   "background_color": "#000000",
@@ -20,7 +20,7 @@
       "purpose": "any maskable"
     }
   ],
-  "description": "Travel Command Centre Build 4.5.89 — Morocco continuity/master review build with all current interface and offline locks.",
+  "description": "Travel Command Centre Build 4.5.89 — full forensic visual audit master with all current offline, calendar, Vault streaming, Reservations and map locks.",
   "scope": "./",
   "id": "./",
   "display_override": [
