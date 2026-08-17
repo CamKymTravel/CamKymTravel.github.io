@@ -21280,3 +21280,630 @@ body[data-screen="vault"] .vault-access-locked-badge svg{width:42px!important;he
 body[data-screen="vault"] .vault-access-locked-badge b{font-size:19px!important;line-height:1!important;letter-spacing:.08em!important;color:#eefaff!important}
 body[data-screen="vault"] .vault-access-locked-badge small{font-size:12px!important;line-height:1.1!important;font-weight:750!important;letter-spacing:.08em!important;color:#8fc5dd!important;text-transform:uppercase!important}
 @media(max-width:1080px){body[data-screen="vault"] .vault-secret-unlock-target{width:165px!important;height:150px!important}}
+
+/* === Vault Netflix / TV codes header launcher + simple local editor · 17 Aug 2026 === */
+body[data-screen="vault"] #screen .vault-streaming-launch{
+  position:absolute!important;z-index:5!important;right:1.45%!important;top:7.5%!important;width:15.7%!important;height:21%!important;
+  min-height:38px!important;display:grid!important;grid-template-columns:28px minmax(0,1fr) 18px!important;align-items:center!important;gap:7px!important;
+  padding:5px 10px!important;border:1px solid rgba(91,126,151,.78)!important;border-radius:10px!important;
+  background:linear-gradient(150deg,#071522 0%,#0a1a28 100%)!important;box-shadow:0 8px 20px rgba(0,0,0,.28)!important;
+  color:#fff!important;text-align:left!important;overflow:hidden!important;
+}
+body[data-screen="vault"] #screen .vault-streaming-launch .vault-netflix-n,
+body[data-screen="vault"] #screen .vault-netflix-n{
+  display:inline-grid!important;place-items:center!important;width:25px!important;height:28px!important;
+  font-family:Arial Black,Arial,sans-serif!important;font-size:24px!important;font-weight:950!important;font-style:normal!important;line-height:1!important;
+  color:#e50914!important;text-shadow:0 0 10px rgba(229,9,20,.26)!important;
+}
+body[data-screen="vault"] #screen .vault-streaming-launch b{font-size:10.5px!important;line-height:1!important;letter-spacing:.10em!important;color:#ff4b55!important;white-space:nowrap!important}
+body[data-screen="vault"] #screen .vault-streaming-launch i{font-size:25px!important;line-height:1!important;font-style:normal!important;color:#cfe7f5!important;text-align:right!important}
+body[data-screen="vault"] #screen .vault-streaming-launch.is-locked{opacity:.34!important;filter:saturate(.45)!important;pointer-events:none!important}
+body[data-screen="vault"] #screen .dedicated-vault-live-status{top:33%!important;height:58%!important}
+
+body[data-screen="vault"] .vault-streaming-backdrop{
+  position:fixed!important;inset:0!important;z-index:2600!important;display:grid!important;place-items:center!important;
+  padding:28px!important;background:rgba(1,8,14,.78)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;
+}
+body[data-screen="vault"] .vault-streaming-panel{
+  width:min(1050px,94vw)!important;max-height:90vh!important;overflow:hidden!important;display:grid!important;grid-template-rows:auto auto minmax(0,1fr) auto!important;
+  border:1px solid #356d8d!important;border-radius:20px!important;background:linear-gradient(155deg,#071827 0%,#0b2235 58%,#07131f 100%)!important;
+  box-shadow:0 28px 70px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.05)!important;color:#eef8ff!important;
+}
+body[data-screen="vault"] .vault-streaming-panel>header{
+  display:flex!important;justify-content:space-between!important;align-items:center!important;gap:16px!important;padding:20px 22px!important;
+  border-bottom:1px solid rgba(79,147,186,.46)!important;background:linear-gradient(180deg,rgba(17,54,78,.92),rgba(8,30,47,.94))!important;
+}
+body[data-screen="vault"] .vault-streaming-panel>header small{display:block!important;font-size:11px!important;font-weight:900!important;letter-spacing:.20em!important;color:#70dcff!important}
+body[data-screen="vault"] .vault-streaming-panel>header h2{margin:4px 0 2px!important;font-size:30px!important;line-height:1!important;letter-spacing:.02em!important;color:#fff!important}
+body[data-screen="vault"] .vault-streaming-panel>header p{margin:7px 0 0!important;font-size:15px!important;color:#c3d7e3!important}
+body[data-screen="vault"] .vault-streaming-close{width:58px!important;height:58px!important;font-size:32px!important;font-weight:800!important;padding:0!important;border-radius:14px!important}
+body[data-screen="vault"] .vault-streaming-toolbar{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;padding:14px 20px!important;border-bottom:1px solid rgba(79,147,186,.28)!important;
+}
+body[data-screen="vault"] .vault-streaming-toolbar>div{display:grid!important;grid-template-columns:38px auto!important;grid-template-rows:auto auto!important;align-items:center!important;column-gap:8px!important}
+body[data-screen="vault"] .vault-streaming-toolbar .vault-netflix-n{grid-row:1/3!important;width:34px!important;height:38px!important;font-size:32px!important}
+body[data-screen="vault"] .vault-streaming-toolbar b{font-size:19px!important;letter-spacing:.08em!important;color:#ff5b64!important}
+body[data-screen="vault"] .vault-streaming-toolbar small{font-size:12px!important;color:#9fb9c9!important}
+body[data-screen="vault"] .vault-streaming-toolbar>button{min-height:48px!important;padding:0 22px!important;font-size:14px!important;font-weight:850!important}
+body[data-screen="vault"] .vault-streaming-list{padding:16px 20px 20px!important;overflow:auto!important;display:grid!important;align-content:start!important;gap:10px!important}
+body[data-screen="vault"] .vault-streaming-row{
+  min-height:82px!important;display:grid!important;grid-template-columns:50px minmax(0,1fr) auto!important;align-items:center!important;gap:13px!important;padding:11px 13px!important;
+  border:1px solid #2c5874!important;border-radius:14px!important;background:linear-gradient(150deg,rgba(9,34,52,.96),rgba(5,22,36,.98))!important;
+}
+body[data-screen="vault"] .vault-streaming-service-mark{width:44px!important;height:44px!important;display:grid!important;place-items:center!important;border-radius:12px!important;background:#141c29!important;border:1px solid #69434a!important;color:#ff4e59!important;font-size:24px!important;font-weight:950!important}
+body[data-screen="vault"] .vault-streaming-row-copy b{display:block!important;font-size:18px!important;color:#fff!important}
+body[data-screen="vault"] .vault-streaming-row-copy small{display:block!important;margin-top:3px!important;font-size:13px!important;color:#a9c1d0!important}
+body[data-screen="vault"] .vault-streaming-row-copy strong{display:block!important;margin-top:6px!important;font-size:16px!important;letter-spacing:.10em!important;color:#76ddff!important}
+body[data-screen="vault"] .vault-streaming-row-actions{display:flex!important;gap:7px!important;align-items:center!important}
+body[data-screen="vault"] .vault-streaming-row-actions button{min-height:42px!important;padding:0 13px!important;font-size:11px!important;font-weight:900!important}
+body[data-screen="vault"] .vault-streaming-empty{margin:18px 20px!important;min-height:150px!important;display:grid!important;place-items:center!important;align-content:center!important;gap:8px!important;text-align:center!important;border:1px dashed #3b6b86!important;border-radius:14px!important;background:rgba(6,28,43,.60)!important}
+body[data-screen="vault"] .vault-streaming-empty b{font-size:20px!important}.vault-streaming-empty span{font-size:14px!important;color:#a9c2d0!important}
+body[data-screen="vault"] .vault-streaming-form{margin:16px 20px 20px!important;padding:18px!important;overflow:auto!important;border:1px solid #3c718d!important;border-radius:16px!important;background:rgba(6,27,42,.88)!important}
+body[data-screen="vault"] .vault-streaming-form-head{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:14px!important;margin-bottom:14px!important}
+body[data-screen="vault"] .vault-streaming-form-head small{font-size:10px!important;font-weight:900!important;letter-spacing:.18em!important;color:#79ddff!important}
+body[data-screen="vault"] .vault-streaming-form-head h3{margin:3px 0 0!important;font-size:23px!important;color:#fff!important}
+body[data-screen="vault"] .vault-streaming-form-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:13px!important}
+body[data-screen="vault"] .vault-streaming-form-grid label{display:grid!important;gap:7px!important}
+body[data-screen="vault"] .vault-streaming-form-grid label>span{font-size:12px!important;font-weight:900!important;letter-spacing:.12em!important;color:#8bddff!important}
+body[data-screen="vault"] .vault-streaming-form-grid input,body[data-screen="vault"] .vault-streaming-form-grid select{height:54px!important;font-size:17px!important;font-weight:750!important;padding:0 14px!important}
+body[data-screen="vault"] .vault-streaming-save{width:100%!important;min-height:54px!important;margin-top:14px!important;font-size:15px!important;font-weight:900!important;letter-spacing:.08em!important}
+body[data-screen="vault"] .vault-streaming-panel>footer{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:16px!important;padding:13px 20px!important;border-top:1px solid rgba(79,147,186,.32)!important;background:rgba(4,19,31,.90)!important}
+body[data-screen="vault"] .vault-streaming-panel>footer span{font-size:12px!important;color:#9fb8c8!important}.vault-streaming-panel>footer button{min-height:44px!important;padding:0 22px!important;font-weight:850!important}
+@media(max-width:1080px) and (orientation:landscape){
+  body[data-screen="vault"] #screen .vault-streaming-launch{right:1.2%!important;width:16%!important;padding:4px 7px!important;grid-template-columns:24px minmax(0,1fr) 12px!important}
+  body[data-screen="vault"] #screen .vault-streaming-launch b{font-size:8.5px!important}
+  body[data-screen="vault"] #screen .vault-streaming-launch .vault-netflix-n{width:21px!important;height:24px!important;font-size:20px!important}
+  body[data-screen="vault"] .vault-streaming-panel{width:96vw!important}
+  body[data-screen="vault"] .vault-streaming-form-grid{grid-template-columns:1fr 1fr!important}
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — DESTINATION BUDGET SUMMARY FIT + CLARITY LOCK               */
+/* Keep the standard widget read-only and quiet. Three useful values only;    */
+/* remove the redundant currency tile and guarantee clean iPad card fit.      */
+/* ========================================================================== */
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.destination-budget-itinerary-lock{
+  display:flex!important;
+  flex-direction:column!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-summary .budget-lock-heading{
+  flex:0 0 auto!important;
+  margin-bottom:10px!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context{
+  flex:0 0 auto!important;
+  min-height:64px!important;
+  margin-bottom:12px!important;
+  padding:10px 13px!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination{
+  flex:1 1 auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  align-items:stretch!important;
+  margin:0!important;
+  min-height:0!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span{
+  min-height:0!important;
+  height:auto!important;
+  padding:11px 12px!important;
+  justify-content:center!important;
+  border-color:rgba(79,207,126,.26)!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>small{
+  font-size:9px!important;
+  line-height:1.1!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>b{
+  margin-top:7px!important;
+  font-size:17px!important;
+  line-height:1.12!important;
+  overflow-wrap:anywhere!important;
+}
+@media(max-width:1180px){
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination{gap:8px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span{padding:9px 10px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>b{font-size:15.5px!important}
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — DESTINATION BUDGET LARGE-FIGURE READABILITY LOCK            */
+/* Read-only summary stays simple, but uses the available iPad card space.    */
+/* Large figures are prioritised while preserving clean fit at landscape.     */
+/* ========================================================================== */
+body[data-screen="budget"] #screen .budget-destination-locked-summary .budget-lock-heading>span{
+  font-size:22px!important;
+  letter-spacing:.095em!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context{
+  min-height:70px!important;
+  padding:11px 14px!important;
+  margin-bottom:12px!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context small{
+  font-size:9.5px!important;
+  line-height:1.15!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context b{
+  margin-top:4px!important;
+  font-size:19px!important;
+  line-height:1.05!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context em{
+  margin-top:5px!important;
+  font-size:10.5px!important;
+  line-height:1.18!important;
+}
+body[data-screen="budget"] #screen .budget-destination-locked-context>strong{
+  padding:6px 10px!important;
+  font-size:9px!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination{
+  gap:10px!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span{
+  min-height:82px!important;
+  padding:12px 13px!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>small{
+  font-size:10.5px!important;
+  line-height:1.12!important;
+  letter-spacing:.105em!important;
+}
+body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>b{
+  margin-top:8px!important;
+  font-size:23px!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+  letter-spacing:.005em!important;
+}
+@media(max-width:1180px){
+  body[data-screen="budget"] #screen .budget-destination-locked-summary .budget-lock-heading>span{font-size:20.5px!important}
+  body[data-screen="budget"] #screen .budget-destination-locked-context{min-height:66px!important;padding:9px 11px!important;margin-bottom:10px!important}
+  body[data-screen="budget"] #screen .budget-destination-locked-context small{font-size:8.8px!important}
+  body[data-screen="budget"] #screen .budget-destination-locked-context b{font-size:18px!important}
+  body[data-screen="budget"] #screen .budget-destination-locked-context em{font-size:9.8px!important}
+  body[data-screen="budget"] #screen .budget-destination-locked-context>strong{font-size:8.5px!important;padding:5px 8px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination{gap:8px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span{min-height:76px!important;padding:10px 10px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>small{font-size:9.6px!important}
+  body[data-screen="budget"] #screen .budget-locked-summary-grid.destination>span>b{font-size:21px!important}
+}
+
+/* 17 Aug 2026 — Reservation Search-Only + Upcoming Collapse Lock */
+body[data-screen="reservations"] .reservation-search-only{
+  margin:12px 0 9px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-screen="reservations"] .reservation-search-only .reservation-search-field{
+  width:100%!important;
+  min-height:62px!important;
+  border:1px solid #8aa0b0!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,#4d5c67 0%,#344653 48%,#253744 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20)!important;
+}
+body[data-screen="reservations"] .reservation-search-only .reservation-search-field input{
+  height:60px!important;
+  min-height:60px!important;
+  font-size:17px!important;
+  font-weight:650!important;
+  color:#f2f7fb!important;
+  background:transparent!important;
+}
+body[data-screen="reservations"] .reservation-search-only .reservation-search-field input::placeholder{color:#e3e9ed!important;opacity:.94!important}
+body[data-screen="reservations"] .reservation-search-only .search-field-icon{width:48px!important;height:48px!important;min-width:48px!important;margin-left:7px!important}
+body[data-screen="reservations"] .reservation-tools{margin-top:0!important}
+body[data-screen="reservations"] .reservation-advanced-filters .reservation-tool-check{
+  min-height:58px!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  padding:12px!important;
+  border:1px solid rgba(81,139,177,.45)!important;
+  border-radius:10px!important;
+  background:rgba(5,25,39,.76)!important;
+  font-size:13px!important;
+  font-weight:700!important;
+  color:#d9e8f2!important;
+}
+body[data-screen="reservations"] .reservation-advanced-filters .reservation-tool-check input{width:27px!important;height:27px!important;min-width:27px!important}
+body[data-screen="reservations"] .reservation-upcoming-block{
+  margin-top:10px!important;
+  border:1px solid #365c76!important;
+  border-radius:12px!important;
+  background:#071827!important;
+  overflow:hidden!important;
+}
+body[data-screen="reservations"] .reservation-upcoming-block>summary{
+  min-height:58px!important;
+  padding:10px 14px!important;
+  cursor:pointer!important;
+  list-style:none!important;
+  user-select:none!important;
+}
+body[data-screen="reservations"] .reservation-upcoming-block>summary::-webkit-details-marker{display:none!important}
+body[data-screen="reservations"] .reservation-upcoming-block>summary::after{
+  content:'▾';
+  margin-left:12px;
+  color:#8fdcff;
+  font-size:16px;
+  transform:rotate(-90deg);
+  transition:transform .15s ease;
+}
+body[data-screen="reservations"] .reservation-upcoming-block[open]>summary::after{transform:rotate(0deg)}
+body[data-screen="reservations"] .reservation-upcoming-block[open]>summary{border-bottom:1px solid rgba(73,126,160,.42)}
+body[data-screen="reservations"] .reservation-upcoming-body{padding:0!important}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — FINAL APP AUDIT: BUDGET CATEGORY EXPANDED COLOUR MATCH      */
+/* Match the expanded Budget by Category view to the graphite/champagne-gold */
+/* source widget. No layout, data or calculation changes.                    */
+/* ========================================================================== */
+.readability-focus-panel.budget-category{
+  --focus-accent:#e2bd69!important;
+  --focus-rgb:126,98,38!important;
+  --focus-deep-rgb:25,23,18!important;
+  border-color:#b89a58!important;
+  background:linear-gradient(145deg,rgba(84,64,22,.94),rgba(27,25,21,.985) 48%,rgba(8,17,25,.995))!important;
+}
+.readability-focus-panel.budget-category .budget-focus-category-row{
+  border-bottom-color:rgba(184,154,88,.34)!important;
+}
+.readability-focus-panel.budget-category .budget-focus-category-row>small,
+.readability-focus-panel.budget-category .readability-section .muted{
+  color:#d8c79b!important;
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — HOME HERO LONG-DESTINATION READABILITY LOCK                 */
+/* Keep the current destination fully readable on iPad instead of truncating */
+/* longer city names. The title scales by name length and the decorative      */
+/* country outline yields a little more horizontal room.                     */
+/* ========================================================================== */
+@media (min-width:1051px) and (max-width:1400px) and (orientation:landscape){
+  body[data-screen="dashboard"] .home-hero-identity{padding-right:118px!important}
+  body[data-screen="dashboard"] .home-hero-country-outline{right:16px!important;top:68px!important;width:86px!important;height:86px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b,
+  body[data-screen="dashboard"] .home-hero-identity>em{max-width:288px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-short{font-size:56px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-medium{font-size:46px!important;letter-spacing:-1px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-long{font-size:39px!important;letter-spacing:-.8px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-xlong{font-size:33px!important;line-height:.92!important;letter-spacing:-.5px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-height:64px!important}
+}
+@media (min-width:1401px) and (orientation:landscape){
+  body[data-screen="dashboard"] .home-hero-identity{padding-right:150px!important}
+  body[data-screen="dashboard"] .home-hero-country-outline{right:22px!important;top:78px!important;width:112px!important;height:112px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b,
+  body[data-screen="dashboard"] .home-hero-identity>em{max-width:356px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-short{font-size:72px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-medium{font-size:60px!important;letter-spacing:-1.3px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-long{font-size:50px!important;letter-spacing:-1px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-xlong{font-size:42px!important;line-height:.92!important;letter-spacing:-.7px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-height:78px!important}
+}
+@media (max-width:1050px) and (orientation:landscape){
+  body[data-screen="dashboard"] .home-hero-identity{padding-right:100px!important}
+  body[data-screen="dashboard"] .home-hero-country-outline{right:12px!important;top:54px!important;width:72px!important;height:72px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b,
+  body[data-screen="dashboard"] .home-hero-identity>em{max-width:242px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-short{font-size:44px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-medium{font-size:38px!important;letter-spacing:-.7px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-long{font-size:33px!important;letter-spacing:-.5px!important}
+  body[data-screen="dashboard"] .home-hero-identity>b.home-city-xlong{font-size:28px!important;line-height:.92!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-height:52px!important}
+}
+
+
+/* BUILD 4.5.89 — ADD EXPENSE SKY-BLUE READABILITY LOCK — 17 Aug 2026
+   User authority: the Add Expense modal should carry the same sky/baby-blue identity as
+   the Add Expense command bar, while each expense category remains clearly colour-coded. */
+#modal:has(.simple-expense-form){
+  border-color:#70d7ff!important;
+  background:linear-gradient(155deg,#0b2d46 0%,#071b2d 48%,#071521 100%)!important;
+  box-shadow:0 28px 78px rgba(0,0,0,.72),0 0 38px rgba(64,190,243,.18)!important;
+}
+#modal:has(.simple-expense-form) .dialog-head{
+  background:linear-gradient(105deg,#197fb8 0%,#176eaa 38%,#153e69 100%)!important;
+  border-bottom-color:#7bdcff!important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.12)!important;
+}
+#modal:has(.simple-expense-form) .dialog-head h2{
+  color:#fff!important;
+  text-shadow:0 2px 16px rgba(0,79,126,.42)!important;
+}
+#modal:has(.simple-expense-form) #modal-body{
+  background:linear-gradient(180deg,#082339 0%,#071827 58%,#061522 100%)!important;
+}
+#modal:has(.simple-expense-form) .simple-form-intro{
+  background:linear-gradient(110deg,rgba(40,157,211,.50),rgba(17,83,127,.58) 60%,rgba(8,42,67,.90))!important;
+  border-color:#70d7ff!important;
+  box-shadow:inset 5px 0 0 #72dcff,0 0 20px rgba(85,196,240,.08)!important;
+}
+#modal:has(.simple-expense-form) .simple-form-intro b{color:#fff!important}
+#modal:has(.simple-expense-form) .simple-form-intro span{color:#d8f1ff!important}
+#modal:has(.simple-expense-form) .simple-form-step.tone-teal,
+#modal:has(.simple-expense-form) .simple-form-step.tone-purple,
+#modal:has(.simple-expense-form) .simple-form-step.tone-amber{
+  background:linear-gradient(120deg,rgba(25,111,157,.42),rgba(7,29,45,.96) 66%,rgba(11,53,78,.82))!important;
+  border-color:#4e9ec7!important;
+  box-shadow:inset 4px 0 0 #55c8ee!important;
+}
+#modal:has(.simple-expense-form) .simple-step-number,
+#modal:has(.simple-expense-form) .tone-teal .simple-step-number,
+#modal:has(.simple-expense-form) .tone-purple .simple-step-number,
+#modal:has(.simple-expense-form) .tone-amber .simple-step-number{
+  background:linear-gradient(180deg,#36b7ea,#1979bd)!important;
+  border-color:#8de5ff!important;
+  box-shadow:0 0 14px rgba(78,196,240,.22)!important;
+}
+#modal:has(.simple-expense-form) .simple-category{
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+#modal:has(.simple-expense-form) .simple-category.tone-1{background:linear-gradient(145deg,#136f5b,#0a3440 72%)!important;border-color:#58d5ab!important}
+#modal:has(.simple-expense-form) .simple-category.tone-2{background:linear-gradient(145deg,#87385f,#351b39 72%)!important;border-color:#ef86b6!important}
+#modal:has(.simple-expense-form) .simple-category.tone-3{background:linear-gradient(145deg,#245f9e,#102f50 72%)!important;border-color:#79b7ff!important}
+#modal:has(.simple-expense-form) .simple-category.tone-4{background:linear-gradient(145deg,#68459d,#2a2248 72%)!important;border-color:#b999f1!important}
+#modal:has(.simple-expense-form) .simple-category.tone-5{background:linear-gradient(145deg,#9b681e,#3c2b18 72%)!important;border-color:#f0bf60!important}
+#modal:has(.simple-expense-form) .simple-category.tone-6{background:linear-gradient(145deg,#226f76,#103640 72%)!important;border-color:#75d1d4!important}
+#modal:has(.simple-expense-form) .simple-category.tone-1.active{background:linear-gradient(180deg,#21a77f,#14745f)!important;border-color:#8af1c8!important}
+#modal:has(.simple-expense-form) .simple-category.tone-2.active{background:linear-gradient(180deg,#c75c8e,#8f3d67)!important;border-color:#ffacd0!important}
+#modal:has(.simple-expense-form) .simple-category.tone-3.active{background:linear-gradient(180deg,#3b91e1,#2466ac)!important;border-color:#a2d3ff!important}
+#modal:has(.simple-expense-form) .simple-category.tone-4.active{background:linear-gradient(180deg,#9167cf,#6847a0)!important;border-color:#d0b6ff!important}
+#modal:has(.simple-expense-form) .simple-category.tone-5.active{background:linear-gradient(180deg,#d89a35,#9c681f)!important;border-color:#ffd47d!important}
+#modal:has(.simple-expense-form) .simple-category.tone-6.active{background:linear-gradient(180deg,#3da8ad,#27727a)!important;border-color:#a0eff0!important}
+#modal:has(.simple-expense-form) .simple-category.active{
+  box-shadow:0 0 0 2px rgba(132,224,255,.30),0 0 18px rgba(78,196,240,.18),inset 0 1px 0 rgba(255,255,255,.20)!important;
+}
+#modal:has(.simple-expense-form) .simple-amount-field{
+  border-color:#58bce8!important;
+  background:linear-gradient(100deg,rgba(27,116,164,.48),#061724 36%)!important;
+}
+#modal:has(.simple-expense-form) .simple-amount-field>span{color:#8ee4ff!important}
+#modal:has(.simple-expense-form) .simple-aud-preview{
+  background:linear-gradient(90deg,#0b3c31,#0e503e)!important;
+  border-color:#44a27d!important;
+  color:#76efba!important;
+}
+#modal:has(.simple-expense-form) .simple-date-field input,
+#modal:has(.simple-expense-form) .expense-date-control{
+  border-color:#4f9dc6!important;
+  background:#071d2d!important;
+}
+#modal:has(.simple-expense-form) .simple-optional{
+  background:linear-gradient(110deg,rgba(18,75,108,.78),rgba(8,28,43,.96))!important;
+  border-color:#4d9bc3!important;
+}
+#modal:has(.simple-expense-form) .dialog-actions{
+  background:linear-gradient(90deg,#08253a,#0a304a)!important;
+  border-top-color:#4f9fc8!important;
+}
+#modal:has(.simple-expense-form) .dialog-actions button.primary:not(:disabled){
+  background:linear-gradient(180deg,#31b9f1,#1782c8)!important;
+  border-color:#8be4ff!important;
+  box-shadow:0 7px 18px rgba(23,130,200,.28)!important;
+}
+
+/* BUILD 4.5.89 — FINAL VISUAL CERTIFICATION / TV CONTRAST LOCK — 17 AUG 2026 */
+/* BUILD 4.5.89 — FINAL VISUAL CERTIFICATION / TV CONTRAST LOCK — 17 AUG 2026
+   Final code-level visual pass. Preserves all approved structure, calculations,
+   maps and interactions while improving iPad/TV contrast, surface highlights,
+   form consistency and expanded-view readability. */
+:root{
+  --text:#f5f9fd;
+  --muted:#a8bfd2;
+  --line:#2a4d6b;
+}
+
+/* Premium but restrained highlight finish across standard widgets. */
+#screen :is(.card,.checklist-list-card,.personal-needs-card,.vault-records-collapse,.reservation-upcoming-block,.settings-panel,.journey-support-card,.budget-monthly-wide){
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 8px 22px rgba(0,0,0,.15)!important;
+}
+#screen .card h3,
+#screen .checklist-list-card h3,
+#screen .personal-needs-card h3{
+  font-weight:900!important;
+  text-shadow:0 1px 12px rgba(0,0,0,.28)!important;
+}
+#screen .readability-expandable,
+#screen .journey-info-expandable,
+#screen .checklist-expandable-card{
+  transition:border-color .14s ease,box-shadow .14s ease,filter .14s ease!important;
+}
+#screen .readability-expandable:focus-visible,
+#screen .journey-info-expandable:focus-visible,
+#screen .checklist-expandable-card:focus-visible{
+  outline:3px solid rgba(105,211,255,.72)!important;
+  outline-offset:3px!important;
+}
+
+/* TV-distance contrast: brighten secondary copy without flattening the palette. */
+#screen .muted,#screen .table-note,#screen .route-item small,#screen .upcoming-row small{color:#adc4d5!important}
+#screen input,#screen select,#screen textarea,
+#modal input,#modal select,#modal textarea{
+  color:#f7fbff!important;
+  border-color:#3d6d8d!important;
+  background:#061a2a!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#screen input::placeholder,#modal input::placeholder,#screen textarea::placeholder,#modal textarea::placeholder{color:#a9bfd0!important;opacity:.9!important}
+button.primary:not(:disabled){box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 16px rgba(19,112,186,.22)!important}
+
+/* Shared destination header microcopy remains compact but no longer tiny. */
+body:not([data-screen="dashboard"]) .premium-screen-identity .shared-context-kicker{font-size:8.6px!important}
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-current small,
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-next small{font-size:9px!important}
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-current strong,
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-next strong{font-size:7.8px!important}
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-current b,
+body:not([data-screen="dashboard"]) .premium-screen-identity .cinematic-next b{font-size:8.6px!important}
+
+/* Home command cards: modest lift for the supporting labels Kym reads at a glance. */
+body[data-screen="dashboard"] .home-daily-budget-simple>span,
+body[data-screen="dashboard"] .home-destination-glance>span,
+body[data-screen="dashboard"] .home-annual-glance>span{font-size:10px!important}
+body[data-screen="dashboard"] .home-pace-note{font-size:9.6px!important}
+body[data-screen="dashboard"] .home-daily-budget-simple>small{font-size:9.4px!important;color:#b0c7d5!important}
+
+/* Expanded screens: stronger separation and crisp large-text hierarchy. */
+.readability-focus-panel,
+body[data-screen="journeys"] .journey-focus-panel,
+body[data-screen="checklist"] .checklist-focus-panel{
+  box-shadow:0 30px 82px rgba(0,0,0,.64),inset 0 1px 0 rgba(255,255,255,.09)!important;
+}
+.readability-focus-head h2,
+body[data-screen="journeys"] .journey-focus-head h2,
+body[data-screen="checklist"] .checklist-focus-head h2{
+  font-weight:950!important;
+  text-shadow:0 2px 18px rgba(0,0,0,.32)!important;
+}
+.readability-focus-head p,
+body[data-screen="journeys"] .journey-focus-head p,
+body[data-screen="checklist"] .checklist-focus-head p{color:#d1e1eb!important}
+.readability-focus-panel footer span,
+body[data-screen="journeys"] .journey-focus-panel footer span,
+body[data-screen="checklist"] .checklist-focus-panel footer span{color:#b5cad8!important}
+
+/* -------------------------------------------------------------------------- */
+/* ADD RESERVATION — SKY / BABY BLUE MASTER IDENTITY                         */
+/* The reservation-type tiles keep their own colours; every surrounding step */
+/* is now part of one consistent sky-blue entry experience.                   */
+/* -------------------------------------------------------------------------- */
+#modal:has(.reservation-quick-form){
+  border-color:#72d9ff!important;
+  background:linear-gradient(155deg,#0b2e47 0%,#071c2e 52%,#061521 100%)!important;
+  box-shadow:0 28px 78px rgba(0,0,0,.72),0 0 38px rgba(63,190,244,.18)!important;
+}
+#modal:has(.reservation-quick-form) .dialog-head{
+  background:linear-gradient(105deg,#2188bd 0%,#176fa8 42%,#174269 100%)!important;
+  border-bottom-color:#7bddff!important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.14)!important;
+}
+#modal:has(.reservation-quick-form) #modal-body{background:linear-gradient(180deg,#08243a 0%,#071a2a 58%,#061522 100%)!important}
+#modal:has(.reservation-quick-form) .quick-entry-intro{
+  border-color:#69d4fb!important;
+  background:linear-gradient(110deg,rgba(31,135,184,.58),rgba(11,73,112,.70) 62%,rgba(7,39,61,.96))!important;
+  box-shadow:inset 5px 0 0 #6fdcff!important;
+}
+#modal:has(.reservation-quick-form) .quick-type-section,
+#modal:has(.reservation-quick-form) .reservation-quick-details,
+#modal:has(.reservation-quick-form) .reservation-money-panel,
+#modal:has(.reservation-quick-form) .reservation-quick-finish,
+#modal:has(.reservation-quick-form) .reservation-optional-panel{
+  border-color:#4f9fc9!important;
+  background:linear-gradient(118deg,rgba(25,104,148,.42),rgba(7,29,45,.97) 68%,rgba(10,49,72,.84))!important;
+  box-shadow:inset 4px 0 0 #56c9ef!important;
+}
+#modal:has(.reservation-quick-form) .reservation-money-panel{box-shadow:inset 4px 0 0 #6acdf0!important}
+#modal:has(.reservation-quick-form) .reservation-budget-choice{
+  border-color:#4b83a4!important;
+  background:rgba(5,28,44,.90)!important;
+}
+#modal:has(.reservation-quick-form) .reservation-payment-panel summary b{color:#8ee4ff!important}
+#modal:has(.reservation-quick-form) .reservation-quick-finish>label>span,
+#modal:has(.reservation-quick-form) .reservation-quick-details label>span,
+#modal:has(.reservation-quick-form) .reservation-money-fields label>span{color:#d9effa!important}
+#modal:has(.reservation-quick-form) .dialog-actions{
+  background:linear-gradient(90deg,#08263b,#0b324c)!important;
+  border-top-color:#55a8d0!important;
+}
+#modal:has(.reservation-quick-form) .dialog-actions button.primary:not(:disabled){
+  background:linear-gradient(180deg,#31baf1,#1783c9)!important;
+  border-color:#8ce6ff!important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ADD DESTINATION — SKY / BABY BLUE MASTER IDENTITY                         */
+/* Destination, RV/Motorhome and Cruise tiles retain their distinct colours. */
+/* -------------------------------------------------------------------------- */
+#modal:has(.itinerary-choice-form),#modal:has(.itinerary-gap-form){
+  border-color:#72d9ff!important;
+  background:linear-gradient(155deg,#0b2d46 0%,#071b2d 52%,#061521 100%)!important;
+  box-shadow:0 28px 78px rgba(0,0,0,.72),0 0 38px rgba(63,190,244,.18)!important;
+}
+#modal:has(.itinerary-choice-form) .dialog-head,#modal:has(.itinerary-gap-form) .dialog-head{
+  background:linear-gradient(105deg,#2188bd 0%,#176fa8 42%,#174269 100%)!important;
+  border-bottom-color:#7bddff!important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.14)!important;
+}
+#modal:has(.itinerary-choice-form) #modal-body,#modal:has(.itinerary-gap-form) #modal-body{background:linear-gradient(180deg,#08243a 0%,#071a2a 58%,#061522 100%)!important}
+#modal:has(.itinerary-choice-form) .itinerary-quick-intro,#modal:has(.itinerary-gap-form) .itinerary-quick-intro{
+  border-color:#68d4fb!important;
+  background:linear-gradient(110deg,rgba(31,135,184,.55),rgba(11,73,112,.70) 62%,rgba(7,39,61,.96))!important;
+  box-shadow:inset 5px 0 0 #6fdcff!important;
+}
+#modal:has(.itinerary-choice-form) .itinerary-mode-fields,
+#modal:has(.itinerary-choice-form) .quick-optional,
+#modal:has(.itinerary-gap-form) .itinerary-gap-grid{
+  border-color:#4f9fc9!important;
+  background:linear-gradient(118deg,rgba(25,104,148,.38),rgba(7,29,45,.97) 68%,rgba(10,49,72,.82))!important;
+  box-shadow:inset 4px 0 0 #56c9ef!important;
+}
+#modal:has(.itinerary-choice-form) .itinerary-section-heading{border-bottom-color:rgba(103,199,238,.38)!important}
+#modal:has(.itinerary-choice-form) .itinerary-section-heading small{color:#b9d9e8!important}
+#modal:has(.itinerary-choice-form) .dialog-actions,#modal:has(.itinerary-gap-form) .dialog-actions{
+  background:linear-gradient(90deg,#08263b,#0b324c)!important;
+  border-top-color:#55a8d0!important;
+}
+#modal:has(.itinerary-choice-form) .dialog-actions button.primary:not(:disabled),#modal:has(.itinerary-gap-form) .dialog-actions button.primary:not(:disabled){
+  background:linear-gradient(180deg,#31baf1,#1783c9)!important;
+  border-color:#8ce6ff!important;
+}
+
+/* Final form readability lift across Add screens without changing geometry. */
+#modal .quick-entry-form label>span,
+#modal .simple-expense-form label>span{font-weight:800!important}
+#modal .quick-entry-form input,#modal .quick-entry-form select,#modal .quick-entry-form textarea{font-size:14px!important}
+#modal .quick-entry-form summary{color:#e6f4fb!important}
+
+/* FINAL CERTIFICATION — MICROCOPY READABILITY FINISH */
+body:not([data-screen="dashboard"]) .premium-screen-identity .shared-context-current>strong,
+body:not([data-screen="dashboard"]) .premium-screen-identity .shared-context-next>strong{
+  font-size:8px!important;
+  line-height:1.05!important;
+}
+body[data-screen="itinerary"] .itinerary-map-summary>.map-stat small{
+  font-size:7.7px!important;
+  line-height:1.08!important;
+  letter-spacing:1.12px!important;
+}
+body[data-screen="budget"] #screen .budget-category-donut-centre span,
+body[data-screen="budget"] .readability-focus-panel .budget-category-donut-centre span{
+  font-size:8.6px!important;
+  letter-spacing:1.25px!important;
+}
+@media(max-width:1200px){
+  body[data-screen="itinerary"] .itinerary-map-summary>.map-stat small{font-size:7.6px!important;letter-spacing:1px!important}
+}
+body[data-screen="budget"] #screen .shared-destination-context-hero .shared-context-card>strong,
+body[data-screen="reservations"] #screen .shared-destination-context-hero .shared-context-card>strong,
+body[data-screen="itinerary"] #screen .shared-destination-context-hero .shared-context-card>strong,
+body[data-screen="calendar"] #screen .shared-destination-context-hero .shared-context-card>strong{
+  font-size:8px!important;
+  line-height:1.05!important;
+  letter-spacing:.68px!important;
+}
+
+/* FINAL CERTIFICATION — EXPANDED VIEW FIT + MAP TAP TARGET FINISH */
+@media(max-width:1200px){
+  .readability-focus-panel.budget-forecast .budget-focus-month-chart{height:165px!important}
+}
+body[data-screen="itinerary"] .itinerary-map-panel.full-page .itinerary-planning-pin{
+  min-width:44px!important;
+  min-height:44px!important;
+}
+
+
+/* === Black-first smooth launch lock · 17 Aug 2026 === */
+html,body{background-color:#000!important}
+#splash{background:#000!important}
+#app{background:#000}
