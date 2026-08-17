@@ -22422,27 +22422,41 @@ body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row{
   height:auto!important;
   padding:5px 2px!important;
 }
-body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>b.home-event-date-tile{
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>.home-event-date-tile{
   grid-area:date!important;
   width:46px!important;
   height:46px!important;
   min-width:46px!important;
   margin:0!important;
-  display:grid!important;
-  place-items:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
   align-self:center!important;
   border:1px solid #4388ae!important;
   border-radius:10px!important;
   background:linear-gradient(180deg,#163c57,#0b2538)!important;
   box-shadow:inset 0 1px rgba(255,255,255,.08),0 4px 10px rgba(0,0,0,.20)!important;
   color:#f3fbff!important;
-  font-size:25px!important;
   line-height:1!important;
-  font-weight:950!important;
-  letter-spacing:-.02em!important;
   text-align:center!important;
 }
-body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>span{
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>.home-event-date-tile>b{
+  color:#f3fbff!important;
+  font-size:24px!important;
+  line-height:.9!important;
+  font-weight:950!important;
+  letter-spacing:-.02em!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>.home-event-date-tile>small{
+  margin-top:4px!important;
+  color:#7fd9ff!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.13em!important;
+}
+body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>span:not(.home-event-date-tile){
   grid-area:title!important;
   align-self:end!important;
 }
@@ -22458,8 +22472,10 @@ body[data-screen="dashboard"] .home-focus-event-row{
 body[data-screen="dashboard"] .home-focus-event-row>.home-event-date-tile.focus{
   width:58px!important;
   height:58px!important;
-  display:grid!important;
-  place-items:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
   border:1px solid #4e9bc7!important;
   border-radius:12px!important;
   background:linear-gradient(180deg,#174763,#0a283c)!important;
@@ -22470,6 +22486,14 @@ body[data-screen="dashboard"] .home-focus-event-row>.home-event-date-tile.focus>
   font-size:30px!important;
   line-height:1!important;
   font-weight:950!important;
+}
+body[data-screen="dashboard"] .home-focus-event-row>.home-event-date-tile.focus>small{
+  margin-top:5px!important;
+  color:#7fd9ff!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.14em!important;
 }
 
 body[data-screen="dashboard"] .home-focus-alert-list .readability-list-row{
@@ -22504,7 +22528,7 @@ body[data-screen="dashboard"] .home-alert-delete:active{transform:translateY(1px
     min-height:49px!important;
     padding:3px 1px!important;
   }
-  body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>b.home-event-date-tile{
+  body[data-screen="dashboard"] .dashboard-upcoming .upcoming-row>.home-event-date-tile{
     width:41px!important;
     height:41px!important;
     min-width:41px!important;
@@ -23011,4 +23035,481 @@ body.vault-streaming-open .vault-streaming-panel{
   body.vault-streaming-open .vault-streaming-panel{
     width:calc(100% - 16px)!important;max-width:calc(100% - 16px)!important;max-height:calc(100vh - 24px)!important;
   }
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — OFFICIAL STREAMING LOGO ARTWORK LOCK                         */
+/* Uses local/offline brand artwork; credential behaviour remains unchanged.  */
+/* ========================================================================== */
+body[data-screen="vault"] .vault-streaming-brand{
+  width:100%!important;
+  min-height:58px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+  font-size:0!important;
+  line-height:0!important;
+}
+body[data-screen="vault"] .vault-streaming-brand img{
+  display:block!important;
+  width:78%!important;
+  height:62px!important;
+  max-width:220px!important;
+  max-height:62px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.22))!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+body[data-screen="vault"] .vault-streaming-brand.brand-netflix img{width:34%!important;max-width:78px!important;height:70px!important;max-height:70px!important}
+body[data-screen="vault"] .vault-streaming-brand.brand-afl img{width:48%!important;max-width:118px!important;height:70px!important;max-height:70px!important}
+body[data-screen="vault"] .vault-streaming-brand.brand-nfl img{width:34%!important;max-width:72px!important;height:72px!important;max-height:72px!important}
+body[data-screen="vault"] .vault-streaming-brand.brand-kayo img{width:70%!important;max-width:190px!important;height:68px!important;max-height:68px!important}
+body[data-screen="vault"] .vault-streaming-brand.brand-nine img{width:72%!important;max-width:190px!important}
+body[data-screen="vault"] .vault-streaming-brand.brand-abc img,
+body[data-screen="vault"] .vault-streaming-brand.brand-sbs img{width:80%!important;max-width:210px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand{min-height:86px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand img{width:68%!important;height:78px!important;max-width:330px!important;max-height:78px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand.brand-netflix img{width:28%!important;max-width:90px!important;height:88px!important;max-height:88px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand.brand-afl img{width:38%!important;max-width:150px!important;height:82px!important;max-height:82px!important}
+body[data-screen="vault"] .vault-streaming-selected-brand .vault-streaming-brand.brand-nfl img{width:25%!important;max-width:88px!important;height:86px!important;max-height:86px!important}
+@media(max-width:1080px){
+  body[data-screen="vault"] .vault-streaming-brand img{width:80%!important;height:52px!important;max-height:52px!important;max-width:180px!important}
+  body[data-screen="vault"] .vault-streaming-brand.brand-netflix img{height:60px!important;max-height:60px!important;max-width:66px!important}
+  body[data-screen="vault"] .vault-streaming-brand.brand-afl img{height:60px!important;max-height:60px!important;max-width:102px!important}
+  body[data-screen="vault"] .vault-streaming-brand.brand-nfl img{height:61px!important;max-height:61px!important;max-width:62px!important}
+}
+
+/* BUILD 4.5.89 — BOOKED RESERVATIONS HEADER COMPACTION LOCK — 17 Aug 2026
+   Keep Sort By → direction → Filter on one horizontal line at iPad landscape widths,
+   and reclaim the vertical space introduced by the two-line BOOKED RESERVATIONS heading. */
+body[data-screen="reservations"] .reservation-heading{
+  min-height:54px!important;
+  margin:0 0 7px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:14px!important;
+}
+body[data-screen="reservations"] .reservation-heading>div:first-child{
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+body[data-screen="reservations"] .reservation-heading h2{
+  margin:0!important;
+  font-size:29px!important;
+  line-height:.98!important;
+}
+body[data-screen="reservations"] .reservation-view-controls{
+  margin-left:auto!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:flex-end!important;
+  gap:8px!important;
+  flex:0 0 auto!important;
+}
+body[data-screen="reservations"] .reservation-view-controls label{
+  min-width:0!important;
+  flex:0 0 auto!important;
+}
+body[data-screen="reservations"] .reservation-view-controls select{
+  min-width:126px!important;
+  width:126px!important;
+  height:48px!important;
+  min-height:48px!important;
+}
+body[data-screen="reservations"] #reservation-sort-direction{
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+}
+body[data-screen="reservations"] .reservation-category-grid{
+  margin-top:0!important;
+}
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="reservations"] .reservation-heading{
+    min-height:50px!important;
+    gap:10px!important;
+  }
+  body[data-screen="reservations"] .reservation-heading h2{
+    font-size:26px!important;
+    letter-spacing:1.25px!important;
+  }
+  body[data-screen="reservations"] .reservation-view-controls{
+    flex-wrap:nowrap!important;
+    gap:6px!important;
+  }
+  body[data-screen="reservations"] .reservation-view-controls label{
+    font-size:9px!important;
+  }
+  body[data-screen="reservations"] .reservation-view-controls select{
+    min-width:112px!important;
+    width:112px!important;
+    height:44px!important;
+    min-height:44px!important;
+    font-size:11px!important;
+  }
+  body[data-screen="reservations"] #reservation-sort-direction{
+    width:44px!important;
+    min-width:44px!important;
+    height:44px!important;
+    min-height:44px!important;
+  }
+}
+
+/* ========================================================================== */
+/* 17 AUG 2026 — DESTINATION BUDGET FEATURE REDESIGN + SPEND GRAPH LOCK      */
+/* Cameron-approved: destination summary becomes a dark premium feature card  */
+/* with distinct Budget / Spent / Remaining tiles and only a restrained gold  */
+/* perimeter accent. Lifetime Spend keeps a horizontal graph in the widget and */
+/* uses a different large vertical-column graph in expanded view.             */
+/* ========================================================================== */
+
+/* Destination Budget — differentiated from Daily & Stay Pace without becoming
+   a solid gold panel. The gold is restricted to the frame/highlight language. */
+body[data-screen="budget"] #screen .budget-rich-dashboard>.budget-overview-grid>.budget-destination-card{
+  position:relative!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(219,177,77,.075),transparent 30%),
+    linear-gradient(145deg,rgba(8,43,50,.97),rgba(5,27,38,.995))!important;
+  border:1.5px solid rgba(219,177,77,.58)!important;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.075),
+    inset 0 0 0 1px rgba(255,225,151,.035),
+    0 0 18px rgba(219,177,77,.065),
+    0 11px 26px rgba(0,0,0,.29)!important;
+}
+body[data-screen="budget"] #screen .budget-rich-dashboard>.budget-overview-grid>.budget-destination-card::after{
+  content:""!important;
+  position:absolute!important;
+  pointer-events:none!important;
+  left:24px!important;right:24px!important;top:0!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,224,145,.62),transparent)!important;
+  opacity:.78!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card>h3{
+  color:#87e4e9!important;
+  border-bottom-color:rgba(219,177,77,.22)!important;
+  text-shadow:0 0 12px rgba(66,208,223,.12)!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  min-height:142px!important;
+  margin:10px 0 12px!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div{
+  min-width:0!important;
+  min-height:142px!important;
+  padding:15px 12px 12px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  border:1px solid rgba(80,164,205,.72)!important;
+  border-radius:12px!important;
+  background:linear-gradient(155deg,rgba(17,82,124,.70),rgba(5,31,47,.92))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 6px 14px rgba(0,0,0,.16)!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div:nth-child(2){
+  border-color:rgba(203,77,111,.68)!important;
+  background:linear-gradient(155deg,rgba(102,31,55,.62),rgba(40,14,29,.91))!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div:nth-child(3){
+  border-color:rgba(69,192,111,.66)!important;
+  background:linear-gradient(155deg,rgba(18,91,56,.65),rgba(6,41,31,.92))!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div+div{border-left-width:1px!important}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three span{
+  font-size:12px!important;
+  line-height:1.05!important;
+  letter-spacing:1.35px!important;
+  font-weight:850!important;
+  color:#eef7fa!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three b.budget-local-figure,
+body[data-screen="budget"] #screen .budget-destination-card .budget-three b{
+  margin:11px 0 7px!important;
+  line-height:.98!important;
+  font-weight:950!important;
+  text-align:center!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div:first-child b{color:#f7fbff!important}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div:nth-child(2) b{color:#ff637d!important}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three>div:nth-child(3) b{color:#55dc88!important}
+body[data-screen="budget"] #screen .budget-destination-card .budget-three small{
+  font-size:11px!important;
+  line-height:1.1!important;
+  font-weight:720!important;
+  color:#d3e2e8!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  min-height:104px!important;
+  height:auto!important;
+  margin:0!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context>span{
+  min-height:104px!important;
+  height:auto!important;
+  padding:11px 9px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  border:1px solid rgba(72,136,164,.55)!important;
+  border-radius:11px!important;
+  background:linear-gradient(155deg,rgba(9,40,54,.83),rgba(5,25,36,.94))!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context>span+span{border-left-width:1px!important}
+body[data-screen="budget"] #screen .budget-destination-card .budget-context-symbol{
+  width:34px!important;height:34px!important;min-width:34px!important;
+  margin:0 auto 7px!important;
+  color:#5cdbf1!important;
+  border-color:rgba(82,188,219,.46)!important;
+  background:rgba(8,44,58,.66)!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context em{
+  font-size:8.5px!important;line-height:1!important;letter-spacing:.9px!important;color:#c4d8e0!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context b{
+  margin-top:7px!important;font-size:14.5px!important;line-height:1.12!important;color:#f2f8fb!important;
+}
+body[data-screen="budget"] #screen .budget-destination-card .budget-period{
+  position:static!important;
+  min-height:48px!important;
+  margin:10px 0 0!important;
+  padding:9px 12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(219,177,77,.24)!important;
+  border-radius:10px!important;
+  background:linear-gradient(90deg,rgba(34,39,35,.42),rgba(10,37,46,.76),rgba(34,39,35,.42))!important;
+  color:#e7edf0!important;
+  font-size:11.5px!important;
+  font-weight:730!important;
+}
+
+/* Compact Lifetime Spend widget — bars are normalized to the largest category,
+   while the percentage label still reports share of total spend. */
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-chart{
+  gap:10px!important;
+  margin-top:14px!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row{
+  grid-template-columns:minmax(94px,1fr) minmax(100px,1.45fr) 76px 38px!important;
+  gap:8px!important;
+  min-height:31px!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-label b{font-size:11.2px!important}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-track{
+  height:15px!important;
+  background:rgba(108,99,126,.30)!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-track span{
+  box-shadow:inset 0 1px rgba(255,255,255,.16),0 0 8px rgba(255,255,255,.04)!important;
+}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row>strong{font-size:11.2px!important}
+body[data-screen="journeys"] #screen .journey-side-spend-locked .journey-spend-bar-row>small{font-size:9.4px!important}
+
+/* Expanded Lifetime Spend — intentionally a DIFFERENT graph: large columns. */
+body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-column-chart,
+body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-column-chart{
+  width:100%!important;
+  min-height:430px!important;
+  margin:26px 0 20px!important;
+  padding:24px 22px 12px!important;
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:18px!important;
+  align-items:end!important;
+  border:1px solid rgba(159,103,201,.44)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(42,24,64,.44),rgba(13,16,34,.30))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.045)!important;
+}
+body[data-screen="journeys"] .journey-spend-column-item{
+  min-width:0!important;
+  height:376px!important;
+  display:grid!important;
+  grid-template-rows:28px 20px minmax(210px,1fr) 34px!important;
+  gap:6px!important;
+  align-items:end!important;
+  text-align:center!important;
+}
+body[data-screen="journeys"] .journey-spend-column-item>strong{
+  align-self:end!important;
+  font-size:17px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+body[data-screen="journeys"] .journey-spend-column-item>small{
+  align-self:start!important;
+  font-size:12px!important;
+  line-height:1!important;
+  font-weight:820!important;
+  color:#cbbfd6!important;
+}
+body[data-screen="journeys"] .journey-spend-column-track{
+  align-self:stretch!important;
+  min-height:210px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0 12px!important;
+  border-bottom:2px solid rgba(213,192,226,.38)!important;
+  background:repeating-linear-gradient(to top,rgba(255,255,255,.035) 0 1px,transparent 1px 25%)!important;
+}
+body[data-screen="journeys"] .journey-spend-column-track>span{
+  display:block!important;
+  width:min(64px,72%)!important;
+  min-height:10px!important;
+  border-radius:8px 8px 2px 2px!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.20),0 0 14px rgba(255,255,255,.055)!important;
+}
+body[data-screen="journeys"] .journey-spend-column-item>b{
+  align-self:start!important;
+  min-width:0!important;
+  font-size:13.5px!important;
+  line-height:1.08!important;
+  font-weight:850!important;
+  color:#f3edf7!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-screen="journeys"] .journey-spend-expanded-key{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  width:100%!important;
+}
+body[data-screen="journeys"] .journey-spend-expanded-key>span{
+  display:grid!important;
+  grid-template-columns:13px minmax(0,1fr) auto auto!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-height:48px!important;
+  padding:9px 11px!important;
+  border:1px solid rgba(151,106,188,.34)!important;
+  border-radius:10px!important;
+  background:rgba(25,19,43,.46)!important;
+}
+body[data-screen="journeys"] .journey-spend-expanded-key i{width:12px!important;height:12px!important;border-radius:50%!important}
+body[data-screen="journeys"] .journey-spend-expanded-key b{font-size:12.5px!important;color:#f4eef8!important}
+body[data-screen="journeys"] .journey-spend-expanded-key strong{font-size:13px!important;color:#fff!important;white-space:nowrap!important}
+body[data-screen="journeys"] .journey-spend-expanded-key small{font-size:11px!important;color:#cbbfd6!important;white-space:nowrap!important}
+
+@media (min-width:1051px) and (max-width:1250px) and (orientation:landscape){
+  body[data-screen="budget"] #screen .budget-destination-card .budget-three{gap:7px!important;min-height:126px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-three>div{min-height:126px!important;padding:11px 8px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-three span{font-size:10px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-three small{font-size:9px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context{min-height:92px!important;gap:7px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context>span{min-height:92px!important;padding:8px 6px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-context-symbol{width:30px!important;height:30px!important;min-width:30px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-destination-context b{font-size:12px!important}
+  body[data-screen="budget"] #screen .budget-destination-card .budget-period{min-height:42px!important;margin-top:7px!important;font-size:9.5px!important}
+  body[data-screen="journeys"] .journey-focus-panel.spend .journey-spend-column-chart,
+  body[data-screen="journeys"] .journey-focus-panel.kpi-spend .journey-spend-column-chart{min-height:350px!important;margin-top:16px!important;padding:16px 14px 8px!important;gap:10px!important}
+  body[data-screen="journeys"] .journey-spend-column-item{height:305px!important;grid-template-rows:24px 18px minmax(165px,1fr) 34px!important}
+  body[data-screen="journeys"] .journey-spend-column-track{min-height:165px!important;padding:0 8px!important}
+  body[data-screen="journeys"] .journey-spend-column-item>strong{font-size:14px!important}
+  body[data-screen="journeys"] .journey-spend-column-item>b{font-size:11px!important}
+  body[data-screen="journeys"] .journey-spend-expanded-key>span{grid-template-columns:11px minmax(0,1fr) auto auto!important;gap:5px!important;padding:7px!important}
+  body[data-screen="journeys"] .journey-spend-expanded-key b{font-size:10.5px!important}
+  body[data-screen="journeys"] .journey-spend-expanded-key strong{font-size:11px!important}
+  body[data-screen="journeys"] .journey-spend-expanded-key small{font-size:9.5px!important}
+}
+
+
+/* ========================================================================== */
+/* 17 AUG 2026 — LOWER BUDGET VISUAL POLISH + VAULT STREAMING SHORTCUT LOCK  */
+/* Approved visual: Annual Budget and lower Destination Budget retain their   */
+/* existing information/geometry but use lighter, more translucent colour.    */
+/* Vault header shortcut is generic Streaming, not Netflix-branded.           */
+/* ========================================================================== */
+
+/* Lower Annual Budget — brighter translucent raspberry/magenta glass. */
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock{
+  background:
+    radial-gradient(circle at 14% 0%,rgba(255,126,178,.17),transparent 36%),
+    linear-gradient(145deg,rgba(151,31,77,.80),rgba(83,19,53,.80) 58%,rgba(36,13,35,.88))!important;
+  border:1.5px solid rgba(246,83,153,.82)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.10),0 0 24px rgba(236,70,143,.13),0 11px 25px rgba(0,0,0,.27)!important;
+  backdrop-filter:blur(8px) saturate(1.08)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock .budget-lock-heading{
+  border-bottom-color:rgba(255,164,202,.32)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock .budget-lock-heading>span{
+  color:#f6b7d5!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock .budget-lock-heading-icon{
+  color:#ff7fba!important;border-color:rgba(255,126,183,.42)!important;background:rgba(128,19,63,.28)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock .budget-locked-hero-value{
+  border-color:rgba(255,141,190,.50)!important;
+  background:linear-gradient(145deg,rgba(85,13,46,.31),rgba(37,8,31,.23))!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-annual-lock .budget-locked-summary-grid>span{
+  border-color:rgba(255,135,184,.40)!important;
+  background:rgba(54,10,37,.25)!important;
+}
+
+/* Lower Destination Budget — brighter translucent emerald glass. */
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-destination-lock{
+  background:
+    radial-gradient(circle at 14% 0%,rgba(111,241,158,.15),transparent 37%),
+    linear-gradient(145deg,rgba(18,129,68,.79),rgba(10,88,52,.79) 58%,rgba(7,49,39,.88))!important;
+  border:1.5px solid rgba(70,220,125,.78)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.10),0 0 24px rgba(55,218,118,.12),0 11px 25px rgba(0,0,0,.27)!important;
+  backdrop-filter:blur(8px) saturate(1.08)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-destination-lock .budget-lock-heading{
+  border-bottom-color:rgba(116,237,158,.29)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-destination-lock .budget-lock-heading>span{
+  color:#7cf0a8!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-command-card.budget-destination-lock .budget-lock-heading-icon{
+  color:#73ee9f!important;border-color:rgba(105,234,151,.40)!important;background:rgba(9,91,49,.28)!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-destination-locked-context{
+  border-color:rgba(100,236,150,.42)!important;
+  background:linear-gradient(145deg,rgba(8,75,42,.30),rgba(3,43,31,.24))!important;
+}
+body[data-screen="budget"] #screen #budget-finance-command .budget-locked-summary-grid.destination>span{
+  border-color:rgba(98,232,147,.38)!important;
+  background:rgba(4,55,35,.25)!important;
+}
+
+/* Vault header shortcut — generic streaming identity, no Netflix mark. */
+body[data-screen="vault"] #screen .vault-streaming-launch{
+  grid-template-columns:34px minmax(0,1fr) 16px!important;
+  border-color:rgba(77,172,219,.62)!important;
+  background:linear-gradient(180deg,rgba(10,46,70,.94),rgba(5,26,43,.96))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.07),0 5px 14px rgba(0,0,0,.24)!important;
+}
+body[data-screen="vault"] #screen .vault-streaming-launch .vault-streaming-shortcut-icon{
+  width:30px!important;height:30px!important;display:grid!important;place-items:center!important;
+  color:#66d7ff!important;border:1px solid rgba(91,201,242,.48)!important;border-radius:9px!important;
+  background:linear-gradient(145deg,rgba(25,106,144,.50),rgba(5,39,59,.80))!important;
+}
+body[data-screen="vault"] #screen .vault-streaming-launch .vault-streaming-shortcut-icon svg{
+  width:20px!important;height:20px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+body[data-screen="vault"] #screen .vault-streaming-launch .vault-streaming-shortcut-icon svg path:nth-of-type(1){fill:currentColor!important;stroke:none!important}
+body[data-screen="vault"] #screen .vault-streaming-launch b{
+  color:#9be6ff!important;font-size:10.5px!important;letter-spacing:.10em!important;
 }

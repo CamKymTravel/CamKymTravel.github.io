@@ -1,0 +1,24 @@
+TRAVEL COMMAND CENTRE — TV & STREAMING LOGO SOURCES
+Checkpoint: 17/08/2026
+
+These marks are used only as visual identifiers inside Cameron & Kym's private, local/offline Vault.
+Trademark rights remain with their respective owners.
+
+Netflix — Netflix N symbol geometry sourced from Netflix-authored brand artwork mirrored on Wikimedia; Netflix brand guidance identifies Netflix Red #E50914 and the N Symbol as a primary mark.
+Disney+ — Disney+ 2024 logo artwork (Disney Enterprises source), Wikimedia.
+Prime Video — current Prime Video logo artwork, Wikimedia.
+Apple TV — Apple Inc. artwork sourced from apple.com via Wikimedia.
+Max — Warner Bros. Discovery / max.com 2025 logo artwork via Wikimedia.
+Paramount+ — Paramount Global / paramountplus.com logo artwork via Wikimedia.
+Stan — Stan logo artwork based on stan.com.au, Wikimedia.
+Binge — Binge logo artwork, Wikimedia.
+Kayo Sports — official Kayo Sports media-centre negative logo asset.
+YouTube — current YouTube wordmark artwork, Google-authored mark via Wikimedia.
+AFL — AFL-supplied current logo artwork via Wikipedia.
+NFL — NFL shield artwork via Wikipedia.
+ABC iview — ABC iview logo artwork, CC BY-SA 4.0 source via Wikimedia; black wordmark adapted to white solely for dark-background legibility.
+SBS On Demand — SBS On Demand logo artwork, Special Broadcasting Service source via Wikipedia; black portion adapted to white solely for dark-background legibility.
+7plus — 7plus logo artwork via Wikimedia (CC BY-SA 4.0).
+9Now — current 9Now logo artwork via Wikipedia.
+
+No logo is fetched at runtime; all artwork is stored locally for offline operation.
